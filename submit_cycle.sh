@@ -185,6 +185,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         # submit model
         echo '************************************************'
         echo "calling model for member ${NNN}"
+        source ${CYCLEDIR}/land_mods
         echo $MEM_WORKDIR
         srun -n 1 $LSMexec 
         #PID=$!

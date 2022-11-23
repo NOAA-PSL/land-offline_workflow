@@ -1,8 +1,8 @@
 [submodule "ufs-land-driver"]
 	path = ufs-land-driver
-	#url = https://github.com/barlage/ufs-land-driver.git
-        url = https://github.com/ClaraDraper-NOAA/ufs-land-driver.git
-        branch = feature/limit_mfsno
+	url = https://github.com/barlage/ufs-land-driver.git
+        #url = https://github.com/ClaraDraper-NOAA/ufs-land-driver.git
+        branch = mpi
         #tag = p8 
 [submodule "DA_update"]
 	path = DA_update
