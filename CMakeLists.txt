@@ -12,6 +12,7 @@ cmake_minimum_required( VERSION 3.12 )
 project( LandDA VERSION 0.0.0 LANGUAGES C CXX Fortran)
 
 find_package(ecbuild 3.3.2 REQUIRED)
+enable_testing()
 include( ecbuild_system NO_POLICY_SCOPE )
 ecbuild_declare_project()
 
@@ -43,6 +44,9 @@ add_subdirectory( vector2tile )
 add_subdirectory( ufs-land-driver )
 add_subdirectory( DA_update/add_jedi_incr )
 add_subdirectory( DA_update/IMS_proc )
+
+# Include testing.
+add_subdirectory(test)
 
 if(ECBUILD_INSTALL_FORTRAN_MODULES)
   install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/${CMAKE_CFG_INTDIR} DESTINATION ${INSTALL_INCLUDE_DIR} )
