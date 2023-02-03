@@ -40,9 +40,20 @@ sed -i -e "s/XXFREQ/${FREQ}/g" ufs-land.namelist
 sed -i -e "s/XXRDD/${RDD}/g" ufs-land.namelist
 sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
 
+# link forcing folder
+ln -fs ${LANDDA_TESTDATA}/forcing .
+
 # link to resart file
 ln -fs ${WORKDIR}/ana/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc .
 
 # submit model
 echo "============================= calling model" 
 $MPIRUN -n $NPROC ${EXECDIR}/${TEST_EXEC} 
+
+# check if new restart exits
+if [[ -e "./ufs_land_restart.${nYY}-${nMM}-${nDD}_${nHH}-00-00.nc" ]]; then
+    echo "run fcst model successed!"
+else
+    echo "run fcst failed"
+    exit 10
+fi
