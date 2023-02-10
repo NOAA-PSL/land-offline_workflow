@@ -32,6 +32,7 @@ find_package( NetCDF REQUIRED COMPONENTS Fortran)
 #find_package( ioda   1.0.0    REQUIRED)
 #find_package( ufo    1.0.0    REQUIRED)
 #find_package( crtm   2.2.3)
+#find_package( fv3-bundle REQUIRED)
 include_directories( ${NETCDF_INCLUDE_DIRS} )
 
 
@@ -43,7 +44,7 @@ set( LANDDA_LINKER_LANGUAGE CXX)
 add_subdirectory( vector2tile )
 add_subdirectory( ufs-land-driver )
 add_subdirectory( DA_update/add_jedi_incr )
-add_subdirectory( DA_update/IMS_proc )
+#add_subdirectory( DA_update/IMS_proc )
 
 # Include testing.
 add_subdirectory(test)
@@ -52,6 +53,10 @@ if(ECBUILD_INSTALL_FORTRAN_MODULES)
   install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/${CMAKE_CFG_INTDIR} DESTINATION ${INSTALL_INCLUDE_DIR} )
 endif()
 
+execute_process(
+     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/DA_update/jedi/fv3-jedi/Data/make_links.sh ${fv3-bundle_BASE_DIR}
+     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DA_update/jedi/fv3-jedi/Data
+)
 ################################################################################
 # Finalise configuration
 ################################################################################

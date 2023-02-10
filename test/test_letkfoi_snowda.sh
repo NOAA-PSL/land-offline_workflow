@@ -9,7 +9,8 @@ project_source_dir=$2
 source ${project_source_dir}/test/runtime_vars.sh ${project_binary_dir} ${project_source_dir}
 
 # set extra paths
-OBSDIR=$project_binary_dir/test/ioda
+OROG_PATH=${LANDDA_TESTDATA}/forcing/C96/orog_files
+OBSDIR=${LANDDA_TESTDATA}/DA/snow_depth
 
 # set executables
 JEDI_EXEC=${JEDI_EXEC:-$JEDI_EXECDIR/fv3jedi_letkf.x}
@@ -27,11 +28,17 @@ do
 done
 
 # prepare yaml files
-cp $project_source_dir/test/testinput/${DAtype}.yaml letkf_land.yaml
+cp $project_source_dir/DA_update/jedi/fv3-jedi/yaml_files/release-v1.0/${DAtype}.yaml letkf_land.yaml
 for ii in "${!OBS_TYPES[@]}";
 do
     echo "============================= ${OBS_TYPES[$ii]}" 
-    cat $project_source_dir/DA_update/jedi/fv3-jedi/yaml_files/${OBS_TYPES[$ii]}.yaml >> letkf_land.yaml
+    cat $project_source_dir/DA_update/jedi/fv3-jedi/yaml_files/release-v1.0/${OBS_TYPES[$ii]}.yaml >> letkf_land.yaml
+
+    # link ioda obs file
+    [[ -e ${OBS_TYPES[$ii]}_${YY}${MM}${DD}${HH}.nc ]] && rm ${OBS_TYPES[$ii]}_${YY}${MM}${DD}${HH}.nc
+    src_file=${OBSDIR}/${OBS_TYPES[$ii]}/data_proc/${YY}/${OBS_TYPES[$ii],,}_snwd_ioda_${YY}${MM}${DD}.nc
+    ln -fs ${src_file} ./${OBS_TYPES[$ii]}_${YY}${MM}${DD}${HH}.nc 
+
 done
 
 sed -i -e "s/XXYYYY/${YY}/g" letkf_land.yaml
@@ -42,8 +49,7 @@ sed -i -e "s/XXYYYP/${YP}/g" letkf_land.yaml
 sed -i -e "s/XXMP/${MP}/g" letkf_land.yaml
 sed -i -e "s/XXDP/${DP}/g" letkf_land.yaml
 sed -i -e "s/XXHP/${HP}/g" letkf_land.yaml
-sed -i -e "s/XXTSTUB/${TSTUB}/g" letkf_land.yaml
-sed -i -e "s#XXTPATH#${TPATH}#g" letkf_land.yaml
+sed -i -e "s#DATAPATH#${OROG_PATH}#g" letkf_land.yaml
 sed -i -e "s/XXRES/${RES}/g" letkf_land.yaml
 RESP1=$((RES+1))
 sed -i -e "s/XXREP/${RESP1}/g" letkf_land.yaml
@@ -54,9 +60,6 @@ mkdir -p ./output/DA/hofx
 
 # link jedi static files
 ln -fs $JEDI_STATICDIR ./
-
-# link obs files
-ln -fs ./ioda/* .
 
 #
 echo "============================= calling ${JEDI_EXEC}"

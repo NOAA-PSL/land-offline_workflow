@@ -33,15 +33,15 @@ export nHH=`echo $NYMDH | cut -c9-10`
 # set paths
 export WORKDIR=$project_binary_dir/test
 export EXECDIR=${EXECDIR:-$project_binary_dir/bin}
-export LANDDA_TESTDATA=${LANDDA_TESTDATA:-`dirname $project_source_dir`}
+export LANDDA_TESTDATA=${LANDDA_TESTDATA:-"`dirname $project_source_dir`/inputs"}
 
 # set IODA path
-export IODA_BUILD_DIR=${IODA_BUILD_DIR:-"/opt/ioda-bundle/build"}
+export IODA_BUILD_DIR=${IODA_BUILD_DIR:-"${JEDI_INSTALL}/ioda-bundle/build"}
 export PYTHON_VERSION=`python -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}".format(*version))'`
 export PYTHONPATH=$PYTHONPATH:${IODA_BUILD_DIR}/lib/python${PYTHON_VERSION}/pyioda:${IODA_BUILD_DIR}/lib/pyiodaconv
 
 # JEDI directories
-export JEDI_EXECDIR=${JEDI_EXECDIR:-"/opt/fv3-bundle/build/bin"}
+export JEDI_EXECDIR=${JEDI_EXECDIR:-"${JEDI_INSTALL}/fv3-bundle/build/bin"}
 export JEDI_STATICDIR=${JEDI_STATICDIR:-"${JEDI_EXECDIR}/../fv3-jedi/test/Data"}
 
 # set executables
@@ -50,11 +50,11 @@ export PYTHON_EXEC=${PYTHON_EXEC:-`which python`}
 
 # configurations
 export RES=96
-export TPATH="$LANDDA_TESTDATA/orog_files/"
-export TSTUB="oro_C96.mx100"
+export TPATH="$LANDDA_TESTDATA/forcing/C${RES}/orog_files/"
+export TSTUB="oro_C${RES}.mx100"
 export atmos_forc=gdas
 export GFSv17=NO
-export OBS_TYPES=("IMS")
+export OBS_TYPES=("GHCN")
 export DAtype=letkfoi_snow
 export B=30  # background error std for LETKFOI
 if [ $GFSv17 == "YES" ]; then

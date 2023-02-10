@@ -21,13 +21,15 @@ NPROC=1
 cd $WORKDIR
 
 # clean output folder
-[[ -e noahmp_output ]] && rm -rf noahmp_output
 [[ -e ufs-land.namelist ]] && rm ufs-land.namelist
 for i in ./ufs_land_restart*.nc;
 do
   [[ -e $i ]] && rm $i
 done
-mkdir -p ./noahmp_output
+for i in ./ufs_land_output*.nc;
+do
+  [[ -e $i ]] && rm $i
+done
 
 # update model namelist
 cp  $project_source_dir/test/testinput/template.ufs-noahMP.namelist.${atmos_forc}  ufs-land.namelist

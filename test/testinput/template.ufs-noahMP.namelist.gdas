@@ -5,7 +5,7 @@
   forcing_dir      = "./forcing/C96/gdas/forcing"
   
   separate_output = .false.
-  output_dir       = "./noahmp_output/"
+  output_dir       = "./"
 
   restart_frequency_s = XXFREQ
   restart_simulation  = .true.
