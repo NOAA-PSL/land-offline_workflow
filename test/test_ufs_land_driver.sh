@@ -32,8 +32,8 @@ do
 done
 
 # update model namelist
-cp  $project_source_dir/test/testinput/template.ufs-noahMP.namelist.${atmos_forc}  ufs-land.namelist
-sed -i "s|LANDDA_TESTDATA|${LANDDA_TESTDATA}|g" ufs-land.namelist
+cp $project_source_dir/template.ufs-noahMP.namelist.release.${atmos_forc}  ufs-land.namelist
+sed -i "s|LANDDA_INPUTS|${LANDDA_INPUTS}|g" ufs-land.namelist
 sed -i -e "s/XXYYYY/${YY}/g" ufs-land.namelist
 sed -i -e "s/XXMM/${MM}/g" ufs-land.namelist
 sed -i -e "s/XXDD/${DD}/g" ufs-land.namelist
@@ -41,9 +41,6 @@ sed -i -e "s/XXHH/${HH}/g" ufs-land.namelist
 sed -i -e "s/XXFREQ/${FREQ}/g" ufs-land.namelist
 sed -i -e "s/XXRDD/${RDD}/g" ufs-land.namelist
 sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
-
-# link forcing folder
-ln -fs ${LANDDA_TESTDATA}/forcing .
 
 # link to resart file
 ln -fs ${WORKDIR}/ana/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc .

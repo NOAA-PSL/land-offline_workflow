@@ -25,7 +25,7 @@ cd $WORKDIR
 
 # copy vector restarts
 mkdir -p $WORKDIR/${prefix}/restarts/vector
-source_restart=${LANDDA_TESTDATA}/single/output/modl/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc
+source_restart=${LANDDA_INPUTS}/single/output/modl/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc
 target_restart=$WORKDIR/${prefix}/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc
 cp $source_restart $target_restart
 
@@ -67,7 +67,7 @@ esac
 # update namelist
 cp  ${project_source_dir}/test/testinput/template.vector2tile vector2tile.namelist
 sed -i "s|DIRECTION|${DIRECTION}|g" vector2tile.namelist
-sed -i "s|LANDDA_TESTDATA|${LANDDA_TESTDATA}|g" vector2tile.namelist
+sed -i "s|LANDDA_INPUTS|${LANDDA_INPUTS}|g" vector2tile.namelist
 sed -i "s|VECTOR_PATH|${VECTOR_PATH}|g" vector2tile.namelist
 sed -i "s|TILE_PATH|${TILE_PATH}|g" vector2tile.namelist
 sed -i "s|OUTPUT_PATH|${OUTPUT_PATH}|g" vector2tile.namelist

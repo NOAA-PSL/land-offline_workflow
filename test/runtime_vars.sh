@@ -33,7 +33,7 @@ export nHH=`echo $NYMDH | cut -c9-10`
 # set paths
 export WORKDIR=$project_binary_dir/test
 export EXECDIR=${EXECDIR:-$project_binary_dir/bin}
-export LANDDA_TESTDATA=${LANDDA_TESTDATA:-"`dirname $project_source_dir`/inputs"}
+export LANDDA_INPUTS=${LANDDA_INPUTS:-"`dirname $project_source_dir`/inputs"}
 
 # set IODA path
 export IODA_BUILD_DIR=${IODA_BUILD_DIR:-"${JEDI_INSTALL}/ioda-bundle/build"}
@@ -50,7 +50,7 @@ export PYTHON_EXEC=${PYTHON_EXEC:-`which python`}
 
 # configurations
 export RES=96
-export TPATH="$LANDDA_TESTDATA/forcing/C${RES}/orog_files/"
+export TPATH="$LANDDA_INPUTS/forcing/C${RES}/orog_files/"
 export TSTUB="oro_C${RES}.mx100"
 export atmos_forc=gdas
 export GFSv17=NO
