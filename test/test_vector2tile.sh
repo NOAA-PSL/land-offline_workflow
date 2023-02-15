@@ -25,7 +25,7 @@ cd $WORKDIR
 
 # copy vector restarts
 mkdir -p $WORKDIR/${prefix}/restarts/vector
-source_restart=${LANDDA_INPUTS}/single/output/modl/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc
+source_restart=${LANDDA_INPUTS}/restarts/${atmos_forc}/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc
 target_restart=$WORKDIR/${prefix}/restarts/vector/ufs_land_restart.${YY}-${MM}-${DD}_${HH}-00-00.nc
 cp $source_restart $target_restart
 
@@ -76,7 +76,7 @@ sed -i -e "s/XXYYYY/${YY}/g" vector2tile.namelist
 sed -i -e "s/XXMM/${MM}/g" vector2tile.namelist
 sed -i -e "s/XXDD/${DD}/g" vector2tile.namelist
 sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
-sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
+sed -i -e "s/MODELTYPE/${atmos_forc}/g" vector2tile.namelist
 sed -i -e "s/XXRES/${RES}/g" vector2tile.namelist
 sed -i -e "s#XXTPATH#${TPATH}#g" vector2tile.namelist
 sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist

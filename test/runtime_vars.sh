@@ -7,7 +7,7 @@ project_source_dir=$2
 
 # Prepare runtime environement
 # set date
-export CYMDH=2016010118
+export CYMDH=2020100118
 export YY=`echo $CYMDH | cut -c1-4`
 export MM=`echo $CYMDH | cut -c5-6`
 export DD=`echo $CYMDH | cut -c7-8`
@@ -50,9 +50,9 @@ export PYTHON_EXEC=${PYTHON_EXEC:-`which python`}
 
 # configurations
 export RES=96
-export TPATH="$LANDDA_INPUTS/forcing/C${RES}/orog_files/"
+export atmos_forc=era5
+export TPATH="$LANDDA_INPUTS/forcing/${atmos_forc}/orog_files/"
 export TSTUB="oro_C${RES}.mx100"
-export atmos_forc=gdas
 export GFSv17=NO
 export OBS_TYPES=("GHCN")
 export DAtype=letkfoi_snow
