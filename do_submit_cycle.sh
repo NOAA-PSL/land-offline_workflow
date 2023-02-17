@@ -1,5 +1,35 @@
 #!/bin/bash 
 
+set -x
+#Set defaults
+export LANDDAROOT=${LANDDAROOT:-`dirname $PWD`}
+export LANDDA_INPUTS=${LANDDA_INPUTS:-${LANDDAROOT}/inputs}
+export CYCLEDIR=$(pwd) 
+export LANDDA_EXPTS=${LANDDA_EXPTS:-${LANDDAROOT}/landda_expts}
+export PYTHON=`which python3`
+export BUILDDIR=${BUILDDIR:-${CYCLEDIR}/build}
+
+#Change some variables if working with a container
+if [[ ${USE_SINGULARITY} =~ yes ]]; then
+  EPICHOME=/opt
+  #use the python that is built into the container. It has all the pythonpaths set and can run the ioda converters
+  export PYTHON=$PWD/singularity/bin/python
+  #JEDI is installed under /opt in the container
+  export JEDI_INSTALL=/opt
+  #Scripts that launch containerized versions of the executables are in $PWD/singularity/bin They should be called
+  #from the host system to be run (e.g. mpiexec -n 6 $BUILDDIR/bin/fv3jedi_letkf.x )
+  export BUILDDIR=$PWD/singularity
+  export JEDI_EXECDIR=${CYCLEDIR}/singularity/bin
+  #we need to have intelmpi loaded on the host system to run the workflow. Try to load it here.
+  #TODO--figure out a way to make sure we have intelmpi loaded or don't let the workflow start
+  module try-load impi
+  module try-load intel-oneapi-mpi
+  module try-load intelmpi
+  module try-load singularity
+  export SINGULARITYBIN=`which singularity`
+  sed -i 's/singularity exec/${SINGULARITYBIN} exec/g' run_container_executable.sh
+fi
+
 ############################
 # load config file 
 
@@ -23,16 +53,25 @@ export KEEPWORKDIR="YES"
 ############################
 # load modules 
 
-source cycle_mods_bash
-export CYCLEDIR=$(pwd) 
+./${LAND_OFFLINE_WORKFLOW}/module_check.sh
 
 ############################
 # set executables
 
-export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
-export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe 
+if [[ -e ${BUILDDIR}/bin/vector2tile_converter.exe ]]; then #prefer cmake-built executables
+  export vec2tileexec=${BUILDDIR}/bin/vector2tile_converter.exe
+else 
+  export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
+fi
+if [[ -e ${BUILDDIR}/bin/ufsLandDriver.exe ]]; then
+  export LSMexec=${BUILDDIR}/bin/ufsLandDriver.exe
+else
+  export LSMexec=${CYCLEDIR}/ufs-land-driver/driver/ufsLandDriver.exe
+fi
+
 export DADIR=${CYCLEDIR}/DA_update/
 export DAscript=${DADIR}/do_landDA.sh
+export MPIEXEC=`which mpiexec`
 
 export analdate=${CYCLEDIR}/analdates.sh
 export incdate=${CYCLEDIR}/incdate.sh
@@ -92,22 +131,6 @@ if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
     mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
 fi
 ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
-
-# copy ICS into restarts, if needed 
-rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-rst_out=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-
-# if restart not in experiment out directory, copy the restarts from the ICSDIR
-if [[ ! -e ${rst_out} ]]; then 
-    echo "Looking for ICS: ${rst_in}"
-    if [[ -e ${rst_in} ]]; then
-       echo "ICS found, copying" 
-       cp ${rst_in} ${rst_out}
-    else  
-       echo "ICS not found. Exiting" 
-       exit 10 
-    fi 
-fi 
 
 # create dates file 
 touch analdates.sh 

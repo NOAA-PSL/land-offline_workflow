@@ -11,6 +11,11 @@
 cmake_minimum_required( VERSION 3.12 )
 project( LandDA VERSION 0.0.0 LANGUAGES C CXX Fortran)
 
+if(DEFINED ENV{JEDI_INSTALL})
+  set( JEDI_INSTALL  $ENV{JEDI_INSTALL}/fv3-bundle)
+else()
+  message(FATAL_ERROR "Define the environment variable 'JEDI_INSTALL' to point to the parent directory of fv3-bundle on your system")
+endif()
 find_package(ecbuild 3.3.2 REQUIRED)
 include( ecbuild_system NO_POLICY_SCOPE )
 ecbuild_declare_project()
@@ -22,15 +27,6 @@ include( landda_compiler_flags )
 # Dependencies
 ################################################################################
 find_package( NetCDF REQUIRED COMPONENTS Fortran)
-#find_package( gsl-lite REQUIRED HINTS $ENV{gsl_list_DIR})
-#find_package( eckit  1.11.6   REQUIRED)
-#find_package( fckit  0.7.0    REQUIRED)
-#find_package( atlas  0.20.2   REQUIRED)
-#find_package( oops   1.0.0    REQUIRED)
-#find_package( saber  1.0.0    REQUIRED)
-#find_package( ioda   1.0.0    REQUIRED)
-#find_package( ufo    1.0.0    REQUIRED)
-#find_package( crtm   2.2.3)
 include_directories( ${NETCDF_INCLUDE_DIRS} )
 
 
@@ -42,12 +38,14 @@ set( LANDDA_LINKER_LANGUAGE CXX)
 add_subdirectory( vector2tile )
 add_subdirectory( ufs-land-driver )
 add_subdirectory( DA_update/add_jedi_incr )
-add_subdirectory( DA_update/IMS_proc )
 
 if(ECBUILD_INSTALL_FORTRAN_MODULES)
   install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/${CMAKE_CFG_INTDIR} DESTINATION ${INSTALL_INCLUDE_DIR} )
 endif()
-
+execute_process(
+     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/DA_update/jedi/fv3-jedi/Data/make_links.sh ${JEDI_INSTALL}
+     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DA_update/jedi/fv3-jedi/Data
+)
 ################################################################################
 # Finalise configuration
 ################################################################################
