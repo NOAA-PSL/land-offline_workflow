@@ -30,7 +30,7 @@ The Land DA System requires:
    * `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__
    * `FV3-bundle <https://github.com/JCSDA/fv3-bundle/wiki>`__   
 
-These software prerequisites are pre-installed in the Land DA :term:`container` and on other Level 1 systems (see :ref:`below <LevelsOfSupport>` for details). However, users on non-Level 1 systems will need to install them.
+These software prerequisites are pre-installed in the Land DA release v1.0.0 :term:`container` and on other Level 1 systems (see :ref:`below <LevelsOfSupport>` for details). However, users on non-Level 1 systems will need to install them.
 
 Before using the Land DA container, users will need to install `Singularity <https://docs.sylabs.io/guides/latest/user-guide/>`__ and an **Intel** MPI (available `free here <https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html>`__). 
 
@@ -63,14 +63,18 @@ Preconfigured (Level 1) systems for Land DA already have the required external l
 |           | impi/2022.1.2                     | /work/noaa/epic-ps/role-epic-ps/contrib/fv3-bundle                         |
 +-----------+-----------------------------------+----------------------------------------------------------------------------+
 | Container | intel-oneapi-compilers/2021.8.0 / | /opt/spack-stack/ (inside the container)                                   |
-|           |                                   |                                                                            |
-|           | intel-oneapi-mpi/2021.8.0         | /opt/fv3-bundle (inside the container)                                     |
+| (release  |                                   |                                                                            |
+| v1.0.0)   | intel-oneapi-mpi/2021.8.0         | /opt/fv3-bundle (inside the container)                                     |
 +-----------+-----------------------------------+----------------------------------------------------------------------------+
 
 Level 2-4 Systems
 ===================
 
 On non-Level 1 platforms, the Land DA System can be run within a container that includes the prerequisite software; otherwise, the required libraries will need to be installed as part of the Land DA build process. Once these prerequisite libraries are installed, applications and models should build and run successfully. However, users may need to perform additional troubleshooting on Level 3 or 4 systems since little or no pre-release testing has been conducted on these systems.
+
+.. attention::
+
+   Currently, a container is available only for the ``v1.0.0`` release and not for the ``develop`` branch. 
 
 .. note::
 
@@ -83,35 +87,33 @@ Directory Structure
 ======================
 
 The main repository for the Land DA System is named ``land-offline_workflow``; 
-it is available on GitHub at https://github.com/NOAA-EPIC/land-offline_workflow/. 
+it is available on GitHub at https://github.com/NOAA-PSL/land-offline_workflow. 
 A number of submodules are nested under the main ``land-offline_workflow`` directory. 
-When the ``release/public-v1.0.0`` branch of the ``land-offline_workflow`` repository 
+When the ``develop`` branch of the ``land-offline_workflow`` repository 
 is cloned with the ``--recursive`` argument, the basic directory structure will be 
 similar to the example below. Some files and directories have been removed for brevity. 
 
 .. code-block:: console
 
    land-offline_workflow
-    ├── DA_update
-    │     ├── add_jedi_incr
-    │     ├── jedi/fv3-jedi
-    │     └── do_LandDA.sh
-    ├── cmake
-    ├── configures
-    ├── docs
-    ├── modulefiles
-    ├── test
-    ├── ufs-land-driver
-    │     └── ccpp-physics
-    ├── vector2tile
-    ├── CMakeLists.txt
-    ├── README.md
-    ├── LICENSE
-    ├── do_submit_cycle.sh
-    ├── release.environment
-    ├── settings_DA_*
-    ├── submit_cycle.sh
-    └── template.*
+   ├── DA_update
+   │     ├── add_jedi_incr
+   │     ├── jedi/fv3-jedi
+   │     └── do_LandDA.sh
+   ├── cmake
+   ├── configures
+   ├── docs
+   ├── ufs-land-driver
+   │     └── ccpp-physics
+   ├── vector2tile
+   ├── CMakeLists.txt
+   ├── README.md
+   ├── LICENSE
+   ├── do_submit_cycle.sh
+   ├── land_mods
+   ├── settings_*
+   ├── submit_cycle.sh
+   └── template.*
 
 Land DA Components
 =====================
@@ -126,7 +128,7 @@ the UFS Land DA System.
    +--------------------------+-----------------------------------------+------------------------------------------------------+
    | Repository Name          | Repository Description                  | Authoritative repository URL                         |
    +==========================+=========================================+======================================================+
-   | land-DA_update           | Contains scripts and components for     | https://github.com/NOAA-EPIC/land-DA_update          |
+   | land-DA_update           | Contains scripts and components for     | https://github.com/NOAA-PSL/land-DA_update           |
    |                          | performing data assimilation (DA)       |                                                      |
    |                          | procedures.                             |                                                      |
    +--------------------------+-----------------------------------------+------------------------------------------------------+
@@ -134,8 +136,13 @@ the UFS Land DA System.
    |                          | JEDI-generated DA increment to UFS      |                                                      |
    |                          | ``sfc_data`` restart                    |                                                      |
    +--------------------------+-----------------------------------------+------------------------------------------------------+
-   | ufs-land-driver          | Repository for the UFS Land             | https://github.com/NOAA-EMC/ufs-land-driver          | 
-   |                          | Driver                                  |                                                      |
+   | *-- land-IMS_proc*       | Contains code for processing Ice        | https://github.com/NOAA-PSL/land-IMS_proc            |
+   |                          | Mapping Data (IMS) ASCII input files    |                                                      |
+   |                          | on the UFS model grid.                  |                                                      |
+   +--------------------------+-----------------------------------------+------------------------------------------------------+
+   | ufs-land-driver          | Repository for the UFS Land Driver      | https://github.com/ClaraDraper-NOAA/ufs-land-driver  |
+   |                          |                                         | (forked from                                         |
+   |                          |                                         | https://github.com/NOAA-EMC/ufs-land-driver)         |
    +--------------------------+-----------------------------------------+------------------------------------------------------+
    | *-- ccpp-physics*        | Repository for the Common               | https://github.com/NCAR/ccpp-physics                 |
    |                          | Community Physics Package (CCPP)        |                                                      |
