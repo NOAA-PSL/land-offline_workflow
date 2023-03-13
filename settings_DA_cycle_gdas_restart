@@ -4,8 +4,8 @@
 export exp_name=DA_GHCN_test
 
 #GDAS forcing is available for 2016
-STARTDATE=2016010118
-ENDDATE=2016010318
+STARTDATE=2016010318
+ENDDATE=2016010418
 
 # Get commmon variables
 source ./release.environment

@@ -3,16 +3,16 @@
 # experiment name
 export exp_name=DA_GHCN_test
 
-#GDAS forcing is available for 2016
-STARTDATE=2016010118
-ENDDATE=2016010318
+#ERA5 forcing is available for 2020-2021
+STARTDATE=2020100318
+ENDDATE=2020100418
 
 # Get commmon variables
 source ./release.environment
 ############################
 
 #forcing options: gdas, era5
-export atmos_forc=gdas
+export atmos_forc=era5
 
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 

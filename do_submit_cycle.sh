@@ -1,35 +1,5 @@
 #!/bin/bash 
 
-set -x
-#Set defaults
-export LANDDAROOT=${LANDDAROOT:-`dirname $PWD`}
-export LANDDA_INPUTS=${LANDDA_INPUTS:-${LANDDAROOT}/inputs}
-export CYCLEDIR=$(pwd) 
-export LANDDA_EXPTS=${LANDDA_EXPTS:-${LANDDAROOT}/landda_expts}
-export PYTHON=`which python3`
-export BUILDDIR=${BUILDDIR:-${CYCLEDIR}/build}
-
-#Change some variables if working with a container
-if [[ ${USE_SINGULARITY} =~ yes ]]; then
-  EPICHOME=/opt
-  #use the python that is built into the container. It has all the pythonpaths set and can run the ioda converters
-  export PYTHON=$PWD/singularity/bin/python
-  #JEDI is installed under /opt in the container
-  export JEDI_INSTALL=/opt
-  #Scripts that launch containerized versions of the executables are in $PWD/singularity/bin They should be called
-  #from the host system to be run (e.g. mpiexec -n 6 $BUILDDIR/bin/fv3jedi_letkf.x )
-  export BUILDDIR=$PWD/singularity
-  export JEDI_EXECDIR=${CYCLEDIR}/singularity/bin
-  #we need to have intelmpi loaded on the host system to run the workflow. Try to load it here.
-  #TODO--figure out a way to make sure we have intelmpi loaded or don't let the workflow start
-  module try-load impi
-  module try-load intel-oneapi-mpi
-  module try-load intelmpi
-  module try-load singularity
-  export SINGULARITYBIN=`which singularity`
-  sed -i 's/singularity exec/${SINGULARITYBIN} exec/g' run_container_executable.sh
-fi
-
 ############################
 # load config file 
 
@@ -50,10 +20,52 @@ source $config_file
 
 export KEEPWORKDIR="YES"
 
-############################
-# load modules 
 
-./${LAND_OFFLINE_WORKFLOW}/module_check.sh
+############################
+# ensure necessary envars are set
+envars=("exp_name" "STARTDATE" "ENDDATE" "LANDDAROOT" "LANDDA_INPUTS" "CYCLEDIR" \
+        "LANDDA_EXPTS" "PYTHON" "BUILDDIR" "atmos_forc" "OBSDIR" "WORKDIR" \
+        "OUTDIR" "TEST_BASEDIR" "JEDI_EXECDIR" "JEDI_STATICDIR" "ensemble_size" \
+        "FCSTHR" "RES" "TPATH" "TSTUB" "cycles_per_job" "ICSDIR" "DA_config" \
+        "DA_config00" "DA_config06" "DA_config12" "DA_config18")
+
+for var in "${envars[@]}"; do
+  if [ -z "${!var}" ]; then
+    unset_envars+=("$var")
+  fi
+done
+
+if [ ${#unset_envars[@]} -ne 0 ]; then
+  echo "ERROR: the following environmental variables have not been set: ${unset_envars[@]}."
+  exit 1
+fi
+
+############################
+# check that modules are loaded in the environment
+
+${CYCLEDIR}/module_check.sh
+
+if [[ $? -ne 0 ]]; then
+  exit 1
+fi
+
+############################
+# check that a valid account for job submission
+# is set in submit_cycle.sh (only on Orion/Hera)
+
+if [[ ${HOSTNAME} == *"Orion"* || ${HOSTNAME} == *"hfe"* ]]; then
+  user_accounts=$(echo $(sacctmgr show assoc where user=$USER format=account) | sed 's|.*--- \(.*\)|\1|')
+  preset_account=$(grep '#SBATCH --account=' submit_cycle.sh | cut -d= -f2)
+
+  # if the account set in submit_cycle matches any of ${user_accounts}, continue;
+  # if not, esuggest a compute account to which the user has access and exit.
+  if echo "$user_accounts" | grep -q -w "${preset_account}"; then
+    echo "Account for sbatch submission set to ${preset_account}."
+  else
+    echo "Warning: You don't have access to the ${preset_account} compute account. You might try setting the #SBATCH --account in submit_cycle.sh to one of the following accounts instead before re-submitting: ${user_acceunts}."
+    exit 1
+  fi
+fi
 
 ############################
 # set executables
