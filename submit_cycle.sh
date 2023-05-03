@@ -93,6 +93,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         # submit vec2tile 
         echo '************************************************'
         echo 'calling vector2tile' 
+        source ${CYCLEDIR}/land_mods
         $vec2tileexec vector2tile.namelist
         if [[ $? != 0 ]]; then
             echo "vec2tile failed"
@@ -132,6 +133,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     if [[ $do_jedi == "YES" ]]; then  
         echo '************************************************'
         echo 'calling tile2vector' 
+        source ${CYCLEDIR}/land_mods
 
         cp  ${CYCLEDIR}/template.tile2vector tile2vector.namelist
 
@@ -170,8 +172,13 @@ while [ $date_count -lt $cycles_per_job ]; do
     # submit model
     echo '************************************************'
     echo "calling model"
+    source ${CYCLEDIR}/land_mods
+    module list
     echo $MEM_WORKDIR
-    srun -n 1 $LSMexec 
+    nt=$SLURM_NTASKS
+    #srun -n $nt $LSMexec
+    #mpirun -n 1 $LSMexec
+    srun '--export=ALL' --label -K -n 1 $LSMexec # CSD single task, as write not working.
     # no error codes on exit from model, check for restart below instead
 
     ############################
