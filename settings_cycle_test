@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_test
-STARTDATE=2019100118
-ENDDATE=2019100318
+export exp_name=DA_test_era5
+STARTDATE=2019122100
+ENDDATE=2019122200
 
 # temporary directory where experiment is run from
 export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/

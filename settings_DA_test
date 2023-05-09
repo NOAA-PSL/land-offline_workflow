@@ -24,12 +24,12 @@ RSTRDIR=${MEM_WORKDIR}
 DAtype=letkfoi_snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
-OBS_TYPES=("IMS" )   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("IMS" "GHCN" )   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA" )   # format ("DA" "HOFX") 
+JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX") 
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
-WINLEN=6
+WINLEN=24
 
 # YAMLS. Options, either:
 # 1. "construct" to construct the YAML name, based on requested obs types and their availability 
@@ -43,3 +43,7 @@ YAML_HOFX=construct
 #IODA_BUILD_DIR= # JEDI IODA-converter source directory
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 #OBSDIR= # to override default OBSDIR
+
+# OPTIONAL : CLEAN UP 
+SAVE_IMS="NO"
+SAVE_INCR="NO"
