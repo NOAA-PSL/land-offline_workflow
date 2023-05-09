@@ -178,7 +178,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     nt=$SLURM_NTASKS
     #srun -n $nt $LSMexec
     #mpirun -n 1 $LSMexec
-    srun '--export=ALL' --label -K -n 1 $LSMexec # CSD single task, as write not working.
+    srun '--export=ALL' --label -K -n $nt $LSMexec # CSD single task, as write not working.
     # no error codes on exit from model, check for restart below instead
 
     ############################
