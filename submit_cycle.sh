@@ -1,17 +1,22 @@
 #!/bin/bash -le 
 #SBATCH --job-name=offline_noahmp
 #SBATCH --account=gsienkf
+##SBATCH --qos=batch
+##SBATCH --nodes=2
+##SBATCH --tasks-per-node=36
 #SBATCH --qos=debug
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=6
 #SBATCH --cpus-per-task=1
-#SBATCH -t 00:10:00
+#SBATCH -t 02:40:00
 #SBATCH -o log_noahmp.%j.log
 #SBATCH -e err_noahmp.%j.err
 
 ############################
 # loop over time steps
 
+echo 'starting cycle' 
+date
 source $analdate 
 
 THISDATE=$STARTDATE
@@ -79,6 +84,8 @@ while [ $date_count -lt $cycles_per_job ]; do
         export MEM_WORKDIR
 
         # update vec2tile and tile2vec namelists
+        # to-do: update location_end in template, for specific res. 
+        # then template will be res-independent.
         cp  ${CYCLEDIR}/template.vector2tile vector2tile.namelist
 
         sed -i -e "s/XXYYYY/${YYYY}/g" vector2tile.namelist
@@ -108,7 +115,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         # submit snow DA 
         echo '************************************************'
-        echo 'calling snow DA'
+        echo 'CSD calling snow DA'
 
         cd $WORKDIR
 
@@ -178,7 +185,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     nt=$SLURM_NTASKS
     #srun -n $nt $LSMexec
     #mpirun -n 1 $LSMexec
-    srun '--export=ALL' --label -K -n $nt $LSMexec # CSD single task, as write not working.
+    srun '--export=ALL' --label -K -n $nt $LSMexec
     # no error codes on exit from model, check for restart below instead
 
     ############################
@@ -213,4 +220,7 @@ if [ $THISDATE -lt $ENDDATE ]; then
     cd ${CYCLEDIR}
     sbatch ${CYCLEDIR}/submit_cycle.sh
 fi
+
+echo 'all done with cycle, exiting' 
+date
 

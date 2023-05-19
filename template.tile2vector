@@ -18,7 +18,7 @@
   restart_date = "XXYYYY-XXMM-XXDD XXHH:00:00"
   
 ! Path for static file  
-  static_filename = "/scratch2/NCEPDEV/land/data/forcing/era5/static/ufs-land_C96_static_fields.nc"
+  static_filename = "/scratch2/NCEPDEV/land/data/forcing/era5/static/ufs-land_CXXRES_static_fields.nc"
   
 ! Location of vector restart file (vector2tile direction)
 
@@ -47,6 +47,6 @@
 
 ! land perturbation variable list, for an example: 'vgf','smc'
 
-  lndp_var_list = ''
+  lndp_var_list = "''"
 
 /

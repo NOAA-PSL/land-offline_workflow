@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_test_era5
-STARTDATE=2019122100
-ENDDATE=2019122200
+export exp_name=DA_test
+STARTDATE=2019122018
+ENDDATE=2019122100
 
 # temporary directory where experiment is run from
 export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
@@ -17,15 +17,15 @@ export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
 export ensemble_size=1
 
 # length of each forecast
-export FCSTHR=24
+export FCSTHR=6
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
 
 #FV3 resolution
 export RES=96
-export TPATH=/scratch2/NCEPDEV/land/data/fix/C${RES}.mx100_frac/
-export TSTUB=oro_C${RES}.mx100 # file stub for orography files in $TPATH
+export TPATH=/scratch2/NCEPDEV/land/data/fix/C96.mx100_frac/
+export TSTUB=oro_C96.mx100 # file stub for orography files in $TPATH
                              # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
 
 # number of cycles to submit in a single job
@@ -38,8 +38,8 @@ export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_work
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
-export DA_config="settings_DA_test"
-#export DA_config="openloop"
+#export DA_config="settings_DA_test"
+export DA_config="openloop"
 
 # if want different DA at different times, list here. 
 export DA_config00=${DA_config} 
