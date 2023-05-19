@@ -8,7 +8,8 @@
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=6
 #SBATCH --cpus-per-task=1
-#SBATCH -t 02:40:00
+##SBATCH -t 02:40:00
+#SBATCH -t 00:10:00
 #SBATCH -o log_noahmp.%j.log
 #SBATCH -e err_noahmp.%j.err
 
