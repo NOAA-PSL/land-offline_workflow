@@ -3,7 +3,7 @@
 # experiment name
 export exp_name=DA_test_era5
 STARTDATE=2019122100
-ENDDATE=2019122200
+ENDDATE=2019122300
 
 # temporary directory where experiment is run from
 export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
