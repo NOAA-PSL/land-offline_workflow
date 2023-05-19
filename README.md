@@ -4,6 +4,7 @@ Clara Draper, Nov, 2021.
 
 History 
 Apr, 2022. Draper:  Moved to PSL repo, restructuring and renaming of repos.
+May, 2023. Draper: Updated intel modules, added MPI for model.
 
 #############################
 
@@ -15,24 +16,26 @@ COMPILING and TESTING.
 2. Compile sub-modules.
 
 2a. 
+>load land_mods
+
+2b.
 > cd vector2tile 
-  then follow instructions in README. 
+> configure 
+     select hera
+> make 
 > cd .. 
 
-2b. 
+2c. 
 > cd ufs-land-driver
-
-> git submodule update --init (if did not use --recursive flag above) 
-
 > configure 
-   
-  select hera, load indicated modules 
-
+  select hera parallel, load indicated modules 
 > make 
+> cd ..
 
-2c.
+2d.
 > cd DA_update
 > build_all.sh 
+> cd .. 
 
 3. Run the test.
 
@@ -50,7 +53,7 @@ RUNNING YOUR OWN EXPERIMENTS
 
 1. Prepare a settings file, using settings_template. Must fill in all variables, unless otherwise commented. 
 
-2. Set start and end dates in analdates.sh 
+2. If running more than 6 tasks with JEDI, need to set layout = [x,y] in yaml, such that ntasks = 6*x*y
 
 3. Make sure there is a restart in your ICSDIR.
 
