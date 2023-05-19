@@ -20,10 +20,6 @@ source $config_file
 
 export KEEPWORKDIR="YES"
 
-############################
-# load modules 
-
-source cycle_mods_bash
 export CYCLEDIR=$(pwd) 
 
 ############################
