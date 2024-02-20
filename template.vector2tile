@@ -18,7 +18,7 @@
   restart_date = "XXYYYY-XXMM-XXDD XXHH:00:00"
   
 ! Path for static file  
-  static_filename = "/scratch2/NCEPDEV/land/data/forcing/era5/static/ufs-land_CXXRES_static_fields.nc"
+  static_filename = "/scratch2/NCEPDEV/land/data/forcing/era5/static/CXXRES/ufs-land_CXXRES_p8_static_fields.nc"
   
 ! Location of vector restart file (vector2tile direction)
 

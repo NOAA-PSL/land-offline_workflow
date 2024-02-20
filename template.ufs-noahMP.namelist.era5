@@ -1,8 +1,8 @@
 &run_setup
 
-  static_file      = "/scratch2/NCEPDEV/land/data/forcing/era5/static/ufs-land_C96_static_fields.nc"
-  init_file        = "/scratch2/NCEPDEV/land/data/forcing/era5/init/ufs-land_C96_init_2010-12-31_23-00-00.nc"
-  forcing_dir      = "/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
+  static_file      = "/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_p8_static_fields.nc"
+  init_file        = "/scratch2/NCEPDEV/land/data/forcing/era5/init/p8/C96/ufs-land_C96_init_2010-12-31_23-00-00.nc"
+  forcing_dir      = "/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/temp/"
   
   separate_output = .false.
   output_dir       = "./noahmp_output/"

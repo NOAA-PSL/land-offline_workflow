@@ -24,7 +24,7 @@ export atmos_forc=era5
 
 #FV3 resolution
 export RES=96
-export TPATH=/scratch2/NCEPDEV/land/data/fix/C${RES}.mx100_frac/
+export TPATH=/scratch2/NCEPDEV/land/data/fix/20220805/C${RES}.mx100_frac/
 export TSTUB=oro_C${RES}.mx100 # file stub for orography files in $TPATH
                              # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
 

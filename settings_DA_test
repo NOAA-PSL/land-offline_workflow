@@ -37,10 +37,7 @@ WINLEN=24
 YAML_DA=construct
 YAML_HOFX=construct
 
-# OPTIONAL: CHANGE JEDI DIRECTORIES
-# if using different JEDI VERSION, will likely need to edit your yamls.
-#JEDI_EXECDIR= # JEDI FV3 build directory
-#IODA_BUILD_DIR= # JEDI IODA-converter source directory
+#OPTIONAL: overrides.
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 #OBSDIR= # to override default OBSDIR
 
