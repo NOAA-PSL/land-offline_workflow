@@ -3,8 +3,9 @@
 # get OUTDIR
 source settings_cycle_test
 
-CMP='/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install/intel/2021.5.0/nccmp-1.9.0.1-jtyxxm5/bin/nccmp -d'
-#CMP='cmp'
+# need to run "module load nccmp" before calling
+
+CMP="nccmp -d"
 
 TEST_BASEDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
 
@@ -14,6 +15,7 @@ do
 for state in  back anal 
 do 
 
+echo ${OUTDIR}/mem000/restarts/vector/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
 $CMP ${OUTDIR}/mem000/restarts/vector/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
 
 if [[ $? != 0 ]]; then
