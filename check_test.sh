@@ -1,9 +1,11 @@
-#!/bin/sh 
+#!/bin/bash
 
 # get OUTDIR
 source settings_cycle_test
 
 # need to run "module load nccmp" before calling
+
+module load nccmp
 
 CMP="nccmp -d"
 
@@ -15,7 +17,6 @@ do
 for state in  back anal 
 do 
 
-echo ${OUTDIR}/mem000/restarts/vector/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
 $CMP ${OUTDIR}/mem000/restarts/vector/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
 
 if [[ $? != 0 ]]; then
