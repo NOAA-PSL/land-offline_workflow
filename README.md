@@ -17,7 +17,7 @@ COMPILING and TESTING.
 2. Compile sub-modules.
 
 2a. 
->load land_mods
+>source land_mods
 (these are the modules needed for steps 2b, 2c).
 
 2b.
@@ -36,6 +36,7 @@ COMPILING and TESTING.
 
 2d.
 > cd DA_update
+> make_links.sh
 > build_all.sh 
 > cd .. 
 
