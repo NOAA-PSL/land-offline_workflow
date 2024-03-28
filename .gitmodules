@@ -1,7 +1,8 @@
 [submodule "ufs-land-driver"]
 	path = ufs-land-driver
         url = https://github.com/ClaraDraper-NOAA/ufs-land-driver.git
-        branch = feature/Rocky8_temp
+        #branch = feature/Rocky8_temp
+        branch = develop
 [submodule "DA_update"]
 	path = DA_update
 	url = https://github.com/NOAA-PSL/land-DA_update.git
