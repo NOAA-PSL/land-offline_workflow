@@ -2,13 +2,17 @@
 
 # experiment name
 export exp_name=DA_test_era5
-STARTDATE=2019122100
-ENDDATE=2019122300
+STARTDATE=2019120100
+ENDDATE=2019120300
 
 # temporary directory where experiment is run from
-export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
+#export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
+export WORKDIR=/scratch2/NCEPDEV/land/${USER}/workdir/
+
 # directory where output is saved
-export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
+#export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
+
+export OUTDIR=/scratch2/NCEPDEV/land/${USER}/landDA/cycle_land/${exp_name}/
 
 ############################
 
@@ -24,8 +28,10 @@ export atmos_forc=era5
 
 #FV3 resolution
 export RES=96
-export TPATH=/scratch2/NCEPDEV/land/data/fix/20220805/C${RES}.mx100_frac/
-export TSTUB=oro_C${RES}.mx100 # file stub for orography files in $TPATH
+export ORES=mx100
+#export TPATH=/scratch2/NCEPDEV/land/data/fix/20220805/C${RES}.mx100_frac/
+export TPATH=/scratch1/NCEPDEV/da/Youlong.Xia/landDA/fix/hr3/C${RES}.${ORES}_frac/
+export TSTUB=oro_C${RES}.${ORES} # file stub for orography files in $TPATH
                              # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
 
 # number of cycles to submit in a single job
@@ -34,7 +40,8 @@ export cycles_per_job=1
 
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5/
+#export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5/
+export ICSDIR=/scratch2/NCEPDEV/land/Youlong.Xia/landDA/era5_ICS/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
