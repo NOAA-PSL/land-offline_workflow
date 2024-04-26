@@ -1,5 +1,9 @@
 &run_setup
 
+! this set up for hr3 with forcing, initials, and static fields due to the new fix field update
+! see /scratch2/NCEPDEV/land/data/fix/20231027
+! as well as model physics options and forcing treatment method 
+
   static_file      = "/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
   init_file        = "/scratch2/NCEPDEV/land/data/forcing/era5/init/C96/ufs-land_C96_hr3_era5_init_2009-12-31_23-00-00.nc"
   forcing_dir      = "/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
