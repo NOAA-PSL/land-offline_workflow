@@ -6,12 +6,12 @@ STARTDATE=2019120100
 ENDDATE=2019120300
 
 # temporary directory where experiment is run from
-#export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
-export WORKDIR=/scratch2/NCEPDEV/land/${USER}/workdir/
+export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
+#export WORKDIR=/scratch2/NCEPDEV/land/${USER}/workdir/
 
 # directory where output is saved
-#export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
-export OUTDIR=/scratch2/NCEPDEV/land/${USER}/landDA/cycle_land/${exp_name}/
+export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
+#export OUTDIR=/scratch2/NCEPDEV/land/${USER}/landDA/cycle_land/${exp_name}/
 
 ############################
 
@@ -41,8 +41,8 @@ export cycles_per_job=1
 
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-#export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5/
-export ICSDIR=/scratch2/NCEPDEV/land/Youlong.Xia/landDA/era5_ICS/
+export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5/
+#export ICSDIR=/scratch2/NCEPDEV/land/Youlong.Xia/landDA/era5_ICS/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
