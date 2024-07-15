@@ -178,7 +178,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
 
     # run for using baseline snow parameter table
-    cp /scratch2/NCEPDEV/land/data/conus/tables/noahmptable.tbl.baseline noahmptable.tbl
+    cp /scratch1/NCEPDEV/da/Youlong.Xia/ufs-land-driver-da/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl noahmptable.tbl
 
     # submit model
     echo '************************************************'
