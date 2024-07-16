@@ -2,13 +2,19 @@
 
 # experiment name
 export exp_name=DA_test_era5
-STARTDATE=2019122100
-ENDDATE=2019122300
+STARTDATE=2019120100
+ENDDATE=2019120300
+
+BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+#BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 
 # temporary directory where experiment is run from
-export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
+#export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
+export WORKDIR=${BASEDIR}/workdir/
+
 # directory where output is saved
-export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
+export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
+#export OUTDIR=${BASEDIR}/landDA/cycle_land/${exp_name}/
 
 ############################
 
@@ -26,7 +32,7 @@ export atmos_forc=era5
 export RES=96
 export TPATH=/scratch2/NCEPDEV/land/data/fix/20220805/C${RES}.mx100_frac/
 export TSTUB=oro_C${RES}.mx100 # file stub for orography files in $TPATH
-                             # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
+export ORES=mx100
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.

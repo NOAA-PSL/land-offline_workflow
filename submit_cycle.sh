@@ -1,6 +1,6 @@
 #!/bin/bash -le 
 #SBATCH --job-name=offline_noahmp
-#SBATCH --account=gsienkf
+#SBATCH --account=da-cpu
 ##SBATCH --qos=batch
 ##SBATCH --nodes=2
 ##SBATCH --tasks-per-node=36
@@ -176,6 +176,9 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXFREQ/${FREQ}/g" ufs-land.namelist
     sed -i -e "s/XXRDD/${RDD}/g" ufs-land.namelist
     sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
+
+    # run for using baseline snow parameter table
+    cp ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl noahmptable.tbl
 
     # submit model
     echo '************************************************'
