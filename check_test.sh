@@ -11,7 +11,7 @@ CMP="nccmp -d"
 
 TEST_BASEDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
 
-for TEST_DATE in 2019-12-21_00-00-00 2019-12-22_00-00-00 
+for TEST_DATE in 2019-12-01_00-00-00 2019-12-02_00-00-00 
 do
 
 for state in  back anal 
@@ -30,7 +30,7 @@ fi
 done
 done 
 
-TEST_DATE=2019-12-23_00-00-00
+TEST_DATE=2019-12-03_00-00-00
 state='back'
 $CMP ${OUTDIR}/mem000/restarts/vector/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
 
