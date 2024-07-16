@@ -30,9 +30,9 @@ export atmos_forc=era5
 
 #FV3 resolution
 export RES=96
-export TPATH=/scratch2/NCEPDEV/land/data/fix/20220805/C${RES}.mx100_frac/
-export TSTUB=oro_C${RES}.mx100 # file stub for orography files in $TPATH
 export ORES=mx100
+export TPATH=/scratch2/NCEPDEV/land/data/fix/20231027/C${RES}/
+export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
@@ -40,7 +40,7 @@ export cycles_per_job=1
 
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5/
+export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
