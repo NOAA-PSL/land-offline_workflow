@@ -20,11 +20,12 @@ RSTRDIR=${MEM_WORKDIR}
 # DA options
 
 # DA algorithm and state being updated
-# options: "letkfoi_snow" , "letkf_snow"
-DAtype=letkfoi_snow
+# options: "letkfoi" , "2DVar"
+DAalg=letkfoi
+analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
-OBS_TYPES=("IMS" "GHCN" )   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("IMS" "GHCN"  )   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX") 
 
