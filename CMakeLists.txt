@@ -42,7 +42,7 @@ set( LANDDA_LINKER_LANGUAGE CXX)
 add_subdirectory( vector2tile )
 add_subdirectory( ufs-land-driver )
 add_subdirectory( DA_update/add_jedi_incr )
-add_subdirectory( DA_update/IMS_proc )
+add_subdirectory( DA_update/SCF_proc )
 
 if(ECBUILD_INSTALL_FORTRAN_MODULES)
   install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/${CMAKE_CFG_INTDIR} DESTINATION ${INSTALL_INCLUDE_DIR} )
