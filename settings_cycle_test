@@ -6,7 +6,6 @@ STARTDATE=2019120100
 ENDDATE=2019120300
 
 BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
-#BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 
 # temporary directory where experiment is run from
 #export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
@@ -23,7 +22,7 @@ export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 export ensemble_size=1
 
 # length of each forecast
-export FCSTHR=24
+export FCSTHR=12
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
