@@ -5,8 +5,7 @@ export exp_name=DA_test_era5
 STARTDATE=2019120100
 ENDDATE=2019120300
 
-BASEDIR=/scratch2/NCEPDEV/stmp1/Yuan.Xue/pull_request/land-offline_workflow/
-#BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 
 # temporary directory where experiment is run from
 #export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
