@@ -6,6 +6,7 @@ History
 Apr, 2022. Draper:  Moved to PSL repo, restructuring and renaming of repos.
 May, 2023. Draper: Updated intel modules, added MPI for model.
 Mar, 2024. Draper: Updated to Rocky8, switched to using GDASApp for JEDI executables. 
+Jul, 2024. Xue: Added NASA VIIRS snow cover DA capability.
 
 #############################
 
