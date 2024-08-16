@@ -5,7 +5,7 @@ export exp_name=DA_test_era5
 STARTDATE=2019120100
 ENDDATE=2019120300
 
-BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch2/NCEPDEV/stmp1/Yuan.Xue/pull_request/land-offline_workflow/
 #BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 
 # temporary directory where experiment is run from
@@ -23,7 +23,7 @@ export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 export ensemble_size=1
 
 # length of each forecast
-export FCSTHR=24
+export FCSTHR=12
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
