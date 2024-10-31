@@ -5,7 +5,8 @@ export exp_name=DA_test_era5
 STARTDATE=2019120100
 ENDDATE=2019120300
 
-BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch1/NCEPDEV/da/${USER}
+#/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 #BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 
 # temporary directory where experiment is run from
@@ -13,30 +14,37 @@ BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 export WORKDIR=${BASEDIR}/workdir/
 
 # directory where output is saved
-export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
+export OUTDIR=${BASEDIR}/${exp_name}/
 #export OUTDIR=${BASEDIR}/landDA/cycle_land/${exp_name}/
 
 ############################
 
+# run (true) ensemble. NO for LETKFOI
+export do_enkf="NO"
+
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
 export ensemble_size=1
+export num_tiles=6         # 1 for regional
 
 # length of each forecast
 export FCSTHR=24
 
-#forcing options: gdas, gswp3, gefs_ens, era5
-export atmos_forc=era5
+# DA window lenth. Will generally be the same as the FCSTLEN
+export WINLEN=24  #win_len=6
+# delta to previous cycle
+export pcyc_del=-6
 
 #FV3 resolution
 export RES=96
+export NPZ=64   # vertical layers
 export ORES=mx100
 export TPATH=/scratch2/NCEPDEV/land/data/fix/20231027/C${RES}/
 export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=1
+export cycles_per_job=2
 
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
@@ -52,3 +60,16 @@ export DA_config00=${DA_config}
 export DA_config06=${DA_config} 
 export DA_config12=${DA_config} 
 export DA_config18=${DA_config} 
+
+# decide if GFSv17
+export GFSv17="NO"
+
+#forcing options: gdas, gswp3, gefs_ens, era5
+export atmos_forc=era5
+
+# for ensemble forcing perturbation
+export forcing_prefix=C${RES}_GDAS_forcing_
+export forcing_dir=
+export stochy_init_exist="YES"
+export stochy_init_dir=
+export EnsForcGenExe=
