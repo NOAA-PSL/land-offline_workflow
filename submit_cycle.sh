@@ -20,7 +20,7 @@ echo 'starting cycle'
 date
 source $analdate 
 
-export PCYC_DEL=${PCYC_DEL:--6}
+export PCYC_DEL=${PCYC_DEL:- -6}
 
 THISDATE=$STARTDATE
 date_count=0
@@ -53,7 +53,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     # substringing to get yr, mon, day, hr info for previous cycle
     # PREVDATE=`${incdate} $THISDATE -6`
-    PREVDATE=`${incdate} $thisdate ${PCYC_DEL}` 
+    PREVDATE=`${incdate} $THISDATE ${PCYC_DEL}` 
     YYYP=`echo $PREVDATE | cut -c1-4`
     MP=`echo $PREVDATE | cut -c5-6`
     DP=`echo $PREVDATE | cut -c7-8`
@@ -97,7 +97,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         for ie in $(seq $ensemble_size)
         do
             # mem_ens="mem000" 
-            if [$ensemble_size  == 1 ]; then 
+            if [[ "$ensemble_size" -eq 1  ]]; then 
                 mem_ens="mem000" 
             else 
                 mem_ens="mem`printf %03i $ie`"
@@ -168,7 +168,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         for ie in $(seq $ensemble_size)
         do
             # mem_ens="mem000" 
-            if [$ensemble_size  == 1 ]; then 
+            if [[ "$ensemble_size" -eq 1  ]]; then 
                 mem_ens="mem000" 
             else 
                 mem_ens="mem`printf %03i $ie`"
@@ -284,7 +284,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     for ie in $(seq $ensemble_size)
     do
         # mem_ens="mem000" 
-        if [$ensemble_size  == 1 ]; then 
+        if [[ "$ensemble_size" -eq 1  ]]; then 
             mem_ens="mem000" 
         else 
             mem_ens="mem`printf %03i $ie`"
@@ -313,7 +313,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     for ie in $(seq $ensemble_size)
     do
         # mem_ens="mem000" 
-        if [$ensemble_size  == 1 ]; then 
+        if [[ "$ensemble_size" -eq 1  ]]; then 
             mem_ens="mem000" 
         else 
             mem_ens="mem`printf %03i $ie`"
@@ -337,7 +337,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     for ie in $(seq $ensemble_size)
     do
         # mem_ens="mem000" 
-        if [$ensemble_size  == 1 ]; then 
+        if [[ "$ensemble_size" -eq 1  ]]; then 
             mem_ens="mem000" 
         else 
             mem_ens="mem`printf %03i $ie`"
