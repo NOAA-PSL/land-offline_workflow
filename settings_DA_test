@@ -42,10 +42,12 @@ YAML_HOFX=construct
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 #OBSDIR= # to override default OBSDIR
 
+# keep working dir?
+KEEPJEDIDIR="YES"
+
 # OPTIONAL : CLEAN UP 
 SAVE_IMS="YES"
 SAVE_TILE="YES"
 SAVE_INCR="YES"
 SAVE_ANL="YES"
 SAVE_HOFX="YES"
-KEEPJEDIDIR="YES"
