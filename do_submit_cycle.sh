@@ -157,5 +157,5 @@ ENDDATE=$ENDDATE
 EOF
 
 # submit script 
+echo "submitting cycle"
 sbatch submit_cycle.sh
-
