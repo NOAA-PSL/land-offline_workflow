@@ -20,6 +20,8 @@ echo 'starting cycle'
 date
 source $analdate 
 
+export PCYC_DEL=${PCYC_DEL:--6}
+
 THISDATE=$STARTDATE
 date_count=0
 
@@ -51,7 +53,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     # substringing to get yr, mon, day, hr info for previous cycle
     # PREVDATE=`${incdate} $THISDATE -6`
-    PREVDATE=`${incdate} $thisdate $win_del` 
+    PREVDATE=`${incdate} $thisdate ${PCYC_DEL}` 
     YYYP=`echo $PREVDATE | cut -c1-4`
     MP=`echo $PREVDATE | cut -c5-6`
     DP=`echo $PREVDATE | cut -c7-8`
@@ -102,14 +104,14 @@ while [ $date_count -lt $cycles_per_job ]; do
             fi 
 
             MEM_WORKDIR=${WORKDIR}/${mem_ens}
-            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+            MEM_MODL_OUTDIR=${OUTDIR}/vector/${mem_ens}
 
             # copy restarts into work directory
-            rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+            rst_in=${MEM_MODL_OUTDIR}/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
             rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
             cp $rst_in $rst_out 
             cp vector2tile.namelist $MEM_WORKDIR
-
+#TODO: parallelize this 
             cd $MEM_WORKDIR
             $vec2tileexec vector2tile.namelist
             if [[ $? != 0 ]]; then
@@ -123,12 +125,12 @@ while [ $date_count -lt $cycles_per_job ]; do
             # rm $rst_out
         done
         wait
-    fi # vector2tile for DA
+    # fi # vector2tile for DA
 
-    ############################
-    # do DA update
+    # ############################
+    # # do DA update
 
-    if [[ $do_jedi == "YES" ]]; then  
+    # if [[ $do_jedi == "YES" ]]; then  
 
         # submit snow DA 
         echo '************************************************'
@@ -142,12 +144,12 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "land DA script failed"
             exit
         fi   
-    fi 
+    # fi 
 
-    ############################
-    #  convert back to vector, run model (all members) 
+    # ############################
+    # #  convert back to vector, run model (all members) 
 
-    if [[ $do_jedi == "YES" ]]; then  
+    # if [[ $do_jedi == "YES" ]]; then  
 
         echo '************************************************'
         echo 'calling tile2vector' 
@@ -173,7 +175,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             fi 
 
             MEM_WORKDIR=${WORKDIR}/${mem_ens}
-            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+            MEM_MODL_OUTDIR=${OUTDIR}/vector/${mem_ens}
 
             cp tile2vector.namelist $MEM_WORKDIR
 
@@ -188,7 +190,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             fi
 
             # save analysis restart
-            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
 
             # for i in $(seq 6) do 
             #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
@@ -289,7 +291,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         fi 
 
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+        MEM_MODL_OUTDIR=${OUTDIR}/vector/${mem_ens}
 
         # run for using baseline snow parameter table
         cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
@@ -342,14 +344,15 @@ while [ $date_count -lt $cycles_per_job ]; do
         fi 
 
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+        MEM_MODL_OUTDIR=${OUTDIR}/vector/${mem_ens}
 
         # no error codes on exit from model, check for restart below instead
         # check model ouput (all members)
         if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
         else 
-            echo "Something is wrong, probably model runtime error, exiting" 
+            echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
+            echo "probably model runtime error occurred, exiting" 
             exit
         fi
 

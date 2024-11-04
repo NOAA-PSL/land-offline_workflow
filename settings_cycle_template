@@ -26,7 +26,7 @@ export FCSTHR=24
 # DA window lenth. Will generally be the same as the FCSTLEN
 export WINLEN=
 # delta to previous cycle
-export pcyc_del=-6
+export PCYC_DEL=-6
 
 #FV3 resolution
 export RES=

@@ -60,37 +60,56 @@ if [[ -e ${WORKDIR} ]]; then
 fi
 mkdir ${WORKDIR}
 
-#outdir for model
-if [[ ! -e ${OUTDIR} ]]; then
-    mkdir -p  ${OUTDIR}
-fi 
-
 ###############################
 # create dirs and copy in ICS if needed
 
 mem_ens="mem000"  # single member, us ensemble 0
-
 MEM_WORKDIR=${WORKDIR}/${mem_ens}
-if [[ ! -e $MEM_WORKDIR ]]; then
-  mkdir $MEM_WORKDIR
+# if [[ ! -e $MEM_WORKDIR ]];   # already deleted above
+mkdir $MEM_WORKDIR
+if [[ "$ensemble_size" -gt 1  ]]; then           
+    for ie in $(seq $ensemble_size)     
+    do
+        mem_ens="mem`printf %03i $ie`"
+        mkdir ${WORKDIR}/${mem_ens}              
+    done    
 fi
 
-# ensemble outdir (model only)
-MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir
+# outdir and subdirs
+# vector and tile dirs top of mem_ens dirs to facilitate parallel run
+if [[ ! -e ${OUTDIR} ]]; then
+    mkdir -p  ${OUTDIR}
+    # if [[ ! -e ${OUTDIR}/vector/ ]]; then  # subdirectories  
+    mkdir -p ${OUTDIR}/vector/ 
+    mkdir -p ${OUTDIR}/tile/ 
+    #TODO: Do we need this?
+    mkdir -p ${OUTDIR}/noahmp/ 
+   
+    # ensemble outdir (model only)
+    mem_ens="mem000"  # single member, us ensemble 0
+    MEM_MODL_OUTDIR=${OUTDIR}/vector/${mem_ens}
+    # if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
     mkdir -p $MEM_MODL_OUTDIR
-fi 
+    mkdir -p ${OUTDIR}/tile/${mem_ens}
+    mkdir -p ${OUTDIR}/noahmp/${mem_ens}   
 
-# outdir subdirs
-if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
-    mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
-    mkdir ${MEM_MODL_OUTDIR}/restarts/tile/
-    mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
+    if [[ "$ensemble_size" -gt 1  ]]; then           
+    for ie in $(seq $ensemble_size)     
+    do
+        mem_ens="mem`printf %03i $ie`"
+        mkdir -p ${OUTDIR}/vector/${mem_ens}    
+        mkdir -p ${OUTDIR}/tile/${mem_ens} 
+        mkdir -p ${OUTDIR}/noahmp/${mem_ens}            
+    done 
+
+    #TODO: Do we need this?
+    ln -sf ${OUTDIR}/noahmp ${WORKDIR}/noahmp_output    
 fi
-ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
 
 # copy ICS into restarts, if needed 
-rst_out=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+mem_ens="mem000"  # single member, us ensemble 0
+MEM_MODL_OUTDIR=${OUTDIR}/vector/${mem_ens}
+rst_out=${OUTDIR}/vector/${mem_ens}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
 if [[ ! -e ${rst_out} ]]; then 
@@ -99,7 +118,7 @@ if [[ ! -e ${rst_out} ]]; then
        echo "ICS found, copying" 
        cp ${rst_in} ${rst_out}
     else  # check if is in output directory structure
-        rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        rst_in=${ICSDIR}/vector/${mem_ens}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         echo "Looking for ICS: ${rst_in}"
         if [[ -e ${rst_in} ]]; then
            echo "ICS found, copying" 
@@ -110,6 +129,25 @@ if [[ ! -e ${rst_out} ]]; then
         fi
     fi 
 fi 
+if [[ "$ensemble_size" -gt 1  ]]; then           
+    for ie in $(seq $ensemble_size)     
+    do
+        mem_ens="mem`printf %03i $ie`"
+        rst_out=${OUTDIR}/vector/${mem_ens}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        rst_in=${ICSDIR}/vector/${mem_ens}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        # if restart not in experiment out directory, copy the restarts from the ICSDIR
+        if [[ ! -e ${rst_out} ]]; then 
+            echo "Looking for ICS: ${rst_in}"
+            if [[ -e ${rst_in} ]]; then
+                echo "ICS found, copying" 
+                cp ${rst_in} ${rst_out}
+            else                  
+                echo "ICS not found. Exiting" 
+                exit 10 
+            fi 
+        fi                
+    done
+fi
 
 # create dates file 
 touch analdates.sh 
