@@ -94,14 +94,14 @@ if [[ ! -e ${OUTDIR} ]]; then
     mkdir -p ${OUTDIR}/noahmp/${mem_ens}   
 
     if [[ "$ensemble_size" -gt 1  ]]; then           
-    for ie in $(seq $ensemble_size)     
-    do
-        mem_ens="mem`printf %03i $ie`"
-        mkdir -p ${OUTDIR}/vector/${mem_ens}    
-        mkdir -p ${OUTDIR}/tile/${mem_ens} 
-        mkdir -p ${OUTDIR}/noahmp/${mem_ens}            
-    done 
-
+        for ie in $(seq $ensemble_size)     
+        do
+            mem_ens="mem`printf %03i $ie`"
+            mkdir -p ${OUTDIR}/vector/${mem_ens}    
+            mkdir -p ${OUTDIR}/tile/${mem_ens} 
+            mkdir -p ${OUTDIR}/noahmp/${mem_ens}            
+        done 
+    fi
     #TODO: Do we need this?
     ln -sf ${OUTDIR}/noahmp ${WORKDIR}/noahmp_output    
 fi
