@@ -302,7 +302,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     wait
 
     # submit model   
-    nt=$SLURM_NTASKS/$ensemble_size   #Note the extra tasks remain idle
+    nt=$((SLURM_NTASKS/ensemble_size))   #Note the extra tasks remain idle
 
     # # srun -l --multi-prog $lsm_tasks_file
     # time srun '--export=ALL' --label -K -n $nt $LSMexec
