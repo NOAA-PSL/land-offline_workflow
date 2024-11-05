@@ -68,10 +68,6 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     if [[ $do_jedi == "YES" ]]; then  
         echo '************************************************'
-        echo 'calling tile2vector' 
-
-        export MEM_WORKDIR
-
         # update vec2tile and tile2vec namelists
         # to-do: update location_end in template, for specific res. 
         # then template will be res-independent.
@@ -109,7 +105,12 @@ while [ $date_count -lt $cycles_per_job ]; do
             # copy restarts into work directory
             rst_in=${MEM_MODL_OUTDIR}/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
             rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-            cp $rst_in $rst_out 
+            if [[ ! -e ${rst_in} ]]; then
+                cp $rst_in $rst_out 
+            else
+                echo "restart not found ${rst_in}; exising" 
+                exit 10
+            fi
             cp vector2tile.namelist $MEM_WORKDIR
 #TODO: parallelize this 
             cd $MEM_WORKDIR
@@ -124,7 +125,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             fi
             # rm $rst_out
         done
-        wait
+        # wait
     # fi # vector2tile for DA
 
     # ############################
@@ -197,7 +198,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             #     rm $tile_out
             # done
         done
-        wait
+        # wait
 
     fi
 
@@ -246,7 +247,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             mem_ens="mem`printf %03i $ie`" 
             cp ${forc_file} ${WORKDIR}/${mem_ens}   &
         done
-        wait
+        # wait
 
         # generate ensemble forcing
         echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
@@ -299,10 +300,10 @@ while [ $date_count -lt $cycles_per_job ]; do
         cp ufs-land.namelist $MEM_WORKDIR    &
 
     done
-    wait
+    # wait
 
     # submit model   
-    nt=$((SLURM_NTASKS/ensemble_size))   #Note the extra tasks remain idle
+    nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
 
     # # srun -l --multi-prog $lsm_tasks_file
     # time srun '--export=ALL' --label -K -n $nt $LSMexec
@@ -331,7 +332,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         #     exit 10
         # fi   
     done
-    wait
+    # wait
 
     
     for ie in $(seq $ensemble_size)
@@ -362,7 +363,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         fi
         
     done
-    wait
+    # wait
 
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile
 
