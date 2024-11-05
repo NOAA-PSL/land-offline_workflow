@@ -105,10 +105,10 @@ while [ $date_count -lt $cycles_per_job ]; do
             # copy restarts into work directory
             rst_in=${MEM_MODL_OUTDIR}/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
             rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-            if [[ ! -e ${rst_in} ]]; then
+            if [[ -e ${rst_in} ]]; then
                 cp $rst_in $rst_out 
             else
-                echo "restart not found ${rst_in}; exising" 
+                echo "restart not found ${rst_in}; exiting" 
                 exit 10
             fi
             cp vector2tile.namelist $MEM_WORKDIR
