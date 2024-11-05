@@ -116,7 +116,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             cd $MEM_WORKDIR
             $vec2tileexec vector2tile.namelist
             if [[ $? != 0 ]]; then
-                echo "vec2tile failed for ens mem "$ie
+                echo "vec2tile failed for ens mem $ie"
                 # for i in $(seq 6) do 
                 #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
                 #     rm $tile_out
@@ -305,6 +305,8 @@ while [ $date_count -lt $cycles_per_job ]; do
     # submit model   
     nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
 
+#TODO: Do this in parallel
+
     # # srun -l --multi-prog $lsm_tasks_file
     # time srun '--export=ALL' --label -K -n $nt $LSMexec
     # if [[ $? != 0 ]]; then
@@ -325,7 +327,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         cd $MEM_WORKDIR
         
 #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-        time srun '--export=ALL' --label -K -n $nt $LSMexec   &  
+        time srun '--export=ALL' --label -K -n $nt $LSMexec    
         # #-N1-1 --exclusive
         # if [[ $? != 0 ]]; then
         #     echo "NoahMP failed for ensemble $ie"
@@ -354,7 +356,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         else 
             echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
             echo "probably model runtime error occurred, exiting" 
-            exit
+            exit 10
         fi
 
         # delete forcing ens files
