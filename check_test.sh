@@ -9,8 +9,9 @@ module load nccmp
 
 CMP="nccmp -d"
 
-TEST_BASEDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/DA_test_era5_20241009/mem000/restarts/vector/
-#/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
+#TEST_BASEDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/DA_test_era5_20241009/mem000/restarts/vector/
+#/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5
+TEST_BASEDIR=${ICSDIR}/mem000/restarts/vector/
 
 for TEST_DATE in 2019-12-01_00-00-00 2019-12-02_00-00-00 
 do
@@ -18,7 +19,7 @@ do
 for state in  back anal 
 do 
 
-$CMP ${OUTDIR}/vector/mem000/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
+$CMP ${OUTDIR}/mem000/restarts/vector/ufs_land_restart_${state}.${TEST_DATE}.nc ${TEST_BASEDIR}/ufs_land_restart_${state}.${TEST_DATE}.nc
 
 if [[ $? != 0 ]]; then
     echo TEST FAILED

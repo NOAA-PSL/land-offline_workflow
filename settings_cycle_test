@@ -49,7 +49,7 @@ export cycles_per_job=1
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
 export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/DA_test_era5_20241009/
-#/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+#export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
