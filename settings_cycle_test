@@ -33,7 +33,7 @@ export FCSTHR=24
 # DA window lenth. Will generally be the same as the FCSTLEN
 export WINLEN=24  #win_len=6
 # delta to previous cycle
-export pcyc_del=-6
+export PCYC_DEL=6
 
 #FV3 resolution
 export RES=96
@@ -48,7 +48,7 @@ export cycles_per_job=1
 
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/DA_test_era5_20241009/
 #/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 # namelist for do_landDA.sh
