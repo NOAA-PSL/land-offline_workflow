@@ -53,7 +53,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     # substringing to get yr, mon, day, hr info for previous cycle
     # PREVDATE=`${incdate} $THISDATE -6`
-    PREVDATE=`${incdate} $THISDATE ${PCYC_DEL}` 
+    PREVDATE=`${incdate} $THISDATE -${PCYC_DEL}` 
     YYYP=`echo $PREVDATE | cut -c1-4`
     MP=`echo $PREVDATE | cut -c5-6`
     DP=`echo $PREVDATE | cut -c7-8`
