@@ -21,7 +21,7 @@ RSTRDIR=${MEM_WORKDIR}
 
 # DA algorithm and state being updated
 # options: "letkfoi" , "2DVar"
-DAalg=letkfoi #2DVar
+DAalg=2DVar
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
@@ -30,7 +30,7 @@ OBS_TYPES=("IMS" "GHCN"  )   # format: ("OBS1" "OBS2")
 JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX") 
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
-# moved to settings_cycle WINLEN=24
+WINLEN=24
 
 # YAMLS. Options, either:
 # 1. "construct" to construct the YAML name, based on requested obs types and their availability 
@@ -45,7 +45,7 @@ YAML_HOFX=construct
 # keep working dir?
 KEEPJEDIDIR="YES"
 
-# OPTIONAL : CLEAN UP 
+# OPTIONAL : CLEAN UP
 SAVE_IMS="YES"
 SAVE_TILE="YES"
 SAVE_INCR="YES"

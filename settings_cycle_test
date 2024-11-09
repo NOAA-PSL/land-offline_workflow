@@ -29,10 +29,7 @@ export num_tiles=6         # 1 for regional
 
 # length of each forecast
 export FCSTHR=24
-
-# DA window lenth. Will generally be the same as the FCSTLEN
-export WINLEN=24  #win_len=6
-# delta to previous cycle
+# delta to previous cycle --6 always?
 export PCYC_DEL=6
 
 #FV3 resolution
@@ -47,6 +44,7 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 export cycles_per_job=1
 
 # directory with initial conditions
+# can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
 export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 # namelist for do_landDA.sh
