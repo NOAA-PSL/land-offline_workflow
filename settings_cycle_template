@@ -64,9 +64,15 @@ export GFSv17="NO"
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
 
-# for ensemble forcing perturbation
-export forcing_prefix=C${RES}_GDAS_forcing_
-export forcing_dir=
+# settings for ensemble forcing perturbation
+
+# forcing prefix 
+# gdas: C${RES}_GDAS_forcing_
+# era: C${RES}_ERA5_forcing_
+export forcing_prefix=C96_ERA5_forcing_
+export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
+export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
 export stochy_init_exist="YES"
-export stochy_init_dir=
-export EnsForcGenExe=
+export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/land-offline_workflow/C96/"
+#export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
+#
