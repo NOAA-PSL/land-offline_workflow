@@ -202,59 +202,49 @@ while [ $date_count -lt $cycles_per_job ]; do
         # wait
 
     fi
-
+ 
 # Forcing perturbation goes here
     if [[ $do_enkf == "YES" ]]; then 
 
-        #cp template.input.nml input.nml
+        cd $WORKDIR
+
         cp  ${CYCLEDIR}/template.generate_ens_forc.nml generate_ens_forc.nml
 
         forc_inp_file=${forcing_prefix}${YYYY}-${MM}-${DD}.nc  #C${RES}_GDAS_forcing_${YYYY}-${MM}-${DD}.nc
-
-        sed -i -e "s/FORINPFILE/${forc_inp_file}/g" generate_ens_forc.nml
+#TODO: refine static file location
+        sed -i -e "s/XXSTATICFILE/${static_file}/g" generate_ens_forc.
+        sed -i -e "s/XXFORINPATH/${WORKDIR}/g" generate_ens_forc.nml
+        sed -i -e "s/XXFORINPFILE/${forc_inp_file}/g" generate_ens_forc.nml
+        
         sed -i -e "s/YYYY/${YYYY}/g" generate_ens_forc.nml
         sed -i -e "s/MM/${MM}/g" generate_ens_forc.nml
         sed -i -e "s/DD/${DD}/g" generate_ens_forc.nml
         sed -i -e "s/HH/${HH}/g" generate_ens_forc.nml
-        sed -i -e "s/XXRES/${RES}/g" generate_ens_forc.nml
-
-        # Make sure the INPUT and RESTART dirs for stochy are in working dir
-        # and input.nml has settings right  
-
-        cp ${CYCLEDIR}/template.input.nml input.nml
-        if [[ $stochy_init_exist == "YES" ]]; then
-           sed -i -e "s/STOCH_INI_VAL/.TRUE./g" input.nml
-        else
-           sed -i -e "s/STOCH_INI_VAL/.FALSE./g" input.nml
-        fi
-
-        if [[ ! -e ${WORKDIR}/INPUT ]]; then
-            mkdir -p ${WORKDIR}/INPUT
-        fi
-
-        if [[ ! -e ${WORKDIR}/RESTART ]]; then
-            mkdir -p ${WORKDIR}/RESTART
-            if [[ ! -e ${stochy_init_dir} ]]; then
-                echo "Error! the directory forStochy init files ${stochy_init_dir} doesn't exist"
-                exit
-            else
-                cp $stochy_init_dir/* ${WORKDIR}/RESTART
-            fi
-        fi
+        sed -i -e "s/XXRESX/${RES}/g" generate_ens_forc.nml   # TODO: Could these two vary?
+        sed -i -e "s/XXRESY/${RES}/g" generate_ens_forc.nml
+        sed -i -e "s/XXNTIL/${num_tiles}/g" input.nml   # Number of tiles
+        sed -i -e "s/XXLX/${LayX}/g" input.nml          # Layout
+        sed -i -e "s/XXLY/${LayY}/g" input.nml
+        lndp_hscale_km=$((lndp_hscale/1000))
+        lndp_tau_hr=$((lndp_tscale/3600))
+        sed -i -e "s/XXLSC/${lndp_hscale_km}/g" input.nml  # Horizontal correlation length = 120 Km
+        sed -i -e "s/XXVSC/${lndp_vscale}/g" input.nml     # Vertical correlation length = 800 m
+        sed -i -e "s/XXTAU/${lndp_tau_hr}/g" input.nml     # Time correlation scale = 24 
+        sed -i -e "s/XXENSZ/${ensemble_size}/g" input.nml     # Ensemble size 
+        sed -i -e "s/XXDTSFCX/${PCYC_DEL}/g" input.nml        # DELTSFC = 6 hr 
+        sed -i -e "s/XXVECTSZ/${vector_size}/g" input.nml     # Noahmp vector array length, check from static file 
 
         forc_file=${forcing_dir}/${forc_inp_file}
         for ie in $(seq $ensemble_size)
         do
             mem_ens="mem`printf %03i $ie`" 
-            cp ${forc_file} ${WORKDIR}/${mem_ens}   &
+            cp ${forc_file} ${WORKDIR}/${mem_ens}/${forc_inp_file}   &
         done
-        # wait
+        wait
 
         # generate ensemble forcing
         echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
-        source ${cycle_dir}/modules_stochy.sh
-        
-        module list
+        source ${cycle_dir}/stochy_mods        
         
         nt=$SLURM_NTASKS
         time srun '--export=ALL' --label -K -n $nt $EnsForcGenExe

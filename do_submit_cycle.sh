@@ -26,7 +26,10 @@ export CYCLEDIR=$(pwd)
 # set executables
 
 export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
-export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe 
+export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe
+# export EnsForcGenExe=${CYCLEDIR}/stochastic_physics/GenEnsForc.x
+export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
+
 export DADIR=${CYCLEDIR}/DA_update/
 export DAscript=${DADIR}/do_landDA.sh
 
@@ -96,6 +99,61 @@ if [[ ! -e ${OUTDIR} ]]; then
         ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
     done 
 
+fi
+
+# Forcing perturbation goes here
+if [[ $do_enkf == "YES" ]]; then 
+
+    # Make sure the INPUT and RESTART dirs for stochy are in working dir
+    # and input.nml has settings right
+    
+    stochy_init_exists="NO"
+
+    if [[ ! -e ${WORKDIR}/RESTART ]]; then
+        mkdir -p ${WORKDIR}/RESTART
+        if [[ -e ${stochy_init_dir} ]]; then
+            cp $stochy_init_dir/* ${WORKDIR}/RESTART  
+            stochy_init_exists="YES"         
+        else
+            echo "directory for Stochy init files $stochy_init_dir doesn't exist, STOCH_INI_VAL will be set to FALSE"
+        fi
+    fi
+
+    if [[ ! -e ${WORKDIR}/INPUT ]]; then
+        mkdir -p ${WORKDIR}/INPUT
+        for tile in 1 2 3 4 5 6 
+        do
+            ln -fs ${TPATH}/C${RES}_grid.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_grid.tile${it}.nc 
+            # ln -fs ${TPATH}/C${RES}_ca_condition.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_ca_condition.tile${it}.nc 
+        done
+        if [[ -e ${TPATH}/C${RES}_grid_spec.nc ]]; then
+            ln -fs ${TPATH}/C${RES}_grid_spec.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc   
+        elif [[ -e ${TPATH}/C${RES}_mosaic.nc ]]; then
+            ln -fs ${TPATH}/C${RES}_mosaic.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc  
+        else
+            echo "Grid spec file not found at ${TPATH}, exiting"
+            exit 10
+        fi          
+    fi
+
+    cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
+    if [[ $stochy_init_exists == "YES" ]]; then               # true for cycling with temporal correlation 
+        sed -i -e "s/XXSTOCH_INI_VAL/.TRUE./g" $WORKDIR/input.nml
+    else
+        sed -i -e "s/XXSTOCH_INI_VAL/.FALSE./g" $WORKDIR/input.nml
+    fi
+    sed -i -e "s/XXRES/${RES}/g" input.nml
+    sed -i -e "s/XXLX/${LayX}/g" input.nml          # Layout
+    sed -i -e "s/XXLY/${LayY}/g" input.nml
+    sed -i -e "s/XXIOLX/${IOLayX}/g" input.nml      # IO Layout
+    sed -i -e "s/XXIOLY/${IOLayY}/g" input.nml
+    RESP1=$((RES+1))
+    sed -i -e "s/XXREP/${RESP1}/g" input.nml 
+    sed -i -e "s/XXNTIL/${num_tiles}/g" input.nml   # Number of tiles
+    sed -i -e "s/XXGRT/${grid_type}/g" input.nml    # grid type -1 for FV3
+    sed -i -e "s/XXLSC/${lndp_hscale}/g" input.nml     # Spatial/horizontal correlation length = 120000 m
+    sed -i -e "s/XXTAU/${lndp_tscale}/g" input.nml     # Time correlation scale = 86400 s
+   
 fi
 
 # copy ICS into restarts, if needed 
