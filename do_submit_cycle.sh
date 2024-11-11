@@ -121,7 +121,7 @@ if [[ $do_enkf == "YES" ]]; then
 
     if [[ ! -e ${WORKDIR}/INPUT ]]; then
         mkdir -p ${WORKDIR}/INPUT
-        for tile in 1 2 3 4 5 6 
+        for it in 1 2 3 4 5 6 
         do
             ln -fs ${TPATH}/C${RES}_grid.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_grid.tile${it}.nc 
             # ln -fs ${TPATH}/C${RES}_ca_condition.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_ca_condition.tile${it}.nc 
@@ -142,17 +142,17 @@ if [[ $do_enkf == "YES" ]]; then
     else
         sed -i -e "s/XXSTOCH_INI_VAL/.FALSE./g" $WORKDIR/input.nml
     fi
-    # sed -i -e "s/XXRES/${RES}/g" input.nml
-    sed -i -e "s/XXLX/${LayX}/g" input.nml          # Layout
-    sed -i -e "s/XXLY/${LayY}/g" input.nml
-    sed -i -e "s/XXIOLX/${IOLayX}/g" input.nml      # IO Layout
-    sed -i -e "s/XXIOLY/${IOLayY}/g" input.nml
+    # sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
+    sed -i -e "s/XXLX/${LayX}/g"  $WORKDIR/input.nml          # Layout
+    sed -i -e "s/XXLY/${LayY}/g"  $WORKDIR/input.nml
+    sed -i -e "s/XXIOLX/${IOLayX}/g"  $WORKDIR/input.nml      # IO Layout
+    sed -i -e "s/XXIOLY/${IOLayY}/g"  $WORKDIR/input.nml
     RESP1=$((RES+1))
-    sed -i -e "s/XXREP/${RESP1}/g" input.nml 
-    sed -i -e "s/XXNTIL/${num_tiles}/g" input.nml       # Number of tiles
-    sed -i -e "s/XXGRT/${grid_type}/g" input.nml        # grid type -1 for FV3
-    sed -i -e "s/XXLSC/${lndp_hscale}/g" input.nml      # Spatial/horizontal correlation length = 120000 m
-    sed -i -e "s/XXTAU/${lndp_tscale}/g" input.nml      # Time correlation scale = 86400 s
+    sed -i -e "s/XXREP/${RESP1}/g"  $WORKDIR/input.nml 
+    sed -i -e "s/XXNTIL/${num_tiles}/g"  $WORKDIR/input.nml       # Number of tiles
+    sed -i -e "s/XXGRT/${grid_type}/g"  $WORKDIR/input.nml        # grid type -1 for FV3
+    sed -i -e "s/XXLSC/${lndp_hscale}/g"  $WORKDIR/input.nml      # Spatial/horizontal correlation length = 120000 m
+    sed -i -e "s/XXTAU/${lndp_tscale}/g"  $WORKDIR/input.nml      # Time correlation scale = 86400 s
    
 fi
 
