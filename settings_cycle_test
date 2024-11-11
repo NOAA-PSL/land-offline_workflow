@@ -75,7 +75,8 @@ export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
 export stochy_init_exist="YES"
 export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/land-offline_workflow/RESTART/C96/"
-#export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
+# JEDI nproc--make sure to sync with iolayout
+export NPROC_JEDI=6
 # x y and io layout
 export LayX=1
 export LayY=1
