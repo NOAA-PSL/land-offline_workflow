@@ -20,11 +20,11 @@ export OUTDIR=${BASEDIR}/${exp_name}/
 ############################
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="NO"
+export do_enkf="YES"
 
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=1
+export ensemble_size=4
 export num_tiles=6         # 1 for regional
 export vector_size=18320   #1067297 C768
 
@@ -46,7 +46,7 @@ export cycles_per_job=1
 
 # directory with initial conditions
 # can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
@@ -78,7 +78,7 @@ export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/land-offline_workf
 #export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
 # x y and io layout
 export LayX=1
-export LayY=2
+export LayY=1
 export IOLayX=1
 export IOLayY=1
 #npx=769,npy=769,
