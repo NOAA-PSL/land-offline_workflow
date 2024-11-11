@@ -65,23 +65,41 @@ mkdir ${WORKDIR}
 
 ###############################
 # create dirs and copy in ICS if needed
+mem_ens="mem000"  # single member, us ensemble 0
+MEM_WORKDIR=${WORKDIR}/${mem_ens}
+# if [[ ! -e $MEM_WORKDIR ]];   # already deleted above
+mkdir $MEM_WORKDIR
 
 if [[ ! -e ${OUTDIR} ]]; then    
 
     mkdir -p  ${OUTDIR}
+    MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}    
+    if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
+        mkdir -p $MEM_MODL_OUTDIR
+    fi
+
+    # outdir subdirs
+    if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
+        mkdir -p ${MEM_MODL_OUTDIR}/restarts/
+        mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
+        mkdir ${MEM_MODL_OUTDIR}/restarts/tile/
+    fi
+    #TODO: Do we need this?
+    mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
+    ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
+
+fi
+
+if [[ "$ensemble_size" -gt 1  ]]; then  
+
     # ensemble outdir (model only)
     for ie in $(seq $ensemble_size)     
     do
-        if [[ "$ensemble_size" -eq 1  ]]; then    
-            mem_ens="mem000"  # single member, us ensemble 0
-        else
-            mem_ens="mem`printf %03i $ie`"
-        fi
+        mem_ens="mem`printf %03i $ie`"
         
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-        
-        # if [[ ! -e $MEM_WORKDIR ]];   # already deleted above
+
         mkdir $MEM_WORKDIR
     
         if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
@@ -92,13 +110,12 @@ if [[ ! -e ${OUTDIR} ]]; then
         if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
             mkdir -p ${MEM_MODL_OUTDIR}/restarts/
             mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
-            mkdir ${MEM_MODL_OUTDIR}/restarts/tile/
-            #TODO: Do we need this?
-            mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
+            mkdir ${MEM_MODL_OUTDIR}/restarts/tile/            
         fi
+        #TODO: Do we need this?
+        mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
         ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
     done 
-
 fi
 
 # Forcing perturbation goes here
@@ -157,36 +174,55 @@ if [[ $do_enkf == "YES" ]]; then
 fi
 
 # copy ICS into restarts, if needed 
-for ie in $(seq $ensemble_size)     
-do
-    if [[ "$ensemble_size" -eq 1  ]]; then    
-        mem_ens="mem000"  # single member, us ensemble 0
-    else
-        mem_ens="mem`printf %03i $ie`"
-    fi
-
-    rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-    rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-    # if restart not in experiment out directory, copy the restarts from the ICSDIR
-    if [[ ! -e ${rst_out} ]]; then 
+mem_ens="mem000"  # single member, us ensemble 0
+rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+# if restart not in experiment out directory, copy the restarts from the ICSDIR
+if [[ ! -e ${rst_out} ]]; then 
+    echo "Looking for ICS: ${rst_in}"
+    if [[ -e ${rst_in} ]]; then
+    echo "ICS found, copying" 
+    cp ${rst_in} ${rst_out}
+    else  # check if is in output directory structure
+        rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         echo "Looking for ICS: ${rst_in}"
         if [[ -e ${rst_in} ]]; then
         echo "ICS found, copying" 
         cp ${rst_in} ${rst_out}
-        else  # check if is in output directory structure
-            rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        else  
+        echo "ICS not found. Exiting" 
+        exit 10 
+        fi
+    fi 
+fi 
+
+if [[ "$ensemble_size" -gt 1  ]]; then  
+
+    for ie in $(seq $ensemble_size)     
+    do
+        mem_ens="mem`printf %03i $ie`"
+        rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        # if restart not in experiment out directory, copy the restarts from the ICSDIR
+        if [[ ! -e ${rst_out} ]]; then 
             echo "Looking for ICS: ${rst_in}"
             if [[ -e ${rst_in} ]]; then
             echo "ICS found, copying" 
             cp ${rst_in} ${rst_out}
-            else  
-            echo "ICS not found. Exiting" 
-            exit 10 
-            fi
+            else  # check if is in output directory structure
+                rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+                echo "Looking for ICS: ${rst_in}"
+                if [[ -e ${rst_in} ]]; then
+                echo "ICS found, copying" 
+                cp ${rst_in} ${rst_out}
+                else  
+                echo "ICS not found. Exiting" 
+                exit 10 
+                fi
+            fi 
         fi 
-    fi 
-
-done
+    done
+fi
 
 # create dates file 
 touch analdates.sh 
