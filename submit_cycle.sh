@@ -88,8 +88,9 @@ while [ $date_count -lt $cycles_per_job ]; do
         source ${CYCLEDIR}/land_mods
 
         ############################
-        # copy restarts to workdir, convert to vector for DA (all members) 
+        # copy restarts to workdir, convert to tile for DA (all members) 
 
+	# for LETKF mem000 holds ensemble mean
         mem_ens="mem000" 
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
@@ -108,7 +109,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         cd $MEM_WORKDIR
         $vec2tileexec vector2tile.namelist
         if [[ $? != 0 ]]; then
-            echo "vec2tile failed "
+            echo "vec2tile failed for mem000"
             # for i in $(seq 6) do 
             #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
             #     rm $tile_out
@@ -228,71 +229,71 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
  
-        mem_ens="mem000" 
-        MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
-        cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
-
-        cd $MEM_WORKDIR
-        $vec2tileexec tile2vector.namelist
-        if [[ $? != 0 ]]; then
-            echo "tile2vector failed "
-            # rm $rst_out
-            exit 
-        fi
-        # save analysis restart
-        cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-
-        if [[ "$ensemble_size" -gt 1  ]]; then 
-
-            for ie in $(seq $ensemble_size)
-            do
-                mem_ens="mem`printf %03i $ie`"
-                MEM_WORKDIR=${WORKDIR}/${mem_ens}
-                MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
-                cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
-
-                cd $MEM_WORKDIR
-                $vec2tileexec tile2vector.namelist
-                if [[ $? != 0 ]]; then
-                    echo "tile2vector failed for ens mem "$ie
-                    # rm $rst_out
-                    exit 
-                fi
-
-                # save analysis restart
-                cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-
-            done
-            # wait
-        fi
-       	
-#        for ie in $(seq $ensemble_size)
-#        do
-#            if [[ "$ensemble_size" -eq 1  ]]; then
-#                mem_ens="mem000" 
-#            else
+#        mem_ens="mem000" 
+#        MEM_WORKDIR=${WORKDIR}/${mem_ens}
+#        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+#
+#        cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
+#
+#        cd $MEM_WORKDIR
+#        $vec2tileexec tile2vector.namelist
+#        if [[ $? != 0 ]]; then
+#            echo "tile2vector failed "
+#            # rm $rst_out
+#            exit 
+#        fi
+#        # save analysis restart
+#        cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+#
+#        if [[ "$ensemble_size" -gt 1  ]]; then 
+#
+#            for ie in $(seq $ensemble_size)
+#            do
 #                mem_ens="mem`printf %03i $ie`"
-#            fi
-#            MEM_WORKDIR=${WORKDIR}/${mem_ens}
-#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+#                MEM_WORKDIR=${WORKDIR}/${mem_ens}
+#                MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 #
-#            cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
+#                cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
 #
-#            cd $MEM_WORKDIR
-#            $vec2tileexec tile2vector.namelist
-#            if [[ $? != 0 ]]; then
-#                echo "tile2vector failed for ens mem "$ie
-#                # rm $rst_out
-#                exit 
-#            fi
+#                cd $MEM_WORKDIR
+#                $vec2tileexec tile2vector.namelist
+#                if [[ $? != 0 ]]; then
+#                    echo "tile2vector failed for ens mem "$ie
+#                    # rm $rst_out
+#                    exit 
+#                fi
 #
-#            # save analysis restart
-#            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+#                # save analysis restart
+#                cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
 #
-#        done
+#            done
+#            # wait
+#        fi
+       	
+        for ie in $(seq $ensemble_size)
+        do
+            if [[ "$ensemble_size" -eq 1  ]]; then
+                mem_ens="mem000" 
+            else
+                mem_ens="mem`printf %03i $ie`"
+            fi
+            MEM_WORKDIR=${WORKDIR}/${mem_ens}
+            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+
+            cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
+
+            cd $MEM_WORKDIR
+            $vec2tileexec tile2vector.namelist
+            if [[ $? != 0 ]]; then
+                echo "tile2vector failed for ens $mem_ens"
+                # rm $rst_out
+                exit 
+            fi
+
+            # save analysis restart
+            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+
+        done
         # wait
 
     fi
@@ -427,13 +428,26 @@ while [ $date_count -lt $cycles_per_job ]; do
             exit 10
         fi
 
-        # delete forcing ens files
-        if [[ $do_enkf == "YES" ]]; then
+        if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
+            # delete forcing ens files
             rm ${MEM_WORKDIR}/${forc_inp_file}  
+
+            # needed for ensemble mean computed below
+            # ln -fs test/workdir/mem00${i}/ufs_land_restart.2019-12-01_00-00-00.nc test/workdir/mem000/ufs_lr_mem${i}.nc
+            ln -fs ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
         fi
         
     done
     # wait
+
+    # for enkf/letkf get ens mean 
+    if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
+        # module load nco
+        MEM_WORKDIR=${WORKDIR}/mem000
+        MEM_MODL_OUTDIR=${OUTDIR}/mem000
+        ncra ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+        cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+    fi
 
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile
 
