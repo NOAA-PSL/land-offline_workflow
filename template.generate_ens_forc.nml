@@ -26,8 +26,10 @@
   n_surf_vars = 6
   vector_size = XXVECTSZ    
 !1067297 
-  forc_inp_path = "XXFORCINPATH"
-  forc_inp_file = "XXFORINPFILE"
+  forc_inp_path = "XXFORINPATH"
+  forc_inp_file = "XXFORINFILE"
 !  std_dev_f = 0.3, 0.2, 20.0, 3.0, 0.075, 0.075, 0.2, 0.01
   std_dev_f = 0.6, 0.3, 30.0, 5.0, 0.1075, 0.1075, 0.4, 0.01
+  forc_var_list = "precipitation_bilinear", "solar_radiation", "longwave_radiation", "temperature",
+            "wind_speed", "specific_humidity", "precipitation_conserve", "surface_pressure"
 /

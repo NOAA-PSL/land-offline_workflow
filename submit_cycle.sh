@@ -1,7 +1,7 @@
 #!/bin/bash -le 
 #SBATCH --job-name=offline_noahmp
 #SBATCH --account=da-cpu
-#SBATCH --qos=debug
+#SBATCH --qos=batch
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=24
 #SBATCH --cpus-per-task=1
@@ -150,7 +150,43 @@ while [ $date_count -lt $cycles_per_job ]; do
             done
             # wait
         fi
-    # fi # vector2tile for DA
+
+#        for ie in $(seq $ensemble_size)
+#        do  
+#            if [[ "$ensemble_size" -eq 1  ]]; then 
+#                mem_ens="mem000"
+#            else
+#                mem_ens="mem`printf %03i $ie`"
+#            fi
+#            MEM_WORKDIR=${WORKDIR}/${mem_ens}
+#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+#
+#            # copy restarts into work directory
+#            rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+#            rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+#            if [[ -e ${rst_in} ]]; then
+#                cp $rst_in $rst_out 
+#            else
+#                echo "restart not found ${rst_in}; exiting" 
+#                exit 10
+#            fi
+#            cp vector2tile.namelist $MEM_WORKDIR
+#        #TODO: parallelize this 
+#            cd $MEM_WORKDIR
+#            $vec2tileexec vector2tile.namelist
+#            if [[ $? != 0 ]]; then
+#                echo "vec2tile failed for ens mem $ie"
+#                # for i in $(seq 6) do 
+#                #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
+#                #     rm $tile_out
+#                # done
+#                exit 
+#            fi
+#            # rm $rst_out
+#        done
+        # wait
+
+    # fi #do_jedi_da: vector2tile for DA
 
     # ############################
     # # do DA update
@@ -232,6 +268,32 @@ while [ $date_count -lt $cycles_per_job ]; do
             done
             # wait
         fi
+       	
+#        for ie in $(seq $ensemble_size)
+#        do
+#            if [[ "$ensemble_size" -eq 1  ]]; then
+#                mem_ens="mem000" 
+#            else
+#                mem_ens="mem`printf %03i $ie`"
+#            fi
+#            MEM_WORKDIR=${WORKDIR}/${mem_ens}
+#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+#
+#            cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
+#
+#            cd $MEM_WORKDIR
+#            $vec2tileexec tile2vector.namelist
+#            if [[ $? != 0 ]]; then
+#                echo "tile2vector failed for ens mem "$ie
+#                # rm $rst_out
+#                exit 
+#            fi
+#
+#            # save analysis restart
+#            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+#
+#        done
+        # wait
 
     fi
  
@@ -244,9 +306,9 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         forc_inp_file=${forcing_prefix}${YYYY}-${MM}-${DD}.nc  #C${RES}_GDAS_forcing_${YYYY}-${MM}-${DD}.nc
 #TODO: refine static file location
-        sed -i -e "s/XXSTATICFILE/${static_file}/g" generate_ens_forc.
-        sed -i -e "s/XXFORINPATH/${WORKDIR}/g" generate_ens_forc.nml
-        sed -i -e "s/XXFORINPFILE/${forc_inp_file}/g" generate_ens_forc.nml
+        sed -i -e "s#XXSTATICFILE#${static_file}#g" generate_ens_forc.nml
+        sed -i -e "s#XXFORINPATH#${WORKDIR}#g" generate_ens_forc.nml
+        sed -i -e "s#XXFORINFILE#${forc_inp_file}#g" generate_ens_forc.nml
         
         sed -i -e "s/YYYY/${YYYY}/g" generate_ens_forc.nml
         sed -i -e "s/MM/${MM}/g" generate_ens_forc.nml
@@ -254,17 +316,17 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/HH/${HH}/g" generate_ens_forc.nml
         sed -i -e "s/XXRESX/${RES}/g" generate_ens_forc.nml   # TODO: Could these two vary?
         sed -i -e "s/XXRESY/${RES}/g" generate_ens_forc.nml
-        sed -i -e "s/XXNTIL/${num_tiles}/g" input.nml   # Number of tiles
-        sed -i -e "s/XXLX/${LayX}/g" input.nml          # Layout
-        sed -i -e "s/XXLY/${LayY}/g" input.nml
+        sed -i -e "s/XXNTIL/${num_tiles}/g" generate_ens_forc.nml   # Number of tiles
+        sed -i -e "s/XXLX/${LayX}/g" generate_ens_forc.nml          # Layout
+        sed -i -e "s/XXLY/${LayY}/g" generate_ens_forc.nml
         lndp_hscale_km=$((lndp_hscale/1000))
         lndp_tau_hr=$((lndp_tscale/3600))
-        sed -i -e "s/XXLSC/${lndp_hscale_km}/g" input.nml  # Horizontal correlation length = 120 Km
-        sed -i -e "s/XXVSC/${lndp_vscale}/g" input.nml     # Vertical correlation length = 800 m
-        sed -i -e "s/XXTAU/${lndp_tau_hr}/g" input.nml     # Time correlation scale = 24 
-        sed -i -e "s/XXENSZ/${ensemble_size}/g" input.nml     # Ensemble size 
-        sed -i -e "s/XXDTSFCX/${PCYC_DEL}/g" input.nml        # DELTSFC = 6 hr 
-        sed -i -e "s/XXVECTSZ/${vector_size}/g" input.nml     # Noahmp vector array length, check from static file 
+        sed -i -e "s/XXLSC/${lndp_hscale_km}/g" generate_ens_forc.nml # Horizontal correlation length = 120 Km
+        sed -i -e "s/XXVSC/${lndp_vscale}/g" generate_ens_forc.nml  # Vertical correlation length = 800 m
+        sed -i -e "s/XXTAU/${lndp_tau_hr}/g" generate_ens_forc.nml   # Time correlation scale = 24 
+        sed -i -e "s/XXENSZ/${ensemble_size}/g" generate_ens_forc.nml  # Ensemble size 
+        sed -i -e "s/XXDTSFCX/${PCYC_DEL}/g" generate_ens_forc.nml     # DELTSFC = 6 hr 
+        sed -i -e "s/XXVECTSZ/${vector_size}/g" generate_ens_forc.nml  # Noahmp vector array length, check from static file 
 
         forc_file=${forcing_dir}/${forc_inp_file}
         for ie in $(seq $ensemble_size)
@@ -276,7 +338,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         # generate ensemble forcing
         echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
-        source ${cycle_dir}/stochy_mods        
+        source ${CYCLEDIR}/stochy_mods        
         
         nt=$SLURM_NTASKS
         time srun '--export=ALL' --label -K -n $nt $EnsForcGenExe

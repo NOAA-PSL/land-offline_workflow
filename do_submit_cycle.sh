@@ -164,6 +164,7 @@ if [[ $do_enkf == "YES" ]]; then
     sed -i -e "s/XXLY/${LayY}/g"  $WORKDIR/input.nml
     sed -i -e "s/XXIOLX/${IOLayX}/g"  $WORKDIR/input.nml      # IO Layout
     sed -i -e "s/XXIOLY/${IOLayY}/g"  $WORKDIR/input.nml
+    sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
     RESP1=$((RES+1))
     sed -i -e "s/XXREP/${RESP1}/g"  $WORKDIR/input.nml 
     sed -i -e "s/XXNTIL/${num_tiles}/g"  $WORKDIR/input.nml       # Number of tiles
