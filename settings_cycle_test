@@ -1,7 +1,7 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_test_era5
+export exp_name=DA_test_era5_hr3
 STARTDATE=2019120100
 ENDDATE=2019120300
 
@@ -20,11 +20,11 @@ export OUTDIR=${BASEDIR}/${exp_name}/
 ############################
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="YES"
+export do_enkf="NO"
 
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=4
+export ensemble_size=1
 export num_tiles=6         # 1 for regional
 export vector_size=18320   #1067297 C768
 
@@ -45,8 +45,9 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 export cycles_per_job=1
 
 # directory with initial conditions
-# can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+# can find some here:
+export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+#export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
