@@ -2,8 +2,8 @@
 #SBATCH --job-name=offline_noahmp
 #SBATCH --account=da-cpu
 #SBATCH --qos=debug
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=6
+#SBATCH --nodes=5
+#SBATCH --tasks-per-node=24
 #SBATCH --cpus-per-task=1
 #SBATCH -t 00:30:00
 #SBATCH -o erlog_noahmp.%j
@@ -12,6 +12,7 @@
 ##SBATCH --qos=batch
 ##SBATCH --nodes=2
 ##SBATCH --tasks-per-node=36
+
 ############################
 # loop over time steps
 
@@ -19,7 +20,10 @@ echo 'starting cycle'
 date
 source $analdate 
 
-export PCYC_DEL=${PCYC_DEL:- 6}
+#PCYC_DEL=${PCYC_DEL:- 6}
+#do_jedi=${do_jedi:- "NO"}
+#ensemble_size=${ensemble_size:- 1}
+#do_enkf=${do_enkf:- "NO"}
 
 THISDATE=$STARTDATE
 date_count=0
@@ -52,7 +56,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     # substringing to get yr, mon, day, hr info for previous cycle
     # PREVDATE=`${incdate} $THISDATE -6`
-    PREVDATE=`${incdate} $THISDATE -${PCYC_DEL}` 
+    PREVDATE=`${incdate} $THISDATE -$PCYC_DEL` 
     YYYP=`echo $PREVDATE | cut -c1-4`
     MP=`echo $PREVDATE | cut -c5-6`
     DP=`echo $PREVDATE | cut -c7-8`
@@ -71,12 +75,11 @@ while [ $date_count -lt $cycles_per_job ]; do
         # update vec2tile and tile2vec namelists
         # to-do: update location_end in template, for specific res. 
         # then template will be res-independent.
-        cp  ${CYCLEDIR}/template.vector2tile vector2tile.namelist
+        cp  ${CYCLEDIR}/template.vector2tile $WORKDIR/vector2tile.namelist
 
         sed -i -e "s/XXYYYY/${YYYY}/g" vector2tile.namelist
         sed -i -e "s/XXMM/${MM}/g" vector2tile.namelist
         sed -i -e "s/XXDD/${DD}/g" vector2tile.namelist
-        sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
         sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
         sed -i -e "s/XXRES/${RES}/g" vector2tile.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
@@ -104,19 +107,15 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "restart not found ${rst_in}; exiting" 
             exit 10
         fi
-        cp vector2tile.namelist $MEM_WORKDIR
+
+        cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR
 
         cd $MEM_WORKDIR
         $vec2tileexec vector2tile.namelist
         if [[ $? != 0 ]]; then
             echo "vec2tile failed for mem000"
-            # for i in $(seq 6) do 
-            #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
-            #     rm $tile_out
-            # done
             exit 
         fi
-        # rm $rst_out
         
         if [[ "$ensemble_size" -gt 1  ]]; then 
 
@@ -135,65 +134,20 @@ while [ $date_count -lt $cycles_per_job ]; do
                     echo "restart not found ${rst_in}; exiting" 
                     exit 10
                 fi
-                cp vector2tile.namelist $MEM_WORKDIR
+                cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR/vector2tile.namelist
             #TODO: parallelize this 
                 cd $MEM_WORKDIR
                 $vec2tileexec vector2tile.namelist
                 if [[ $? != 0 ]]; then
                     echo "vec2tile failed for ens mem $ie"
-                    # for i in $(seq 6) do 
-                    #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
-                    #     rm $tile_out
-                    # done
                     exit 
                 fi
-                # rm $rst_out
+               
             done
             # wait
         fi
 
-#        for ie in $(seq $ensemble_size)
-#        do  
-#            if [[ "$ensemble_size" -eq 1  ]]; then 
-#                mem_ens="mem000"
-#            else
-#                mem_ens="mem`printf %03i $ie`"
-#            fi
-#            MEM_WORKDIR=${WORKDIR}/${mem_ens}
-#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-#
-#            # copy restarts into work directory
-#            rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
-#            rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-#            if [[ -e ${rst_in} ]]; then
-#                cp $rst_in $rst_out 
-#            else
-#                echo "restart not found ${rst_in}; exiting" 
-#                exit 10
-#            fi
-#            cp vector2tile.namelist $MEM_WORKDIR
-#        #TODO: parallelize this 
-#            cd $MEM_WORKDIR
-#            $vec2tileexec vector2tile.namelist
-#            if [[ $? != 0 ]]; then
-#                echo "vec2tile failed for ens mem $ie"
-#                # for i in $(seq 6) do 
-#                #     tile_out = ${MEM_WORKDIR}/${YYYY}-${MM}-${DD}_${HH}-00-00_sfc_data.tile$i.nc
-#                #     rm $tile_out
-#                # done
-#                exit 
-#            fi
-#            # rm $rst_out
-#        done
-        # wait
-
-    # fi #do_jedi_da: vector2tile for DA
-
     # ############################
-    # # do DA update
-
-    # if [[ $do_jedi == "YES" ]]; then  
-
         # submit snow DA 
         echo '************************************************'
         echo 'CSD calling snow DA'
@@ -206,14 +160,11 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "land DA script failed"
             exit
         fi   
-    # fi 
 
         cd $WORKDIR
 
     # ############################
     # #  convert back to vector, run model (all members) 
-
-    # if [[ $do_jedi == "YES" ]]; then  
 
         echo '************************************************'
         echo 'calling tile2vector' 
@@ -240,7 +191,6 @@ while [ $date_count -lt $cycles_per_job ]; do
         $vec2tileexec tile2vector.namelist
         if [[ $? != 0 ]]; then
             echo "tile2vector failed for $mem_ens"
-            # rm $rst_out
             exit 
         fi
         # save analysis restart
@@ -260,7 +210,6 @@ while [ $date_count -lt $cycles_per_job ]; do
                 $vec2tileexec tile2vector.namelist
                 if [[ $? != 0 ]]; then
                     echo "tile2vector failed for ens mem "$ie
-                    # rm $rst_out
                     exit 
                 fi
 
@@ -269,46 +218,18 @@ while [ $date_count -lt $cycles_per_job ]; do
 
             done
             # wait
-        fi
-        
-#        # mem000 is either for 1 member cases (2DVar) or LETKF ens mean  
-#        for ie in $(seq 0 $ensemble_size)
-#        do
-#            # if [[ "$ensemble_size" -eq 1  ]]; then
-#            #    mem_ens="mem000" 
-#            # else
-#            mem_ens="mem`printf %03i $ie`"
-#            # fi
-#            MEM_WORKDIR=${WORKDIR}/${mem_ens}
-#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-#
-#            cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
-#
-#            cd $MEM_WORKDIR
-#            $vec2tileexec tile2vector.namelist
-#            if [[ $? != 0 ]]; then
-#                echo "tile2vector failed for ens $mem_ens"
-#                # rm $rst_out
-#                exit 
-#            fi
-#
-#            # save analysis restart
-#            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-#
-#        done
-        # wait
-
+        fi       
     fi
  
-# Forcing perturbation goes here
+    # Forcing perturbation goes here
     if [[ $do_enkf == "YES" ]]; then 
 
         cd $WORKDIR
 
-        cp  ${CYCLEDIR}/template.generate_ens_forc.nml generate_ens_forc.nml
+        cp  ${CYCLEDIR}/template.generate_ens_forc.nml $WORKDIR/generate_ens_forc.nml
 
-        forc_inp_file=${forcing_prefix}${YYYY}-${MM}-${DD}.nc  #C${RES}_GDAS_forcing_${YYYY}-${MM}-${DD}.nc
-#TODO: refine static file location
+        forc_inp_file=${forcing_prefix}${YYYY}-${MM}-${DD}.nc  
+        
         sed -i -e "s#XXSTATICFILE#${static_file}#g" generate_ens_forc.nml
         sed -i -e "s#XXFORINPATH#${WORKDIR}#g" generate_ens_forc.nml
         sed -i -e "s#XXFORINFILE#${forc_inp_file}#g" generate_ens_forc.nml
@@ -330,12 +251,24 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXENSZ/${ensemble_size}/g" generate_ens_forc.nml  # Ensemble size 
         sed -i -e "s/XXDTSFCX/${PCYC_DEL}/g" generate_ens_forc.nml     # DELTSFC = 6 hr 
         sed -i -e "s/XXVECTSZ/${vector_size}/g" generate_ens_forc.nml  # Noahmp vector array length, check from static file 
+	if [[ ${perturb_state} -eq "YES" ]]; then
+	    state_file_name=ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+	    sed -i -e "s/XXPERTSTATE/.true./g" generate_ens_forc.nml
+	    sed -i -e "s/XXSTATEVAR/${state_var_name}/g" generate_ens_forc.nml
+            sed -i -e "s/XXSTATEFILE/${state_file_name}/g" generate_ens_forc.nml
+        else
+	    sed -i -e "s/XXPERTSTATE/.false./g" generate_ens_forc.nml
+        fi
 
         forc_file=${forcing_dir}/${forc_inp_file}
+        #TODO: fix Noahmp so the following two lines are not needed
+        forc_inp_file_next=${forcing_prefix}${nYYYY}-${nMM}-${nDD}.nc
+        forc_file_next=${forcing_dir}/${forc_inp_file_next}
         for ie in $(seq $ensemble_size)
         do
             mem_ens="mem`printf %03i $ie`" 
-            cp ${forc_file} ${WORKDIR}/${mem_ens}/${forc_inp_file}   &
+            cp ${forc_file} ${WORKDIR}/${mem_ens}/${forc_inp_file}   
+	    cp ${forc_file_next} ${WORKDIR}/${mem_ens}/${forc_inp_file_next}   &
         done
         wait
 
@@ -358,7 +291,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     cd $WORKDIR
 
     # update model namelist 
-    cp  ${CYCLEDIR}/template.ufs-noahMP.namelist.${atmos_forc}  ufs-land.namelist
+    cp  ${CYCLEDIR}/template.ufs-noahMP.namelist.${atmos_forc}  $WORKDIR/ufs-land.namelist
 
     sed -i -e "s/XXYYYY/${YYYY}/g" ufs-land.namelist
     sed -i -e "s/XXMM/${MM}/g" ufs-land.namelist
@@ -367,6 +300,11 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXFREQ/${FREQ}/g" ufs-land.namelist
     sed -i -e "s/XXRDD/${RDD}/g" ufs-land.namelist
     sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
+    if [[ $do_enkf == "YES" ]]; then 
+        sed -i -e "s#XXFORCDIR#"./"#g" ufs-land.namelist
+    else
+	sed -i -e "s#XXFORCDIR#${forcing_dir}#g" ufs-land.namelist
+    fi
 
     echo '************************************************'
     echo "calling model"
@@ -374,7 +312,8 @@ while [ $date_count -lt $cycles_per_job ]; do
     module list
 
     nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
-    
+    NPROC_NOMP=${NPROC_NOMP:-$nt}    
+
     for ie in $(seq $ensemble_size)
     do
         if [[ "$ensemble_size" -eq 1  ]]; then 
@@ -393,20 +332,22 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         cd $MEM_WORKDIR
             
-#TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-        time srun '--export=ALL' --label -K -n $nt $LSMexec   &
+        #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
+        time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   &
         # #-N1-1 --exclusive
 
         # # srun -l --multi-prog $lsm_tasks_file
 
-# no error codes on exit from model, check for restart below instead
-# TODO: Modify noahmp to exit with error code    
+        # no error codes on exit from model, check for restart below instead
+        # TODO: Modify noahmp to exit with error code    
         # if [[ $? != 0 ]]; then
         #     echo "NoahMP failed for ensemble $ie"
         #     exit 10
         # fi   
     done
     wait
+
+    cd $WORKDIR
 
     ############################
     # check model ouput (all members)
@@ -431,16 +372,16 @@ while [ $date_count -lt $cycles_per_job ]; do
         fi
 
         if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-            # delete forcing ens files
-            rm ${MEM_WORKDIR}/${forc_inp_file}  
+           
+	     # delete forcing ens files
+#            rm ${MEM_WORKDIR}/${forc_inp_file}  
 
             # needed for ensemble mean computed below
-            # ln -fs test/workdir/mem00${i}/ufs_land_restart.2019-12-01_00-00-00.nc test/workdir/mem000/ufs_lr_mem${i}.nc
-            ln -fs ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
+            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
         fi
         
     done
-    # wait
+    wait
 
     # for enkf/letkf get ens mean 
     if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
@@ -449,6 +390,8 @@ while [ $date_count -lt $cycles_per_job ]; do
         MEM_MODL_OUTDIR=${OUTDIR}/mem000
         ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
         cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+   
+        rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
     fi
 
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile

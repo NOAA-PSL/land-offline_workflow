@@ -27,8 +27,8 @@ export CYCLEDIR=$(pwd)
 
 export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
 export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe
-# export EnsForcGenExe=${CYCLEDIR}/stochastic_physics/GenEnsForc.x
-export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
+export EnsForcGenExe=${CYCLEDIR}/stochastic_physics/GenEnsForc.x
+#export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
 
 export DADIR=${CYCLEDIR}/DA_update/
 export DAscript=${DADIR}/do_landDA.sh
@@ -53,8 +53,8 @@ sHH=`echo $STARTDATE | cut -c9-10`
 export FREQ=$(( 3600 * $FCSTHR )) 
 export RDD=$(( $FCSTHR / 24 )) 
 export RHH=$(( $FCSTHR % 24 )) 
-
-############################
+##------------
+#############################
 # set up directories
 
 #workdir
@@ -87,6 +87,12 @@ if [[ ! -e ${OUTDIR} ]]; then
     #TODO: Do we need this?
     mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
     ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
+
+    if [[ ! -e ${OUTDIR}/STOCHY/ ]]; then  # Stochastic physics
+        mkdir ${OUTDIR}/STOCHY/
+        # mkdir ${OUTDIR}/STOCHY/INPUT/
+        mkdir ${OUTDIR}/STOCHY/RESTART/
+    fi
 
 fi
 
@@ -124,17 +130,25 @@ if [[ $do_enkf == "YES" ]]; then
     # Make sure the INPUT and RESTART dirs for stochy are in working dir
     # and input.nml has settings right
     
-    stochy_init_exists="NO"
-
-    if [[ ! -e ${WORKDIR}/RESTART ]]; then
-        mkdir -p ${WORKDIR}/RESTART
+    stochy_init_found="NO"
+    
+    if [[ $stochy_init_exist == "YES" ]]; then
         if [[ -e ${stochy_init_dir} ]]; then
-            cp $stochy_init_dir/* ${WORKDIR}/RESTART  
-            stochy_init_exists="YES"         
+	    echo "Stochy init files found. Copying..."
+            cp $stochy_init_dir/*.nc ${OUTDIR}/STOCHY/RESTART/ 
+            stochy_init_found="YES"     	    
         else
-            echo "directory for Stochy init files $stochy_init_dir doesn't exist, STOCH_INI_VAL will be set to FALSE"
+            echo "directory for Stochy init files $stochy_init_dir doesn't exist."
+            echo "STOCH_INI_VAL will be set to FALSE -- NOT recommended for cycling experiments"
         fi
+    else
+        echo "STOCH_INI_VAL will be set to FALSE -- NOT recommended for cycling experiments"
     fi
+
+    ln -fs ${OUTDIR}/STOCHY/RESTART/ ${WORKDIR}/RESTART 
+    # if [[ ! -e ${WORKDIR}/RESTART ]]; then
+    #     mkdir -p ${WORKDIR}/RESTART
+    # fi  
 
     if [[ ! -e ${WORKDIR}/INPUT ]]; then
         mkdir -p ${WORKDIR}/INPUT
@@ -154,7 +168,7 @@ if [[ $do_enkf == "YES" ]]; then
     fi
 
     cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
-    if [[ $stochy_init_exists == "YES" ]]; then               # true for cycling with temporal correlation 
+    if [[ $stochy_init_found == "YES" ]]; then               # true for cycling with temporal correlation 
         sed -i -e "s/XXSTOCH_INI_VAL/.TRUE./g" $WORKDIR/input.nml
     else
         sed -i -e "s/XXSTOCH_INI_VAL/.FALSE./g" $WORKDIR/input.nml
@@ -224,7 +238,7 @@ if [[ "$ensemble_size" -gt 1  ]]; then
         fi 
     done
 fi
-
+#---------------
 # create dates file 
 touch analdates.sh 
 cat << EOF > analdates.sh

@@ -6,8 +6,9 @@
 
   static_file      = "/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
   init_file        = "/scratch2/NCEPDEV/land/data/forcing/era5/init/C96/ufs-land_C96_hr3_era5_init_2009-12-31_23-00-00.nc"
-  forcing_dir      = "/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
-  
+
+  forcing_dir      = "XXFORCDIR"
+ 
   separate_output = .false.
   output_dir       = "./noahmp_output/"
   output_frequency_s = 0
@@ -23,7 +24,7 @@
 ! either set simulation_end or run_* or run_timesteps, priority
 !   1. simulation_end 2. run_[days/hours/minutes/seconds] 3. run_timesteps
 
-  simulation_start = "2011-01-01 00:00:00"   ! start date [yyyy-mm-dd hh:mm:ss]
+!  simulation_start = "2011-01-01 00:00:00"   ! start date [yyyy-mm-dd hh:mm:ss]
 !  simulation_end   = "1999-01-01 06:00:00"   !   end date [yyyy-mm-dd hh:mm:ss]
 
   run_days         = XXRDD   ! number of days to run

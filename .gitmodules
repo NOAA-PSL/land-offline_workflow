@@ -4,9 +4,15 @@
         branch =hr4_update
 [submodule "DA_update"]
 	path = DA_update
-	url = https://github.com/NOAA-PSL/land-DA_update.git
-        branch = develop
+#	url = https://github.com/NOAA-PSL/land-DA_update.git
+#        branch = develop
+        url = https://github.com/tsga/land-DA_update
+	branch = feature/lnd_ens
 [submodule "vector2tile"]
 	path = vector2tile
 	url = https://github.com/NOAA-PSL/land-vector2tile.git
         branch = develop
+[submodule "stochastic_physics"]
+	path = stochastic_physics
+	url = https://github.com/tsga/stochastic_physics
+	branch = lnd_ens

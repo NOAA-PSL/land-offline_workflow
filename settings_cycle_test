@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_test_era5_hr3
+export exp_name=letkf96
 STARTDATE=2019120100
-ENDDATE=2019120300
+ENDDATE=2019120400
 
 BASEDIR=/scratch1/NCEPDEV/da/${USER}/low/test/
 #/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
@@ -17,14 +17,18 @@ export WORKDIR=${BASEDIR}/workdir/
 export OUTDIR=${BASEDIR}/${exp_name}/
 #export OUTDIR=${BASEDIR}/landDA/cycle_land/${exp_name}/
 
+export CYCLEDIR=/scratch1/NCEPDEV/da/${USER}/low/
 ############################
 
+# decide if GFSv17
+export GFSv17="NO"
+
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="NO"
+export do_enkf="YES"
 
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=1
+export ensemble_size=20
 export num_tiles=6         # 1 for regional
 export vector_size=18320   #1067297 C768
 
@@ -34,7 +38,7 @@ export FCSTHR=24
 export PCYC_DEL=6
 
 #FV3 resolution
-export RES=96
+export RES=96   # 768
 export NPZ=64   # vertical layers
 export ORES=mx100
 export TPATH=/scratch2/NCEPDEV/land/data/fix/20231027/C${RES}/
@@ -42,12 +46,7 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=1
-
-# directory with initial conditions
-# can find some here:
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
-#export ICSDIR=/scratch2/BMC/gsienkf/Tseganeh.Gichamo/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+export cycles_per_job=31
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
@@ -60,8 +59,11 @@ export DA_config06=${DA_config}
 export DA_config12=${DA_config} 
 export DA_config18=${DA_config} 
 
-# decide if GFSv17
-export GFSv17="NO"
+# directory with initial conditions
+# can find some here:
+#export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/RESTARTS/C${RES}
+export ICSDIR=${CYCLEDIR}/RESTARTS/C${RES}
+#export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -71,13 +73,20 @@ export atmos_forc=era5
 # forcing prefix
 # gdas: C${RES}_GDAS_forcing_
 # era: C${RES}_ERA5_forcing_
-export forcing_prefix=C96_ERA5_forcing_
+export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
+#/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
 export stochy_init_exist="YES"
-export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/land-offline_workflow/RESTART/C96/"
+#export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/STOCHY/RESTART/"
+export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
+
+export perturb_state="NO" # not fully worked out so keep no
+export state_var_name="snow_depth"
+#/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/test/RESTART4/"
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
+export NPROC_NOMP=6
 # x y and io layout
 export LayX=1
 export LayY=1

@@ -2,8 +2,8 @@
 
   static_file      = "/scratch2/NCEPDEV/land/data/forcing/cfs/static/ufs-land_C768_static_fields.nc"
   init_file        = "/scratch2/NCEPDEV/land/data/forcing/cfs/init/ufs-land_C768_init_fields_1hr.nc"
-  forcing_dir      = "/scratch2/NCEPDEV/land/data/forcing/gdas/datm/C768/"
-
+!  forcing_dir      = "/scratch2/NCEPDEV/land/data/forcing/gdas/datm/C768/"
+  forcing_dir      = "XXRORCDIR"
   separate_output = .false.
   output_dir       = "./noahmp_output/"
 
