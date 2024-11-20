@@ -40,7 +40,7 @@ COMPILING and TESTING.
 > build_all.sh 
 > cd .. 
 
-2d.
+2e.
 > cd stochastic_physics
 > ./compile_ens.hera_intel
 > cd ../
