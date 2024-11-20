@@ -40,6 +40,11 @@ COMPILING and TESTING.
 > build_all.sh 
 > cd .. 
 
+2d.
+> cd stochastic_physics
+> ./compile_ens.hera_intel
+> cd ../
+
 3. Run the test.
 
  in settings_cycle_test check WORKDIR and OUTDIR are OK
