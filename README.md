@@ -41,9 +41,9 @@ COMPILING and TESTING.
 > cd .. 
 
 2e.
-> cd stochastic_physics
-> ./compile_ens.hera_intel
-> cd ../
+> cd stochastic_physics 
+> ./compile_ens.hera_intel 
+> cd ..
 
 3. Run the test.
 
