@@ -20,7 +20,7 @@ source $config_file
 
 export KEEPWORKDIR="YES"
 
-export CYCLEDIR=$(pwd) 
+CYCLEDIR=${CYCLEDIR:-$(pwd)} 
 
 ############################
 # set executables
@@ -28,7 +28,6 @@ export CYCLEDIR=$(pwd)
 export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
 export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe
 export EnsForcGenExe=${CYCLEDIR}/stochastic_physics/GenEnsForc.x
-#export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
 
 export DADIR=${CYCLEDIR}/DA_update/
 export DAscript=${DADIR}/do_landDA.sh
@@ -53,7 +52,7 @@ sHH=`echo $STARTDATE | cut -c9-10`
 export FREQ=$(( 3600 * $FCSTHR )) 
 export RDD=$(( $FCSTHR / 24 )) 
 export RHH=$(( $FCSTHR % 24 )) 
-##------------
+
 #############################
 # set up directories
 
@@ -65,77 +64,78 @@ mkdir ${WORKDIR}
 
 ###############################
 # create dirs and copy in ICS if needed
-mem_ens="mem000"  # single member, us ensemble 0
+
+mem_ens="mem000"  # single member, use ensemble 0
 MEM_WORKDIR=${WORKDIR}/${mem_ens}
-# if [[ ! -e $MEM_WORKDIR ]];   # already deleted above
 mkdir $MEM_WORKDIR
 
+#outdir for model
 if [[ ! -e ${OUTDIR} ]]; then    
 
     mkdir -p  ${OUTDIR}
+
+    # ensemble outdir (model only)
     MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}    
-    if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
+    if [[ ! -e $MEM_MODL_OUTDIR ]]; then  
         mkdir -p $MEM_MODL_OUTDIR
     fi
 
     # outdir subdirs
-    if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
+    if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  
         mkdir -p ${MEM_MODL_OUTDIR}/restarts/
         mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
         mkdir ${MEM_MODL_OUTDIR}/restarts/tile/
     fi
-    #TODO: Do we need this?
+
     mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
     ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
 
-    if [[ ! -e ${OUTDIR}/STOCHY/ ]]; then  # Stochastic physics
-        mkdir ${OUTDIR}/STOCHY/
-        # mkdir ${OUTDIR}/STOCHY/INPUT/
+    # stochy: ensemble forcing perturbation
+    if [[ ! -e ${OUTDIR}/STOCHY/ ]]; then  
+        mkdir -p ${OUTDIR}/STOCHY/        
         mkdir ${OUTDIR}/STOCHY/RESTART/
+        # mkdir ${OUTDIR}/STOCHY/INPUT/
     fi
-
 fi
 
 if [[ "$ensemble_size" -gt 1  ]]; then  
 
-    # ensemble outdir (model only)
     for ie in $(seq $ensemble_size)     
     do
-        mem_ens="mem`printf %03i $ie`"
-        
+        mem_ens="mem`printf %03i $ie`"        
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
         mkdir $MEM_WORKDIR
-    
+
+        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
         if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
             mkdir -p $MEM_MODL_OUTDIR
         fi
 
         # outdir subdirs
-        if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
+        if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  
             mkdir -p ${MEM_MODL_OUTDIR}/restarts/
             mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
             mkdir ${MEM_MODL_OUTDIR}/restarts/tile/            
         fi
+
         #TODO: Do we need this?
         mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
         ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
     done 
 fi
 
-# Forcing perturbation goes here
-if [[ $do_enkf == "YES" ]]; then 
-
-    # Make sure the INPUT and RESTART dirs for stochy are in working dir
-    # and input.nml has settings right
+# Forcing perturbation 
+# Make sure the INPUT and RESTART dirs for stochy are in working dir
+# and input.nml has settings right
+if [[ $do_enkf == "YES" ]]; then     
     
     stochy_init_found="NO"
     
     if [[ $stochy_init_exist == "YES" ]]; then
+
         if [[ -e ${stochy_init_dir} ]]; then
-	    echo "Stochy init files found. Copying..."
-            cp $stochy_init_dir/*.nc ${OUTDIR}/STOCHY/RESTART/ 
+	        echo "Stochy init files found. Copying..."
+            cp ${stochy_init_dir}/*.nc ${OUTDIR}/STOCHY/RESTART/ 
             stochy_init_found="YES"     	    
         else
             echo "directory for Stochy init files $stochy_init_dir doesn't exist."
@@ -145,10 +145,7 @@ if [[ $do_enkf == "YES" ]]; then
         echo "STOCH_INI_VAL will be set to FALSE -- NOT recommended for cycling experiments"
     fi
 
-    ln -fs ${OUTDIR}/STOCHY/RESTART/ ${WORKDIR}/RESTART 
-    # if [[ ! -e ${WORKDIR}/RESTART ]]; then
-    #     mkdir -p ${WORKDIR}/RESTART
-    # fi  
+    ln -fs ${OUTDIR}/STOCHY/RESTART/ ${WORKDIR}/RESTART  
 
     if [[ ! -e ${WORKDIR}/INPUT ]]; then
         mkdir -p ${WORKDIR}/INPUT
@@ -168,18 +165,21 @@ if [[ $do_enkf == "YES" ]]; then
     fi
 
     cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
+
     if [[ $stochy_init_found == "YES" ]]; then               # true for cycling with temporal correlation 
         sed -i -e "s/XXSTOCH_INI_VAL/.TRUE./g" $WORKDIR/input.nml
     else
         sed -i -e "s/XXSTOCH_INI_VAL/.FALSE./g" $WORKDIR/input.nml
     fi
-    # sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
+
+    sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
     sed -i -e "s/XXLX/${LayX}/g"  $WORKDIR/input.nml          # Layout
     sed -i -e "s/XXLY/${LayY}/g"  $WORKDIR/input.nml
     sed -i -e "s/XXIOLX/${IOLayX}/g"  $WORKDIR/input.nml      # IO Layout
     sed -i -e "s/XXIOLY/${IOLayY}/g"  $WORKDIR/input.nml
-    sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
+
     RESP1=$((RES+1))
+
     sed -i -e "s/XXREP/${RESP1}/g"  $WORKDIR/input.nml 
     sed -i -e "s/XXNTIL/${num_tiles}/g"  $WORKDIR/input.nml       # Number of tiles
     sed -i -e "s/XXGRT/${grid_type}/g"  $WORKDIR/input.nml        # grid type -1 for FV3
@@ -189,7 +189,7 @@ if [[ $do_enkf == "YES" ]]; then
 fi
 
 # copy ICS into restarts, if needed 
-mem_ens="mem000"  # single member, us ensemble 0
+mem_ens="mem000"  # single member/ensemble mean, use ensemble 0
 rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
