@@ -1,7 +1,7 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=letkf96
+export exp_name=letkf_ghcn_ims
 STARTDATE=2019120100
 ENDDATE=2019120400
 
