@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=letkf_ghcn_ims
+export exp_name=2DVar
 STARTDATE=2019120100
-ENDDATE=2019120400
+ENDDATE=2019120300
 
 BASEDIR=/scratch1/NCEPDEV/da/${USER}/low/test/
 #/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
@@ -24,11 +24,11 @@ export CYCLEDIR=/scratch1/NCEPDEV/da/${USER}/low/
 export GFSv17="NO"
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="YES"
+export do_enkf="NO"
 
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=20
+export ensemble_size=1
 export num_tiles=6         # 1 for regional
 export vector_size=18320   #1067297 C768
 
@@ -62,8 +62,8 @@ export DA_config18=${DA_config}
 # directory with initial conditions
 # can find some here:
 #export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/RESTARTS/C${RES}
-export ICSDIR=${CYCLEDIR}/RESTARTS/C${RES}
-#export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+#export ICSDIR=${CYCLEDIR}/RESTARTS/C${RES}
+export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
