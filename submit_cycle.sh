@@ -2,8 +2,8 @@
 #SBATCH --job-name=offline_noahmp
 #SBATCH --account=da-cpu
 #SBATCH --qos=debug
-#SBATCH --nodes=5
-#SBATCH --tasks-per-node=24
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=6
 #SBATCH --cpus-per-task=1
 #SBATCH -t 00:30:00
 #SBATCH -o erlog_noahmp.%j

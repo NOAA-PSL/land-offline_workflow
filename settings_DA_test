@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/   #mem000           #${MEM_WORKDIR}
 
 # DA algorithm and state being updated
 # options: "letkfoi" , "2DVar", "letkf"
-DAalg=letkf
+DAalg=letkfoi
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
