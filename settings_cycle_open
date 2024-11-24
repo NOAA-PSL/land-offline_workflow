@@ -62,6 +62,8 @@ export DA_config18=${DA_config}
 # directory with initial conditions
 # can find some here:
 export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+#for LETKF
+#export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo//land-offline-workflow/RESTARTS/C96/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -89,8 +91,8 @@ export LayY=1
 export IOLayX=1
 export IOLayY=1
 #
-export grid_type=-1    #grid type -1 for fv3 tiles 
+export grid_type=-1         #grid type -1 for fv3 tiles 
 export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km
 export lndp_vscale=800	    #vertical correlation scale (m)
 export lndp_tscale=86400    #temporal decorrelation length (s) ~ 24hr
-#export EnsForcGenExe=$CYCLEDIR/stochastic_physics/GenEnsForc.x
+#

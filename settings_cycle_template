@@ -63,7 +63,7 @@ export DA_config18=${DA_config}
 # can find some here:
 export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
 ## for LETKF use this:
-# export ICSDIR=cratch1/NCEPDEV/da/Tseganeh.Gichamo/low/RESTARTS/C96/
+# export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo//land-offline-workflow/RESTARTS/C96/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
