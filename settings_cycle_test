@@ -5,19 +5,17 @@ export exp_name=2DVar
 STARTDATE=2019120100
 ENDDATE=2019120300
 
-BASEDIR=/scratch1/NCEPDEV/da/${USER}/low/test/
-#/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
-#BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+#BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
 
 # temporary directory where experiment is run from
-#export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
 export WORKDIR=${BASEDIR}/workdir/
 
 # directory where output is saved
-export OUTDIR=${BASEDIR}/${exp_name}/
-#export OUTDIR=${BASEDIR}/landDA/cycle_land/${exp_name}/
+export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 
-export CYCLEDIR=/scratch1/NCEPDEV/da/${USER}/low/
+# directory of land-offline_workflow repo
+export CYCLEDIR=${BASEDIR}/land-offline-workflow/
 ############################
 
 # decide if GFSv17
@@ -29,8 +27,10 @@ export do_enkf="NO"
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
 export ensemble_size=1
+
+# number of tiles and vector size
 export num_tiles=6         # 1 for regional
-export vector_size=18320   #1067297 C768
+export vector_size=18320   # 1067297 C768
 
 # length of each forecast
 export FCSTHR=24
@@ -46,7 +46,7 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=31
+export cycles_per_job=1
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
@@ -61,10 +61,9 @@ export DA_config18=${DA_config}
 
 # directory with initial conditions
 # can find some here:
-#export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/RESTARTS/C${RES}
-#export ICSDIR=${CYCLEDIR}/RESTARTS/C${RES}
-#export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/
 export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+## for LETKF use this:
+# export ICSDIR=cratch1/NCEPDEV/da/Tseganeh.Gichamo/low/RESTARTS/C96/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -76,15 +75,15 @@ export atmos_forc=era5
 # era: C${RES}_ERA5_forcing_
 export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
-#/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
+#gdas:/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
 export stochy_init_exist="YES"
-#export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/STOCHY/RESTART/"
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
+#export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/STOCHY/RESTART/"
 
 export perturb_state="NO" # not fully worked out so keep no
 export state_var_name="snow_depth"
-#/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/test/RESTART4/"
+
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
 export NPROC_NOMP=6
@@ -93,10 +92,9 @@ export LayX=1
 export LayY=1
 export IOLayX=1
 export IOLayY=1
-#npx=769,npy=769,
-#export ntiles=6
-export grid_type=-1
-export lndp_hscale=120000
-export lndp_vscale=800
-export lndp_tscale=86400
-#export EnsForcGenExe=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/stochastic_physics_mod/GenEnsForc.x
+#
+export grid_type=-1         #grid type -1 for fv3 tiles 
+export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km
+export lndp_vscale=800	    #vertical correlation scale (m)
+export lndp_tscale=86400    #temporal decorrelation length (s) ~ 24hr
+#

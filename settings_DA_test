@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/   #mem000           #${MEM_WORKDIR}
 
 # DA algorithm and state being updated
 # options: "letkfoi" , "2DVar", "letkf"
-DAalg=letkfoi
+DAalg=2DVar
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
@@ -45,7 +45,7 @@ YAML_HOFX=construct
 # keep working dir?
 KEEPJEDIDIR="YES"
 
-# OPTIONAL : CLEAN UP
+# OPTIONAL : delete jedi work dirs?
 SAVE_IMS="YES"
 SAVE_TILE="YES"
 SAVE_INCR="YES"
