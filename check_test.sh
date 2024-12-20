@@ -10,7 +10,6 @@ module load nccmp
 CMP="nccmp -d"
 
 TEST_BASEDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
-#TEST_BASEDIR=${ICSDIR}/mem000/restarts/vector/
 
 for TEST_DATE in 2019-12-01_00-00-00 2019-12-02_00-00-00 
 do
