@@ -62,8 +62,6 @@ export DA_config18=${DA_config}
 # directory with initial conditions
 # can find some here:
 export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
-#for LETKF
-#export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo//land-offline-workflow/RESTARTS/C96/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -77,11 +75,11 @@ export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
 #gdas:/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
-export stochy_init_exist="YES"
+export stochy_init_exist="NO"
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
 
 export perturb_state="NO" # not fully worked out so keep no
-export state_var_name="snow_depth"
+export state_var_name="snow_level_ice"
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
 export NPROC_NOMP=6
