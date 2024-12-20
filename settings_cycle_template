@@ -77,7 +77,7 @@ export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
 #gdas:/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
-export stochy_init_exist="YES"
+export stochy_init_exist="NO"
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
 
 export perturb_state="NO" # not fully worked out so keep no
