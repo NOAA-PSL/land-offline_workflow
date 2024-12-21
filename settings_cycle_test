@@ -1,12 +1,12 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=2DVar
+export exp_name=2DVar_dec20
 STARTDATE=2019120100
 ENDDATE=2019120300
 
-BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
-#BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
+#BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -15,7 +15,7 @@ export WORKDIR=${BASEDIR}/workdir/
 export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 
 # directory of land-offline_workflow repo
-export CYCLEDIR=${BASEDIR}/land-offline-workflow/
+export CYCLEDIR=${BASEDIR}/land-offline_workflow/
 ############################
 
 # decide if GFSv17
@@ -61,9 +61,7 @@ export DA_config18=${DA_config}
 
 # directory with initial conditions
 # can find some here:
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
-## for LETKF use this:
-# export ICSDIR=/scratch1/NCEPDEV/da/Tseganeh.Gichamo//land-offline-workflow/RESTARTS/C96/
+export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5

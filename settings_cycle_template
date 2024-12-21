@@ -61,8 +61,7 @@ export DA_config18=${DA_config}
 
 # directory with initial conditions
 # can find some here:
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
-## for LETKF use this RESTARTS/C96/  within the land-offline_workflow
+export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -74,7 +73,7 @@ export atmos_forc=era5
 # era: C${RES}_ERA5_forcing_
 export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
-#gdas:/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
+
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
 export stochy_init_exist="NO"
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"

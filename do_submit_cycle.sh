@@ -195,18 +195,18 @@ rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
 if [[ ! -e ${rst_out} ]]; then 
     echo "Looking for ICS: ${rst_in}"
-    if [[ -e ${rst_in} ]]; then
-    echo "ICS found, copying" 
-    cp ${rst_in} ${rst_out}
+    if [[ -e "${rst_in}" ]]; then
+        echo "ICS found, copying" 
+        cp ${rst_in} ${rst_out}
     else  # check if is in output directory structure
         rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         echo "Looking for ICS: ${rst_in}"
         if [[ -e ${rst_in} ]]; then
-        echo "ICS found, copying" 
-        cp ${rst_in} ${rst_out}
+            echo "ICS found, copying" 
+            cp ${rst_in} ${rst_out}
         else  
-        echo "ICS not found. Exiting" 
-        exit 10 
+            echo "ICS not found. Exiting" 
+            exit 10 
         fi
     fi 
 fi 
