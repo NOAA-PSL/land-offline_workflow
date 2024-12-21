@@ -1,7 +1,7 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=2DVar_dec20
+export exp_name=2DVar_era5
 STARTDATE=2019120100
 ENDDATE=2019120300
 
@@ -61,7 +61,8 @@ export DA_config18=${DA_config}
 
 # directory with initial conditions
 # can find some here:
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
+export ICSDIR=${CYCLEDIR}/TESTS/RESTARTS/
+#/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -73,11 +74,10 @@ export atmos_forc=era5
 # era: C${RES}_ERA5_forcing_
 export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
-#gdas:/scratch1/NCEPDEV/da/Tseganeh.Gichamo/FORC/C768/"
+
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
-export stochy_init_exist="YES"
+export stochy_init_exist="NO"
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
-#export stochy_init_dir="/scratch1/NCEPDEV/da/Tseganeh.Gichamo/low/STOCHY/RESTART/"
 
 export perturb_state="NO" # not fully worked out so keep no
 export state_var_name="snow_depth"

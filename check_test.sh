@@ -2,6 +2,7 @@
 
 # get OUTDIR
 source settings_cycle_test
+source settings_DA_test
 
 # need to run "module load nccmp" before calling
 
@@ -9,7 +10,8 @@ module load nccmp
 
 CMP="nccmp -d"
 
-TEST_BASEDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
+TEST_BASEDIR=${CYCLEDIR}/TESTS/OUTPUTS/${DAalg}/
+#TEST_BASEDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/DA_test_era5/mem000/restarts/vector/
 
 for TEST_DATE in 2019-12-01_00-00-00 2019-12-02_00-00-00 
 do
