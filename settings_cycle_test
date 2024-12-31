@@ -1,7 +1,7 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=2DVar_era5
+export exp_name=letkf_era5
 STARTDATE=2019120100
 ENDDATE=2019120300
 
@@ -22,11 +22,11 @@ export CYCLEDIR=${BASEDIR}/land-offline_workflow/
 export GFSv17="NO"
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="NO"
+export do_enkf="YES"
 
 # for LETKF, this is size of ensemble.
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=1
+export ensemble_size=20
 
 # number of tiles and vector size
 export num_tiles=6         # 1 for regional
@@ -76,11 +76,12 @@ export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
 
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
-export stochy_init_exist="NO"
+export stochy_init_exist="NO" #init patterns read from cycledir/stochy/restart. If not initialized from seed
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
+# export stochy_init_found="NO" 
 
-export perturb_state="NO" # not fully worked out so keep no
-export state_var_name="snow_depth"
+export perturb_forcing="YES"
+export perturb_state="YES" # 
 
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
