@@ -129,20 +129,20 @@ fi
 # and input.nml has settings right
 if [[ $do_enkf == "YES" ]]; then     
     
-    stochy_init_found="NO"
+    export stochy_init_found="NO"
     
     if [[ $stochy_init_exist == "YES" ]]; then
 
         if [[ -e ${stochy_init_dir} ]]; then
 	        echo "Stochy init files found. Copying..."
             cp ${stochy_init_dir}/*.nc ${OUTDIR}/STOCHY/RESTART/ 
-            stochy_init_found="YES"     	    
+            export stochy_init_found="YES"     	    
         else
             echo "directory for Stochy init files $stochy_init_dir doesn't exist."
-            echo "STOCH_INI_VAL will be set to FALSE -- NOT recommended for cycling experiments"
+            echo "STOCH_INI_VAL will be set to FALSE "
         fi
     else
-        echo "STOCH_INI_VAL will be set to FALSE -- NOT recommended for cycling experiments"
+        echo "STOCH_INI_VAL will be set to FALSE "
     fi
 
     ln -fs ${OUTDIR}/STOCHY/RESTART/ ${WORKDIR}/RESTART  
@@ -162,30 +162,7 @@ if [[ $do_enkf == "YES" ]]; then
             echo "Grid spec file not found at ${TPATH}, exiting"
             exit 10
         fi          
-    fi
-
-    cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
-
-    if [[ $stochy_init_found == "YES" ]]; then               # true for cycling with temporal correlation 
-        sed -i -e "s/XXSTOCH_INI_VAL/.TRUE./g" $WORKDIR/input.nml
-    else
-        sed -i -e "s/XXSTOCH_INI_VAL/.FALSE./g" $WORKDIR/input.nml
-    fi
-
-    sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
-    sed -i -e "s/XXLX/${LayX}/g"  $WORKDIR/input.nml          # Layout
-    sed -i -e "s/XXLY/${LayY}/g"  $WORKDIR/input.nml
-    sed -i -e "s/XXIOLX/${IOLayX}/g"  $WORKDIR/input.nml      # IO Layout
-    sed -i -e "s/XXIOLY/${IOLayY}/g"  $WORKDIR/input.nml
-
-    RESP1=$((RES+1))
-
-    sed -i -e "s/XXREP/${RESP1}/g"  $WORKDIR/input.nml 
-    sed -i -e "s/XXNTIL/${num_tiles}/g"  $WORKDIR/input.nml       # Number of tiles
-    sed -i -e "s/XXGRT/${grid_type}/g"  $WORKDIR/input.nml        # grid type -1 for FV3
-    sed -i -e "s/XXLSC/${lndp_hscale}/g"  $WORKDIR/input.nml      # Spatial/horizontal correlation length = 120000 m
-    sed -i -e "s/XXTAU/${lndp_tscale}/g"  $WORKDIR/input.nml      # Time correlation scale = 86400 s
-   
+    fi 
 fi
 
 # copy ICS into restarts, if needed 

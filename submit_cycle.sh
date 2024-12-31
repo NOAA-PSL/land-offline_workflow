@@ -23,6 +23,8 @@ source $analdate
 THISDATE=$STARTDATE
 date_count=0
 
+#stochy_init_found=${stochy_init_found:-"NO"}
+
 while [ $date_count -lt $cycles_per_job ]; do
 
     if [ $THISDATE -ge $ENDDATE ]; then 
@@ -220,42 +222,70 @@ while [ $date_count -lt $cycles_per_job ]; do
     if [[ $do_enkf == "YES" ]]; then 
 
         cd $WORKDIR
+        
+	cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
 
-        cp  ${CYCLEDIR}/template.generate_ens_forc.nml $WORKDIR/generate_ens_forc.nml
+        if [[ $stochy_init_found == "YES" ]]; then
+	    echo "stochy init patterns to be read from files"
+            sed -i -e "s/XXSTOCH_INI_VAL/.TRUE./g" $WORKDIR/input.nml
+        else
+            sed -i -e "s/XXSTOCH_INI_VAL/.FALSE./g" $WORKDIR/input.nml
+	    echo "stochy init patterns to be generated from seed"
+        fi
+    
+        sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
+        sed -i -e "s/XXLX/${LayX}/g"  $WORKDIR/input.nml          # Layout
+        sed -i -e "s/XXLY/${LayY}/g"  $WORKDIR/input.nml
+        sed -i -e "s/XXIOLX/${IOLayX}/g"  $WORKDIR/input.nml      # IO Layout
+        sed -i -e "s/XXIOLY/${IOLayY}/g"  $WORKDIR/input.nml
+    
+        RESP1=$((RES+1))
+    
+        sed -i -e "s/XXREP/${RESP1}/g"  $WORKDIR/input.nml
+        sed -i -e "s/XXNTIL/${num_tiles}/g"  $WORKDIR/input.nml       # Number of tiles
+        sed -i -e "s/XXGRT/${grid_type}/g"  $WORKDIR/input.nml        # grid type -1 for FV3
+        sed -i -e "s/XXLSC/${lndp_hscale}/g"  $WORKDIR/input.nml      # Spatial/horizontal correlation length = 120000 m
+        sed -i -e "s/XXTAU/${lndp_tscale}/g"  $WORKDIR/input.nml      # Time correlation scale = 86400 s
+
+        cp  ${CYCLEDIR}/template.generate_ens_forc_state.nml $WORKDIR/generate_ens_forc_state.nml
 
         forc_inp_file=${forcing_prefix}${YYYY}-${MM}-${DD}.nc  
-        
-        sed -i -e "s#XXSTATICFILE#${static_file}#g" generate_ens_forc.nml
-        sed -i -e "s#XXFORINPATH#${WORKDIR}#g" generate_ens_forc.nml
-        sed -i -e "s#XXFORINFILE#${forc_inp_file}#g" generate_ens_forc.nml
-        
-        sed -i -e "s/YYYY/${YYYY}/g" generate_ens_forc.nml
-        sed -i -e "s/MM/${MM}/g" generate_ens_forc.nml
-        sed -i -e "s/DD/${DD}/g" generate_ens_forc.nml
-        sed -i -e "s/HH/${HH}/g" generate_ens_forc.nml
-        sed -i -e "s/XXRESX/${RES}/g" generate_ens_forc.nml   # TODO: Do these two (RESX/RESY) every differ?
-        sed -i -e "s/XXRESY/${RES}/g" generate_ens_forc.nml
-        sed -i -e "s/XXNTIL/${num_tiles}/g" generate_ens_forc.nml   # Number of tiles
-        sed -i -e "s/XXLX/${LayX}/g" generate_ens_forc.nml          # Layout
-        sed -i -e "s/XXLY/${LayY}/g" generate_ens_forc.nml
+        state_file_name=ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+
+        sed -i -e "s#XXSTATICFILE#${static_file}#g" generate_ens_forc_state.nml
+        sed -i -e "s#XXFORINPATH#${WORKDIR}#g" generate_ens_forc_state.nml
+        sed -i -e "s#XXFORINFILE#${forc_inp_file}#g" generate_ens_forc_state.nml
+        sed -i -e "s/XXSTATEFILE/${state_file_name}/g" generate_ens_forc_state.nml
+
+        sed -i -e "s/YYYY/${YYYY}/g" generate_ens_forc_state.nml
+        sed -i -e "s/MM/${MM}/g" generate_ens_forc_state.nml
+        sed -i -e "s/DD/${DD}/g" generate_ens_forc_state.nml
+        sed -i -e "s/HH/${HH}/g" generate_ens_forc_state.nml
+        sed -i -e "s/XXRESX/${RES}/g" generate_ens_forc_state.nml   # TODO: Do these two (RESX/RESY) every differ?
+        sed -i -e "s/XXRESY/${RES}/g" generate_ens_forc_state.nml
+        sed -i -e "s/XXNTIL/${num_tiles}/g" generate_ens_forc_state.nml   # Number of tiles
+        sed -i -e "s/XXLX/${LayX}/g" generate_ens_forc_state.nml          # Layout
+        sed -i -e "s/XXLY/${LayY}/g" generate_ens_forc_state.nml
 
         lndp_hscale_km=$((lndp_hscale/1000))
         lndp_tau_hr=$((lndp_tscale/3600))
 
-        sed -i -e "s/XXLSC/${lndp_hscale_km}/g" generate_ens_forc.nml   # Horizontal correlation length = 120 Km
-        sed -i -e "s/XXVSC/${lndp_vscale}/g" generate_ens_forc.nml      # Vertical correlation length = 800 m
-        sed -i -e "s/XXTAU/${lndp_tau_hr}/g" generate_ens_forc.nml      # Time correlation scale = 24 
-        sed -i -e "s/XXENSZ/${ensemble_size}/g" generate_ens_forc.nml   # Ensemble size 
-        sed -i -e "s/XXDTSFCX/${PCYC_DEL}/g" generate_ens_forc.nml      # DELTSFC = 6 hr 
-        sed -i -e "s/XXVECTSZ/${vector_size}/g" generate_ens_forc.nml   # Noahmp vector array length, check from static file 
-
-        if [[ ${perturb_state} -eq "YES" ]]; then
-            state_file_name=ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-            sed -i -e "s/XXPERTSTATE/.true./g" generate_ens_forc.nml
-            sed -i -e "s/XXSTATEVAR/${state_var_name}/g" generate_ens_forc.nml
-            sed -i -e "s/XXSTATEFILE/${state_file_name}/g" generate_ens_forc.nml
+        sed -i -e "s/XXLSC/${lndp_hscale_km}/g" generate_ens_forc_state.nml   # Horizontal correlation length = 120 Km
+        sed -i -e "s/XXVSC/${lndp_vscale}/g" generate_ens_forc_state.nml      # Vertical correlation length = 800 m
+        sed -i -e "s/XXTAU/${lndp_tau_hr}/g" generate_ens_forc_state.nml      # Time correlation scale = 24 
+        sed -i -e "s/XXENSZ/${ensemble_size}/g" generate_ens_forc_state.nml   # Ensemble size 
+        sed -i -e "s/XXDTSFCX/${PCYC_DEL}/g" generate_ens_forc_state.nml      # DELTSFC = 6 hr 
+        sed -i -e "s/XXVECTSZ/${vector_size}/g" generate_ens_forc_state.nml   # Noahmp vector array length, check from static file 
+        
+	if [[ ${perturb_forcing} -eq "YES" ]]; then
+	    sed -i -e "s/XXPERTFORC/.true./g" generate_ens_forc_state.nml
         else
-            sed -i -e "s/XXPERTSTATE/.false./g" generate_ens_forc.nml
+	    sed -i -e "s/XXPERTFORC/.false./g" generate_ens_forc_state.nml
+	fi
+        if [[ ${perturb_state} -eq "YES" ]]; then
+            sed -i -e "s/XXPERTSTATE/.true./g" generate_ens_forc_state.nml
+        else
+            sed -i -e "s/XXPERTSTATE/.false./g" generate_ens_forc_state.nml
         fi
 
         forc_file=${forcing_dir}/${forc_inp_file}
@@ -268,7 +298,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         do
             mem_ens="mem`printf %03i $ie`" 
             cp ${forc_file} ${WORKDIR}/${mem_ens}/${forc_inp_file}   
-	        cp ${forc_file_next} ${WORKDIR}/${mem_ens}/${forc_inp_file_next}     #&
+            cp ${forc_file_next} ${WORKDIR}/${mem_ens}/${forc_inp_file_next}     #&
         done
         #wait
 
@@ -282,6 +312,9 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "EnsForc Gen failed"
             exit 
         fi
+
+        # for subsequent cycles use pattern saved in RESTART
+	stochy_init_found="YES"
 
     fi
 
