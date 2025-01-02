@@ -223,8 +223,11 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         cd $WORKDIR
         
-	cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
+	echo ""
+	echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
 
+	cp ${CYCLEDIR}/template.input.nml $WORKDIR/input.nml
+    
         if [[ $stochy_init_found == "YES" ]]; then
 	    echo "stochy init patterns to be read from files"
             sed -i -e "s/XXSTOCH_INI_VAL/.TRUE./g" $WORKDIR/input.nml
@@ -302,8 +305,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         done
         #wait
 
-        # generate ensemble forcing
-        echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
+        # generate ensemble forcing and soil moisture states
         source ${CYCLEDIR}/stochy_mods        
         
         nt=$SLURM_NTASKS
