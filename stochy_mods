@@ -1,0 +1,9 @@
+module purge
+
+module use /scratch1/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/sorc/ufs_model.fd/modulefiles
+module load ufs_hera.intel
+
+#module load netcdf/4.7.0
+module load netcdf-hdf5parallel/4.7.4
+
+module list

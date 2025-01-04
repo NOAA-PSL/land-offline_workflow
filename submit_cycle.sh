@@ -306,10 +306,10 @@ while [ $date_count -lt $cycles_per_job ]; do
         #wait
 
         # generate ensemble forcing and soil moisture states
-        source ${CYCLEDIR}/land_mods        
+        source ${CYCLEDIR}/stochy_mods        
         
         nt=$SLURM_NTASKS
-        time srun '--export=ALL' --label -K -n $nt $EnsGenExe
+        time srun '--export=ALL' --label -K -n $nt $EnsForcGenExe
         if [[ $? != 0 ]]; then
             echo "EnsForc Gen failed"
             exit 
@@ -345,6 +345,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     echo '************************************************'
     echo "calling model"
     source ${CYCLEDIR}/land_mods
+    module list
 
     nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
     NPROC_NOMP=${NPROC_NOMP:-$nt}    
