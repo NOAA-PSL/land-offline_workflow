@@ -40,7 +40,7 @@ COMPILING and TESTING.
 > build_all.sh 
 > cd .. 
 
-2e. (Compiling in release mode. To compile in debug mode, change DEBUG=YES in stochastic_physics/compile_ens.hera_intel)
+2e. (Compiling the ensemble generator in release mode. To compile in debug mode, change DEBUG=YES in stochastic_physics/compile_ens.hera_intel)
 > cd stochastic_physics 
 > ./compile_ens.hera_intel 
 > cd ..
@@ -59,9 +59,9 @@ Once completed:
 
 RUNNING YOUR OWN EXPERIMENTS 
 
-1. Prepare a settings file, using settings_template. Must fill in all variables, unless otherwise commented. 
+1. Modify the settings_cycle_test and settings_DA_test files. Must fill in all variables, unless otherwise commented. 
 
-2. If running more than 6 tasks with JEDI, need to set layout = [x,y] in yaml, such that ntasks = 6*x*y
+2. If running more than 6 tasks with JEDI, need to set layout = [x,y] in yaml, such that ntasks = 6*x*y. For LETKF and the ensemble forcing and state generator (Stochy) these are specified in settings_cycle_test as LayX, IOLayX, etc.
 
 3. Make sure there is a restart in your ICSDIR.
 
