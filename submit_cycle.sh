@@ -309,7 +309,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         source ${CYCLEDIR}/stochy_mods        
         
         nt=$SLURM_NTASKS
-        time srun '--export=ALL' --label -K -n $nt $EnsForcGenExe
+        time srun '--export=ALL' --label -K -n $nt $EnsGenExe
         if [[ $? != 0 ]]; then
             echo "EnsForc Gen failed"
             exit 
