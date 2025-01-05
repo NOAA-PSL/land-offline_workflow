@@ -40,7 +40,7 @@ COMPILING and TESTING.
 > build_all.sh 
 > cd .. 
 
-2e.
+2e. (Compiling in release mode. To compile in debug mode, change DEBUG=YES in stochastic_physics/compile_ens.hera_intel)
 > cd stochastic_physics 
 > ./compile_ens.hera_intel 
 > cd ..
