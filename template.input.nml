@@ -77,7 +77,7 @@
   lndp_type=2
   lndp_var_list='stc','stc','stc','stc','stc','stc'
   lndp_prt_list=1.0,1.0,1.0,1.0,1.0,1.0
-  iseed_lndp=0
+  iseed_lndp=9990
   lndp_tau= XXTAU,  
   lndp_lscale = XXLSC,
 /
