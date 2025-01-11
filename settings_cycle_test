@@ -85,7 +85,9 @@ export perturb_state="YES" #
 
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
-export NPROC_NOMP=6
+
+# export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
+
 # x y and io layout
 export LayX=1
 export LayY=1
