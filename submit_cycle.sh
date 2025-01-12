@@ -88,10 +88,9 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         ############################
         # copy restarts to workdir, convert to tile for DA (all members) 
-	    # mem000 for non-ens applications  
-        if [[ "$ensemble_size" -eq 1  ]]; then 
-
-            mem_ens="mem000" 
+	    if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
+            # memdet for deterministic
+            mem_ens="memdet" 
             MEM_WORKDIR=${WORKDIR}/${mem_ens}
             MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
@@ -110,17 +109,14 @@ while [ $date_count -lt $cycles_per_job ]; do
             cd $MEM_WORKDIR
             $vec2tileexec vector2tile.namelist
             if [[ $? != 0 ]]; then
-                echo "vec2tile failed for mem000"
+                echo "vec2tile failed for memdet"
                 exit 10
             fi
+        fi
         
-        elif [[ "$ensemble_size" -gt 1  ]]; then 
-       
-            mem_st=1
-            if [[ ${DAalg} == 'hyb2DenVar' ]]; then mem_st=0; fi # mem 0 for 2dvar of hyb2denvar 
-
+        if [[ "$ensemble_size" -gt 1 ]]; then 
             #TODO: parallelize this 
-            for ie in $(seq $mem_st $ensemble_size)
+            for ie in $(seq 0 $ensemble_size)   # mem000 holds ensemble mean
             do
                 mem_ens="mem`printf %03i $ie`"
                 MEM_WORKDIR=${WORKDIR}/${mem_ens}
@@ -135,6 +131,7 @@ while [ $date_count -lt $cycles_per_job ]; do
                     echo "restart not found ${rst_in}; exiting" 
                     exit 10
                 fi
+
                 cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR/vector2tile.namelist
 
                 #TODO: parallelize this 
@@ -143,37 +140,9 @@ while [ $date_count -lt $cycles_per_job ]; do
                 if [[ $? != 0 ]]; then
                     echo "vec2tile failed for ens mem $ie"
                     exit 10
-                fi
-               
+                fi               
             done
             # wait
-
-            # ensemble mean
-            mem_ens="ensmean"
-            MEM_WORKDIR=${WORKDIR}/${mem_ens}
-            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
-            # copy restarts into work directory
-            rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
-            rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-            if [[ -e ${rst_in} ]]; then
-
-                cp $rst_in $rst_out 
-
-                cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR/vector2tile.namelist
-                cd $MEM_WORKDIR
-                $vec2tileexec vector2tile.namelist
-                if [[ $? != 0 ]]; then
-                    echo "Warning! vec2tile failed for ens mean"    # ens mean restart is not critical
-                    exit 10
-                fi
-            else
-                echo "Warning! restart not found for ens mean: ${rst_in}" 
-                # exit 10             # ens mean restart is not critical
-            fi            
-        else
-            echo "Invalid ensemble size. Exiting."
-            exit 10
         fi
 
         # ############################
@@ -208,11 +177,10 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXRES/${RES}/g" tile2vector.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
-
-        # mem000 for non-ens applications (e.g., 2DVar)
-        if [[ "$ensemble_size" -eq 1  ]]; then 
-
-            mem_ens="mem000" 
+        
+        if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
+            # memdet for deterministic member or non-ensemble DA
+            mem_ens="memdet" 
             MEM_WORKDIR=${WORKDIR}/${mem_ens}
             MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
@@ -226,13 +194,11 @@ while [ $date_count -lt $cycles_per_job ]; do
             fi
             # save analysis restart
             cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+        fi
 
-        elif [[ "$ensemble_size" -gt 1  ]]; then 
-            
-            mem_st=1
-            if [[ ${DAalg} == 'hyb2DenVar' ]]; then mem_st=0; fi # mem 0 for 2dvar of hyb2denvar 
+        if [[ "$ensemble_size" -gt 1  ]]; then 
 
-            for ie in $(seq $mem_st $ensemble_size)
+            for ie in $(seq 0 $ensemble_size)
             do
                 mem_ens="mem`printf %03i $ie`"
                 MEM_WORKDIR=${WORKDIR}/${mem_ens}
@@ -248,29 +214,8 @@ while [ $date_count -lt $cycles_per_job ]; do
                 fi
                 # save analysis restart
                 cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-
             done
             # wait
-            
-            # ens mean
-            mem_ens="ensmean"
-            MEM_WORKDIR=${WORKDIR}/${mem_ens}
-            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
-            cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
-
-            cd $MEM_WORKDIR
-            $vec2tileexec tile2vector.namelist
-            if [[ $? != 0 ]]; then
-                echo "tile2vector failed for ens mean "
-                exit 10        # This ensemble mean should exist
-            fi
-            # save analysis restart
-            cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-
-        else   # code shouldn't get here, just a redundant check
-            echo "Invalid ensemble size. Exiting."
-            exit 10
         fi
     fi
  
@@ -370,10 +315,8 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "EnsForc Gen failed"
             exit 10
         fi
-
         # for subsequent cycles use pattern saved in RESTART
 	    stochy_init_found="YES"
-
     fi
 
     ############################
@@ -401,11 +344,10 @@ while [ $date_count -lt $cycles_per_job ]; do
     echo '************************************************'
     echo "calling model"
     source ${CYCLEDIR}/land_mods
-    module list
 
-    if [[ "$ensemble_size" -eq 1  ]]; then 
+    if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
 
-        mem_ens="mem000" 
+        mem_ens="memdet" 
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         # echo "member working dir $MEM_WORKDIR"
 
@@ -419,20 +361,14 @@ while [ $date_count -lt $cycles_per_job ]; do
         NPROC_NOMP=${SLURM_NTASKS}    #${NPROC_NOMP:-${SLURM_NTASKS}}    
     
         time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   
-   
-    else          #[[ "$ensemble_size" -gt 1  ]]; then 
+    fi
 
-        mem_st=1
+    if [[ "$ensemble_size" -gt 1  ]]; then 
+
         nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
-        if [[ ${DAalg} == 'hyb2DenVar' ]]; then 
-            mem_st=0               # mem 0 for 2dvar of hyb2denvar
-            ensp=$((ensemble_size+1)) 
-            nt=$((SLURM_NTASKS/ensp))  #Note the extra tasks remain idle
-        fi 
-
         NPROC_NOMP=$nt       #${NPROC_NOMP:-$nt}    
 
-        for ie in $(seq $mem_st $ensemble_size)
+        for ie in $(seq 1 $ensemble_size)
         do
             
             mem_ens="mem`printf %03i $ie`"
@@ -469,9 +405,9 @@ while [ $date_count -lt $cycles_per_job ]; do
     ############################
     # check model ouput (all members)
     
-    if [[ "$ensemble_size" -eq 1  ]]; then 
+    if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
 
-        mem_ens="mem000" 
+        mem_ens="memdet" 
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
@@ -482,11 +418,11 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "probably model runtime error occurred, exiting" 
             exit 10
         fi
+    fi
 
-    else
-        mem_st=1
-        if [[ ${DAalg} == 'hyb2DenVar' ]]; then mem_st=0; fi # mem 0 for 2dvar of hyb2denvar 
-        for ie in $(seq $mem_st $ensemble_size)
+    if [[ "$ensemble_size" -gt 1  ]]; then 
+        
+        for ie in $(seq 1 $ensemble_size)
         do            
             mem_ens="mem`printf %03i $ie`"
             MEM_WORKDIR=${WORKDIR}/${mem_ens}
@@ -500,24 +436,22 @@ while [ $date_count -lt $cycles_per_job ]; do
                 exit 10
             fi
 
-            if [[ $do_enkf == "YES" && "$ie" -gt 0 ]]; then
-            
-                # delete forcing ens files
-                rm -f ${MEM_WORKDIR}/${forc_inp_file}  
-                rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
+            # delete forcing ens files
+            rm -f ${MEM_WORKDIR}/${forc_inp_file}  
+            rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
 
-                # needed for ensemble mean computed below
-                yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/ensmean/ufs_lr_mem${ie}.nc 
-            fi            
+            # needed for ensemble mean computed below
+            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
+             
         done
         # wait
     fi
 
-    # for enkf/letkf get ens mean 
+    # for enkf/letkf/hyb2DenVar get ens mean 
     if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
 
-        MEM_WORKDIR=${WORKDIR}/ensmean
-        MEM_MODL_OUTDIR=${OUTDIR}/ensmean
+        MEM_WORKDIR=${WORKDIR}/mem000
+        MEM_MODL_OUTDIR=${OUTDIR}/mem000
         
         ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
 

@@ -65,7 +65,11 @@ mkdir ${WORKDIR}
 ###############################
 # create dirs and copy in ICS if needed
 
-mem_ens="mem000"  # single member/the 2DVar of hyb2DEnVar, use ensemble 0
+# Jan 11.2025: Changes to accomodate hyb2DenVar
+# - mem000: for ensemble mean when applicable
+# - memdet: for deterministic 'members' of 2DVar, letkf-oi, hyb2DenVar 
+
+mem_ens="memdet"  # deterministic DA cases (2DVar/letkf-oi/the 2DVar part of hyb2DEnVar) 
 MEM_WORKDIR=${WORKDIR}/${mem_ens}
 mkdir $MEM_WORKDIR
 
@@ -100,7 +104,7 @@ fi
 
 if [[ "$ensemble_size" -gt 1  ]]; then  
 
-    for ie in $(seq $ensemble_size)     
+    for ie in $(seq 0 $ensemble_size)     
     do
         mem_ens="mem`printf %03i $ie`"        
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
@@ -122,27 +126,6 @@ if [[ "$ensemble_size" -gt 1  ]]; then
         mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
         ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
     done 
-
-    # ensemble mean 
-    mem_ens="ensmean"        
-    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-    mkdir $MEM_WORKDIR
-
-    MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-    if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble mean outdir 
-        mkdir -p $MEM_MODL_OUTDIR
-    fi
-
-    # outdir ens mean subdirs
-    if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  
-        mkdir -p ${MEM_MODL_OUTDIR}/restarts/
-        mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
-        mkdir ${MEM_MODL_OUTDIR}/restarts/tile/            
-    fi
-
-    #TODO: Do we need this?
-    mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
-    ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
 fi
 
 # Forcing perturbation 
@@ -187,43 +170,39 @@ if [[ $do_enkf == "YES" ]]; then
 fi
 
 # copy ICS into restarts, if needed 
-if [[ "$ensemble_size" -eq 1  ]]; then 
-
-    mem_ens="mem000"  # single member, use ensemble 0
-    rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-    rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-    # if restart not in experiment out directory, copy the restarts from the ICSDIR
-    if [[ ! -e ${rst_out} ]]; then 
+mem_ens="memdet"  # single member/deterministic 
+rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+# if restart not in experiment out directory, copy the restarts from the ICSDIR
+if [[ ! -e ${rst_out} ]]; then 
+    echo "Looking for ICS: ${rst_in}"
+    if [[ -e "${rst_in}" ]]; then
+        echo "ICS found, copying" 
+        cp ${rst_in} ${rst_out}
+    else  # check if is in output directory structure
+        rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         echo "Looking for ICS: ${rst_in}"
-        if [[ -e "${rst_in}" ]]; then
+        if [[ -e ${rst_in} ]]; then
             echo "ICS found, copying" 
             cp ${rst_in} ${rst_out}
-        else  # check if is in output directory structure
-            rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-            echo "Looking for ICS: ${rst_in}"
-            if [[ -e ${rst_in} ]]; then
-                echo "ICS found, copying" 
-                cp ${rst_in} ${rst_out}
-            else  
-                echo "ICS not found. Exiting" 
-                exit 10 
-            fi
-        fi 
-    else
-        echo "ICs exist in out dir: ${rst_out}"
-    fi     
-elif [[ "$ensemble_size" -gt 1  ]]; then  
-    
-    mem_st=1
-    if [[ ${DAalg} == 'hyb2DenVar' ]]; then mem_st=0; fi # mem 0 for 2dvar of hyb2denvar 
+        else  
+            echo "ICS not found. Exiting" 
+            exit 10 
+        fi
+    fi 
+else
+    echo "ICs exist in out dir: ${rst_out}"
+fi 
 
-    for ie in $(seq $mem_st $ensemble_size)     
+if [[ "$ensemble_size" -gt 1  ]]; then  
+    
+    for ie in $(seq 0 $ensemble_size)     
     do
         mem_ens="mem`printf %03i $ie`"
         rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         # if restart not in experiment out directory, copy the restarts from the ICSDIR
         if [[ ! -e ${rst_out} ]]; then 
-            # for ensembles first check individual IC directory structure
+            # for ensembles, first check individual IC directory structure
             rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
             echo "Looking for ICS: ${rst_in}"
             if [[ -e ${rst_in} ]]; then
@@ -244,34 +223,6 @@ elif [[ "$ensemble_size" -gt 1  ]]; then
             echo "ICs exist in out dir: ${rst_out}"
         fi 
     done
-
-    mem_ens="ensmean"  # ensemble mean
-    rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-    # if restart not in experiment out directory, copy the restarts from the ICSDIR
-    if [[ ! -e ${rst_out} ]]; then 
-        # first check individual IC directory structure
-        rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-        echo "Looking for ICS: ${rst_in}"
-        if [[ -e "${rst_in}" ]]; then
-            echo "ICS found, copying" 
-            cp ${rst_in} ${rst_out}
-        else  # if individual ens ember IC doesn't exit, copy same IC for all ens members, if available
-            rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-            echo "Looking for ICS: ${rst_in}"
-            if [[ -e ${rst_in} ]]; then
-                echo "ICS found, copying" 
-                cp ${rst_in} ${rst_out}
-            else  
-                echo "ICS not found for ensemble mean"  # ens mean IC not being found is not critical  
-                # exit 10 
-            fi
-        fi 
-    else
-        echo "ICs exist in out dir: ${rst_out}"
-    fi
-else
-    echo "Invalid ensemble size. Exiting."
-    exit 10
 fi
 
 #---------------
