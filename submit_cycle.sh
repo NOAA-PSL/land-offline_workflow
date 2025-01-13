@@ -377,7 +377,8 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         cd $MEM_WORKDIR
 
-        NPROC_NOMP=${SLURM_NTASKS}    #${NPROC_NOMP:-${SLURM_NTASKS}}    
+        NPROC_NOMP=${NPROC_NOMP:-${SLURM_NTASKS}}   # ${SLURM_NTASKS}    # 
+        echo "running deterministic member with ${NPROC_NOMP} processes"
     
         time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   
     fi
@@ -385,7 +386,8 @@ while [ $date_count -lt $cycles_per_job ]; do
     if [[ "$ensemble_size" -gt 1  ]]; then 
 
         nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
-        NPROC_NOMP=$nt       #${NPROC_NOMP:-$nt}    
+        NPROC_NOMP=${NPROC_NOMP:-$nt}           #$nt       #    
+        echo "running ensemble members each with ${NPROC_NOMP} processes"
 
         for ie in $(seq 1 $ensemble_size)
         do
