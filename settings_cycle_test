@@ -6,14 +6,16 @@ STARTDATE=2019120100
 ENDDATE=2019120300
 
 #BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
-#BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
-export BASEDIR=/scratch1/NCEPDEV/stmp2/Tseganeh.Gichamo/
+BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
+SCRDIR=/scratch1/NCEPDEV/stmp2/Tseganeh.Gichamo/
 
 # temporary directory where experiment is run from
-export WORKDIR=${BASEDIR}/workdir/
+#export WORKDIR=${BASEDIR}/workdir/
+export WORKDIR=${SCRDIR}/workdir/
 
 # directory where output is saved
-export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
+#export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
+export OUTDIR=${SCRDIR}/cycle_land/${exp_name}/
 
 # directory of land-offline_workflow repo
 export CYCLEDIR=${BASEDIR}/land-offline_workflow/
@@ -50,7 +52,7 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 export cycles_per_job=1
 
 # DA algorithm options: "letkfoi" , "2DVar", "letkf", "hyb2DenVar"
-DAalg=hyb2DenVar       # note hyb2DenVar runs both 2DenVar and letkf
+export DAalg=hyb2DenVar       # note hyb2DenVar runs both 2DenVar and letkf
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
