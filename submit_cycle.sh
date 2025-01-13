@@ -67,8 +67,6 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     cd $WORKDIR
 
-    source $config_file
-
     if [[ $do_jedi == "YES" ]]; then  
         # update vec2tile and tile2vec namelists
         # to-do: update location_end in template, for specific res. 
