@@ -1,12 +1,13 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=letkf_era5
+export exp_name=hyb2denvar
 STARTDATE=2019120100
 ENDDATE=2019120300
 
 #BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
-BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
+#BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
+export BASEDIR=/scratch1/NCEPDEV/stmp2/Tseganeh.Gichamo/
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -89,7 +90,7 @@ export perturb_state="YES" #
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
 
-# export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
+export NPROC_NOMP=6     # Specify this only if necessary; else calculated by code 
 
 # x y and io layout
 export LayX=1
