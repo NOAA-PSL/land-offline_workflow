@@ -48,6 +48,9 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 # on hera in the debug queue 20 is a good number.
 export cycles_per_job=1
 
+# DA algorithm options: "letkfoi" , "2DVar", "letkf", "hyb2DenVar"
+DAalg=hyb2DenVar       # note hyb2DenVar runs both 2DenVar and letkf
+
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
 export DA_config="settings_DA_test"

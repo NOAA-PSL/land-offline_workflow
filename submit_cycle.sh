@@ -67,6 +67,8 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     cd $WORKDIR
 
+    source $config_file
+
     if [[ $do_jedi == "YES" ]]; then  
         # update vec2tile and tile2vec namelists
         # to-do: update location_end in template, for specific res. 
@@ -153,11 +155,28 @@ while [ $date_count -lt $cycles_per_job ]; do
         cd $WORKDIR
 
         export THISDATE
-        $DAscript ${CYCLEDIR}/$DA_config
+
+        cp ${CYCLEDIR}/$DA_config $WORKDIR/$DA_config
+        sed -i -e "s/XXDAALGXX/${DAalg}/g" $WORKDIR/$DA_config
+
+        $DAscript $WORKDIR/$DA_config
         if [[ $? != 0 ]]; then
-            echo "land DA script failed"
+            echo "land DA script failed for ${DAalg}"
             exit 10
         fi   
+        
+        # for hybrid envar, run letkf after 2denvar 
+        if [[ ${DAalg} == 'hyb2DenVar' ]]; then 
+
+            cp ${CYCLEDIR}/$DA_config $WORKDIR/$DA_config
+            sed -i -e "s/XXDAALGXX/letkf/g" $WORKDIR/$DA_config
+
+            $DAscript $WORKDIR/$DA_config
+            if [[ $? != 0 ]]; then
+                echo "land DA script failed for letkf after 2denvar"
+                exit 10
+            fi
+        fi
 
         cd $WORKDIR
 
