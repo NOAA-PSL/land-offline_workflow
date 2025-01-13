@@ -88,7 +88,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         ############################
         # copy restarts to workdir, convert to tile for DA (all members) 
-	    if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
+	    if [[ "$ensemble_size" -eq 1  || "${DAalg}" == 'hyb2DenVar' ]]; then 
             # memdet for deterministic
             mem_ens="memdet" 
             MEM_WORKDIR=${WORKDIR}/${mem_ens}
@@ -368,6 +368,14 @@ while [ $date_count -lt $cycles_per_job ]; do
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         # echo "member working dir $MEM_WORKDIR"
 
+        forc_inp_file=${forcing_prefix}${YYYY}-${MM}-${DD}.nc  
+        forc_file=${forcing_dir}/${forc_inp_file}
+        forc_inp_file_next=${forcing_prefix}${nYYYY}-${nMM}-${nDD}.nc
+        forc_file_next=${forcing_dir}/${forc_inp_file_next}
+
+        cp ${forc_file} ${MEM_WORKDIR}/${forc_inp_file}   
+        cp ${forc_file_next} ${MEM_WORKDIR}/${forc_inp_file_next}     #&
+   
         cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
 
         # run for using baseline snow parameter table
@@ -379,6 +387,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         echo "running deterministic member with ${NPROC_NOMP} processes"
     
         time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   
+        #TODO: Modify NoahMP exit all jobs on error/or return error code
     fi
 
     if [[ "$ensemble_size" -gt 1  ]]; then 
