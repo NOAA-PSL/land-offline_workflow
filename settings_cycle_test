@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=hyb2denvar
+export exp_name=letkf
 STARTDATE=2019120100
-ENDDATE=2019120300
+ENDDATE=2019120600
 
 #BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
@@ -52,7 +52,7 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 export cycles_per_job=1
 
 # DA algorithm options: "letkfoi" , "2DVar", "letkf", "hyb2DenVar"
-export DAalg=hyb2DenVar       # note hyb2DenVar runs both 2DenVar and letkf
+export DAalg=letkf	#hyb2DenVar       # note hyb2DenVar runs both 2DenVar and letkf
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
@@ -82,7 +82,7 @@ export forcing_prefix=C${RES}_ERA5_forcing_
 export forcing_dir="/scratch2/NCEPDEV/land/data/forcing/era5/datm/C96/"
 
 export static_file="/scratch2/NCEPDEV/land/data/forcing/era5/static/C96/ufs-land_C96_hr3_static_fields.nc"
-export stochy_init_exist="NO"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
+export stochy_init_exist="YES"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
 export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
 # export stochy_init_found="NO" 
 

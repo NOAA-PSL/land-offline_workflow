@@ -25,9 +25,9 @@ DAalg=XXDAALGXX       # this is filled at run time
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
-OBS_TYPES=("IMS" "GHCN" )   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("GHCN" ) # "IMS"   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX") 
+JEDI_TYPES=("DA" )  # "DA" )   # format ("DA" "HOFX") 
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
