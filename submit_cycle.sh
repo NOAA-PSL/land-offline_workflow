@@ -150,9 +150,9 @@ while [ $date_count -lt $cycles_per_job ]; do
         echo '************************************************'
         echo 'CSD calling snow DA'
 
-        cd $WORKDIR
-
         export THISDATE
+
+        cd $WORKDIR
 
         cp ${CYCLEDIR}/$DA_config $WORKDIR/$DA_config
         sed -i -e "s/XXDAALGXX/${DAalg}/g" $WORKDIR/$DA_config
@@ -162,9 +162,11 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "land DA script failed for ${DAalg}"
             exit 10
         fi   
-        
+
         # for hybrid envar, run letkf after 2denvar 
         if [[ ${DAalg} == 'hyb2DenVar' ]]; then 
+
+            cd $WORKDIR
 
             cp ${CYCLEDIR}/$DA_config $WORKDIR/$DA_config
             sed -i -e "s/XXDAALGXX/letkf/g" $WORKDIR/$DA_config
@@ -391,7 +393,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     fi
 
     if [[ "$ensemble_size" -gt 1  ]]; then 
-
+#TODO: fix this for 0 dividend
         nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
         NPROC_NOMP=${NPROC_NOMP:-$nt}           #$nt       #    
         echo "running ensemble members each with ${NPROC_NOMP} processes"
