@@ -237,7 +237,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             # wait
         fi
     fi
- 
+ #TODO: add document/add a check about the number of procs vs work load
     # Forcing perturbation goes here
     if [[ $do_enkf == "YES" ]]; then 
 
