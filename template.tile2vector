@@ -4,7 +4,7 @@
 ! Direction of conversion: either "vector2tile" or "tile2vector" for restart file
 !                                 "lndp2tile" or "lndp2vector" for perturbation 
 
-  direction = "tile2vector"
+  direction = "XXCONVDIR"
 
 ! FV3 resolution and path to oro files for restart/perturbation conversion
 

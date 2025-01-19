@@ -71,6 +71,10 @@ while [ $date_count -lt $cycles_per_job ]; do
         # update vec2tile and tile2vec namelists
         # to-do: update location_end in template, for specific res. 
         # then template will be res-independent.
+
+        convdir="vector2tile"; 
+        if [[ $regional_grid == "YES" ]]; then convdir="regvector2tile" ; fi
+        
         cp  ${CYCLEDIR}/template.vector2tile $WORKDIR/vector2tile.namelist
 
         sed -i -e "s/XXYYYY/${YYYY}/g" vector2tile.namelist
@@ -81,6 +85,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" vector2tile.namelist
         sed -i -e "s#XXSTATICFILE#${static_file}#g" vector2tile.namelist
+        sed -i -e "s#XXCONVDIR#${convdir}#g" vector2tile.namelist
 
         # submit vec2tile 
         echo '************************************************'
@@ -187,6 +192,9 @@ while [ $date_count -lt $cycles_per_job ]; do
         echo '************************************************'
         echo 'calling tile2vector' 
         source ${CYCLEDIR}/land_mods
+        
+        convdir="tile2vector"; 
+        if [[ $regional_grid == "YES" ]]; then convdir="regtile2vector" ; fi
 
         cp  ${CYCLEDIR}/template.tile2vector tile2vector.namelist
 
@@ -198,6 +206,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
         sed -i -e "s#XXSTATICFILE#${static_file}#g" tile2vector.namelist
+        sed -i -e "s#XXCONVDIR#${convdir}#g" tile2vector.namelist
         
         if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
             # memdet for deterministic member or non-ensemble DA
