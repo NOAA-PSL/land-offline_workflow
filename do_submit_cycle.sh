@@ -26,7 +26,7 @@ CYCLEDIR=${CYCLEDIR:-$(pwd)}
 # set executables
 export apps_dir=/scratch1/NCEPDEV/da/Tseganeh.Gichamo/APPS/
 export apps_bin=$apps_dir/bin
-export vector2tile_exe=$apps_dir/vector2tile/vector2tile_converter.exe
+export vec2tileexec=$apps_dir/vector2tile/vector2tile_converter.exe
 # export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
 export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe
 export EnsGenExe=${CYCLEDIR}/stochastic_physics/EnsGen.x
