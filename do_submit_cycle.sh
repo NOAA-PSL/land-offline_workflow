@@ -153,19 +153,28 @@ if [[ $do_enkf == "YES" ]]; then
 
     if [[ ! -e ${WORKDIR}/INPUT ]]; then
         mkdir -p ${WORKDIR}/INPUT
-        for it in 1 2 3 4 5 6 
-        do
-            ln -fs ${TPATH}/C${RES}_grid.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_grid.tile${it}.nc 
-            # ln -fs ${TPATH}/C${RES}_ca_condition.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_ca_condition.tile${it}.nc 
-        done
-        if [[ -e ${TPATH}/C${RES}_grid_spec.nc ]]; then
-            ln -fs ${TPATH}/C${RES}_grid_spec.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc   
-        elif [[ -e ${TPATH}/C${RES}_mosaic.nc ]]; then
-            ln -fs ${TPATH}/C${RES}_mosaic.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc  
+        if [[ -e ${grid_file} ]]; then
+           ln -fs ${grid_file}  ${WORKDIR}/INPUT/C${RES}_grid.tile7.nc 
         else
-            echo "Grid spec file not found at ${TPATH}, exiting"
-            exit 10
-        fi          
+            for it in $(seq 1 $num_tiles) 
+            do
+                ln -fs ${TPATH}/C${RES}_grid.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_grid.tile${it}.nc 
+                # ln -fs ${TPATH}/C${RES}_ca_condition.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_ca_condition.tile${it}.nc 
+            done
+        fi
+
+        if [[ -e ${grid_spec} ]]; then
+           ln -fs ${grid_spec}  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc
+        else
+            if [[ -e ${TPATH}/C${RES}_grid_spec.nc ]]; then
+                ln -fs ${TPATH}/C${RES}_grid_spec.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc   
+            elif [[ -e ${TPATH}/C${RES}_mosaic.nc ]]; then
+                ln -fs ${TPATH}/C${RES}_mosaic.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc  
+            else
+                echo "Grid spec file not found at ${TPATH}, exiting"
+                exit 10
+            fi   
+        fi       
     fi 
 fi
 
