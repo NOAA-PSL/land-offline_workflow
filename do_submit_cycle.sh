@@ -149,7 +149,7 @@ if [[ $do_enkf == "YES" ]]; then
 
     if [[ ! -e ${WORKDIR}/INPUT ]]; then
         mkdir -p ${WORKDIR}/INPUT
-        for it in 1 2 3 4 5 6 
+        for it in $(seq 1 $num_tiles) 
         do
             ln -fs ${TPATH}/C${RES}_grid.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_grid.tile${it}.nc 
             # ln -fs ${TPATH}/C${RES}_ca_condition.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_ca_condition.tile${it}.nc 
