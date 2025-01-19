@@ -359,6 +359,11 @@ while [ $date_count -lt $cycles_per_job ]; do
     else
 	    sed -i -e "s#XXFORCDIR#${forcing_dir}#g" ufs-land.namelist
     fi
+    sed -i -e "s/XXRES/${RES}/g" ufs-land.namelist
+    sed -i -e "s#XXSTATICDIRXX#${static_file}#g" ufs-land.namelist
+    sed -i -e "s#XXVLEN#${vector_size}#g" ufs-land.namelist
+    
+    
 
     echo '************************************************'
     echo "calling model"
