@@ -73,7 +73,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         # then template will be res-independent.
 
         convdir="vector2tile"; 
-        if [[ $regional_grid == "YES" ]]; then convdir="regvector2tile" ; fi
+        if [[ $regional_grid == "YES" ]]; then convdir="regvec2tile" ; fi
         
         cp  ${CYCLEDIR}/template.vector2tile $WORKDIR/vector2tile.namelist
 
@@ -194,7 +194,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         source ${CYCLEDIR}/land_mods
         
         convdir="tile2vector"; 
-        if [[ $regional_grid == "YES" ]]; then convdir="regtile2vector" ; fi
+        if [[ $regional_grid == "YES" ]]; then convdir="regtile2vec" ; fi
 
         cp  ${CYCLEDIR}/template.tile2vector tile2vector.namelist
 
