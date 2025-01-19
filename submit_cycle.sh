@@ -80,6 +80,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXRES/${RES}/g" vector2tile.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" vector2tile.namelist
+        sed -i -e "s#XXSTATICFILE#${static_file}#g" vector2tile.namelist
 
         # submit vec2tile 
         echo '************************************************'
@@ -196,6 +197,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXRES/${RES}/g" tile2vector.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
+        sed -i -e "s#XXSTATICFILE#${static_file}#g" tile2vector.namelist
         
         if [[ "$ensemble_size" -eq 1  || ${DAalg} == 'hyb2DenVar' ]]; then 
             # memdet for deterministic member or non-ensemble DA
@@ -360,11 +362,9 @@ while [ $date_count -lt $cycles_per_job ]; do
 	    sed -i -e "s#XXFORCDIR#${forcing_dir}#g" ufs-land.namelist
     fi
     sed -i -e "s/XXRES/${RES}/g" ufs-land.namelist
-    sed -i -e "s#XXSTATICDIRXX#${static_file}#g" ufs-land.namelist
+    sed -i -e "s#XXSTATICFILE#${static_file}#g" ufs-land.namelist
     sed -i -e "s#XXVLEN#${vector_size}#g" ufs-land.namelist
     
-    
-
     echo '************************************************'
     echo "calling model"
     source ${CYCLEDIR}/land_mods
