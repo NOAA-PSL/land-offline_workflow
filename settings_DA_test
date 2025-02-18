@@ -19,8 +19,9 @@ RSTRDIR=${WORKDIR}/
 ############################
 # DA options
 
-# DA algorithm # options: "letkfoi" , "2DVar", "letkf", "hyb2DenVar"
-DAalg=XXDAALGXX       # this is filled at run time
+#DA algorithm # options: "letkfoi" , "2DVar", "letkf", "hyb2DenVar"
+#* leave this as it is for cycling test. filled from submit_cycle 
+DAalg=XXDAALGXX       
 # state being updated
 analVar=snow
 

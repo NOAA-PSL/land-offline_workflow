@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=letkf
+export exp_name=LETKF
 STARTDATE=2019120100
-ENDDATE=2019120600
+ENDDATE=2019120300
 
 #BASEDIR=/scratch2/BMC/gsienkf/${USER}/ # for PSL staff
 BASEDIR=/scratch1/NCEPDEV/da/${USER}/  # for EMC staff
@@ -24,7 +24,7 @@ export CYCLEDIR=${BASEDIR}/land-offline_workflow/
 # decide if GFSv17
 export GFSv17="NO"
 
-# run (true) ensemble. NO for LETKFOI
+# run (true) ensemble. NO for LETKFOI and 2DVar
 export do_enkf="YES"
 
 # for LETKF, this is size of ensemble.
@@ -33,7 +33,7 @@ export ensemble_size=20
 
 # number of tiles and vector size
 export num_tiles=6         # 1 for regional
-export vector_size=18320   # 1067297 C768
+export vector_size=18320   # 1067297/1067333 C768 hr2/3?
 
 # length of each forecast
 export FCSTHR=24
@@ -52,7 +52,7 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 export cycles_per_job=1
 
 # DA algorithm options: "letkfoi" , "2DVar", "letkf", "hyb2DenVar"
-export DAalg=letkf	#hyb2DenVar       # note hyb2DenVar runs both 2DenVar and letkf
+export DAalg=letkf       #hyb2DenVar   # note hyb2DenVar runs both 2DenVar and letkf
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
@@ -90,13 +90,14 @@ export perturb_forcing="YES"
 export perturb_state="YES" # 
 
 # JEDI nproc--make sure to sync with iolayout
-export NPROC_JEDI=6
+export NPROC_JEDI=24
 
-export NPROC_NOMP=6     # Specify this only if necessary; else calculated by code 
+# NoahMP nproc. Assigned on the fly to 'load balance' if not specified here 
+#export NPROC_NOMP=24      
 
 # x y and io layout
 export LayX=1
-export LayY=1
+export LayY=4
 export IOLayX=1
 export IOLayY=1
 #

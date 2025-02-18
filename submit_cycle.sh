@@ -3,7 +3,7 @@
 #SBATCH --account=da-cpu
 #SBATCH --qos=debug
 #SBATCH --nodes=1
-#SBATCH --tasks-per-node=6
+#SBATCH --tasks-per-node=24
 #SBATCH --cpus-per-task=1
 #SBATCH -t 00:30:00
 #SBATCH -o erlog_noahmp.%j
@@ -18,6 +18,7 @@
 
 echo 'starting cycle' 
 date
+start_time=$(date +%s)
 source $analdate 
 
 THISDATE=$STARTDATE
@@ -399,18 +400,19 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         cd $MEM_WORKDIR
 
-        NPROC_NOMP=${NPROC_NOMP:-${SLURM_NTASKS}}   # ${SLURM_NTASKS}    # 
-        echo "running deterministic member with ${NPROC_NOMP} processes"
+        NPROC_RUN=${NPROC_NOMP:-${SLURM_NTASKS}}   # ${SLURM_NTASKS}    # 
+        echo "running deterministic member with ${NPROC_RUN} processes"
     
-        time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   
+        time srun '--export=ALL' --label -K -n $NPROC_RUN $LSMexec   
         #TODO: Modify NoahMP exit all jobs on error/or return error code
     fi
 
     if [[ "$ensemble_size" -gt 1  ]]; then 
 #TODO: fix this for 0 dividend
         nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
-        NPROC_NOMP=${NPROC_NOMP:-$nt}           #$nt       #    
-        echo "running ensemble members each with ${NPROC_NOMP} processes"
+	if [[ "$nt" -lt 1 ]]; then nt=1; fi
+        NPROC_RUN=${NPROC_NOMP:-$nt}           #$nt       #    
+        echo "running ensemble members each with ${NPROC_RUN} processes"
 
         for ie in $(seq 1 $ensemble_size)
         do
@@ -428,7 +430,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             cd $MEM_WORKDIR
                 
             #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-            time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   &
+            time srun '--export=ALL' --label -K -n $NPROC_RUN $LSMexec   &
             # #-N1-1 --exclusive
 
             # # srun -l --multi-prog $lsm_tasks_file
@@ -528,6 +530,10 @@ if [ $THISDATE -lt $ENDDATE ]; then
     sbatch ${CYCLEDIR}/submit_cycle.sh
 fi
 
-echo 'all done with cycle, finishing' 
+echo 'all done with cycle, finishing'
+echo 'all done with cycle, finishing' >> $logfile
 date
+end_time=$(date +%s)
+elapsed=$(( end_time - start_time ))
+echo "Elapsed time ${elapsed} (sec)"  >> $logfile
 
