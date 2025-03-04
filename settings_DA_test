@@ -23,10 +23,10 @@ RSTRDIR=${WORKDIR}/
 #* leave this as it is for cycling test. filled from submit_cycle 
 DAalg=XXDAALGXX       
 # state being updated
-analVar=snow
+analVar=smc #snow
 
 # JEDI input obs. options : IMS, GHCN, GTS, SYNTH 
-OBS_TYPES=("GHCN" ) # "IMS"   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("SMAP")  #"GHCN" ) # "IMS"   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA" )  # "DA" )   # format ("DA" "HOFX") 
 
