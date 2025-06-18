@@ -1,0 +1,2209 @@
+PBS: Running prologue on parent mom node: nid003713...
+Job 46054179.dbqs01 nodelist: nid003713
++ /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/dev/jobs/analcalc.sh
++ source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/load_fv3gfs_modules.sh
+++ [[ hxB == *x* ]]
+++ set_x=YES
+++ [[ NO == \N\O ]]
+++ echo 'Loading modules quietly...'
+Loading modules quietly...
+++ set +x
+Resetting modules to system default. Reseting $MODULEPATH back to system default. All extra directories will be removed from $MODULEPATH.
+
+Currently Loaded Modules:
+  1) craype-x86-rome    (H)  13) perl/5.32.0          25) ncdiag/1.0.0
+  2) libfabric/1.20.1        14) libjpeg/9c           26) met/9.1.3
+  3) craype-network-ofi (H)  15) udunits/2.2.28       27) metplus/3.1.1
+  4) envvar/1.0              16) gsl/2.7              28) prepobs/1.1.0
+  5) PrgEnv-intel/8.1.0      17) cdo/1.9.8            29) fit2obs/1.1.7
+  6) craype/2.7.13           18) imagemagick/7.0.8-7  30) module_base.wcoss2
+  7) intel/19.1.3.304        19) hdf5/1.10.6          31) grib_util/1.2.3
+  8) cray-mpich/8.1.9        20) netcdf/4.7.4         32) g2tmpl/1.10.2
+  9) cray-pals/1.0.17        21) nco/4.7.9            33) crtm/2.4.0.1
+ 10) cfp/2.0.4               22) prod_util/2.0.9      34) wgrib2/2.0.8
+ 11) python/3.8.6            23) bufr_dump/1.0.0
+ 12) gempak/7.15.1           24) util_shared/1.4.0
+
+  Where:
+   H:  Hidden Module
+
+ 
+
+++ wxflowPATH=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/python
+++ PYTHONPATH=/apps/ops/prod/nco/core/prod_util.v2.0.9/ush:/apps/prod/python-modules/3.8.6/intel/19.1.3.304/lib/python3.8/site-packages:/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush:/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/python
+++ export PYTHONPATH
+++ ulimit -S -s unlimited
+++ unset ulimit_s
++ status=0
++ [[ 0 -ne 0 ]]
++ export job=analcalc
++ job=analcalc
++ export jobid=analcalc.45032
++ jobid=analcalc.45032
++ /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/jobs/JGLOBAL_ATMOS_ANALYSIS_CALC
+Begin /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/jobs/JGLOBAL_ATMOS_ANALYSIS_CALC at Mon Jun 16 18:45:45 UTC 2025
+++ jjob_header.sh[46]OPTIND=1
+++ jjob_header.sh[47]getopts c:e: option
+++ jjob_header.sh[48]case "${option}" in
+++ jjob_header.sh[50]env_job=analcalc
+++ jjob_header.sh[47]getopts c:e: option
+++ jjob_header.sh[48]case "${option}" in
+++ jjob_header.sh[49]read -ra configs
+++ jjob_header.sh[47]getopts c:e: option
+++ jjob_header.sh[61]shift 4
+++ jjob_header.sh[63][[ -z analcalc ]]
+++ jjob_header.sh[71]export DATA=/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
+++ jjob_header.sh[71]DATA=/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
+++ jjob_header.sh[72][[ YES == \Y\E\S ]]
+++ jjob_header.sh[73]rm -rf /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
+++ jjob_header.sh[75]mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
+++ jjob_header.sh[76]cd /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
+++ jjob_header.sh[85]export pid=45588
+++ jjob_header.sh[85]pid=45588
+++ jjob_header.sh[86]export pgmout=OUTPUT.45588
+++ jjob_header.sh[86]pgmout=OUTPUT.45588
+++ jjob_header.sh[87]export pgmerr=errfile
+++ jjob_header.sh[87]pgmerr=errfile
+++ jjob_header.sh[90]export pgm=
+++ jjob_header.sh[90]pgm=
+++ jjob_header.sh[96]export cycle=t18z
+++ jjob_header.sh[96]cycle=t18z
+++ jjob_header.sh[97]setpdy.sh
++ setpdy.sh[20]'[' /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032 == /u/emc.global ']'
++ setpdy.sh[25][[ ! t18z =~ t??z ]]
++ setpdy.sh[30]case $# in
++ setpdy.sh[31]dates_before_PDY=7
++ setpdy.sh[32]dates_after_PDY=7
++ setpdy.sh[50]COMDATEROOT=/lfs/h1/ops/prod/com
++ setpdy.sh[53]'[' -z 20241124 ']'
++ setpdy.sh[57]sed 's/[0-9]\{8\}/20241124/' /lfs/h1/ops/prod/com/date/t18z
+++ setpdy.sh[62]finddate.sh 20241124 s-7
++++ finddate.sh[27]set +x
++ setpdy.sh[62]DATElne_minus=
+++ jjob_header.sh[97]true
+++ jjob_header.sh[98]source ./PDY
+/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/jjob_header.sh: line 98: ./PDY: No such file or directory
+++ jjob_header.sh[98]true
+++ jjob_header.sh[104]export EXPDIR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10
+++ jjob_header.sh[104]EXPDIR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10
+++ jjob_header.sh[105]for config in "${configs[@]:-''}"
+++ jjob_header.sh[106]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.base
++++ config.base[6]echo 'BEGIN: config.base'
+BEGIN: config.base
++++ config.base[9]export machine=WCOSS2
++++ config.base[9]machine=WCOSS2
++++ config.base[12]export RUN_ENVIR=emc
++++ config.base[12]RUN_ENVIR=emc
++++ config.base[15]export ACCOUNT=GFS-DEV
++++ config.base[15]ACCOUNT=GFS-DEV
++++ config.base[16]export QUEUE=devmax
++++ config.base[16]QUEUE=devmax
++++ config.base[17]export QUEUE_SERVICE=dev_transfer
++++ config.base[17]QUEUE_SERVICE=dev_transfer
++++ config.base[18]export QUEUE_DTN=dev_transfer
++++ config.base[18]QUEUE_DTN=dev_transfer
++++ config.base[19]export 'PARTITION_BATCH={{ PARTITION_BATCH }}'
++++ config.base[19]PARTITION_BATCH='{{ PARTITION_BATCH }}'
++++ config.base[20]export PARTITION_SERVICE=
++++ config.base[20]PARTITION_SERVICE=
++++ config.base[21]export PARTITION_DTN=
++++ config.base[21]PARTITION_DTN=
++++ config.base[22]export RESERVATION=
++++ config.base[22]RESERVATION=
++++ config.base[23]export CLUSTERS=
++++ config.base[23]CLUSTERS=
++++ config.base[24]export CLUSTERS_SERVICE=
++++ config.base[24]CLUSTERS_SERVICE=
++++ config.base[25]export CLUSTERS_DTN=
++++ config.base[25]CLUSTERS_DTN=
++++ config.base[28]export HPSS_PROJECT=emc-global
++++ config.base[28]HPSS_PROJECT=emc-global
++++ config.base[31]export HOMEgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602
++++ config.base[31]HOMEgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602
++++ config.base[32]export EXECgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec
++++ config.base[32]EXECgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec
++++ config.base[33]export FIXgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix
++++ config.base[33]FIXgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix
++++ config.base[34]export PARMgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/parm
++++ config.base[34]PARMgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/parm
++++ config.base[35]export SCRgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/scripts
++++ config.base[35]SCRgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/scripts
++++ config.base[36]export USHgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush
++++ config.base[36]USHgfs=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush
++++ config.base[38]export FIXam=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am
++++ config.base[38]FIXam=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am
++++ config.base[39]export FIXaer=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/aer
++++ config.base[39]FIXaer=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/aer
++++ config.base[40]export FIXcpl=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/cpl
++++ config.base[40]FIXcpl=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/cpl
++++ config.base[41]export FIXlut=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/lut
++++ config.base[41]FIXlut=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/lut
++++ config.base[42]export FIXcice=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/cice
++++ config.base[42]FIXcice=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/cice
++++ config.base[43]export FIXmom=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/mom6
++++ config.base[43]FIXmom=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/mom6
++++ config.base[44]export FIXreg2grb2=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/reg2grb2
++++ config.base[44]FIXreg2grb2=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/reg2grb2
++++ config.base[45]export FIXgdas=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gdas
++++ config.base[45]FIXgdas=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gdas
++++ config.base[50]export PACKAGEROOT=/lfs/h1/ops/prod/packages
++++ config.base[50]PACKAGEROOT=/lfs/h1/ops/prod/packages
++++ config.base[51]export COMROOT=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot
++++ config.base[51]COMROOT=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot
++++ config.base[52]export COMINsyn=/lfs/h1/ops/prod/com/gfs/v16.3/syndat
++++ config.base[52]COMINsyn=/lfs/h1/ops/prod/com/gfs/v16.3/syndat
++++ config.base[53]export DMPDIR=/lfs/h2/emc/dump/noscrub/dump
++++ config.base[53]DMPDIR=/lfs/h2/emc/dump/noscrub/dump
++++ config.base[57]export COMINecmwf=/lfs/h2/emc/global/noscrub/emc.global/data/external_gempak/ecmwf
++++ config.base[57]COMINecmwf=/lfs/h2/emc/global/noscrub/emc.global/data/external_gempak/ecmwf
++++ config.base[58]export COMINnam=/lfs/h2/emc/global/noscrub/emc.global/data/external_gempak/nam
++++ config.base[58]COMINnam=/lfs/h2/emc/global/noscrub/emc.global/data/external_gempak/nam
++++ config.base[59]export COMINukmet=/lfs/h2/emc/global/noscrub/emc.global/data/external_gempak/ukmet
++++ config.base[59]COMINukmet=/lfs/h2/emc/global/noscrub/emc.global/data/external_gempak/ukmet
++++ config.base[62]export HOMEDIR=/lfs/h2/emc/global/noscrub/emc.global
++++ config.base[62]HOMEDIR=/lfs/h2/emc/global/noscrub/emc.global
++++ config.base[63]export STMP=/lfs/h2/emc/stmp/emc.global
++++ config.base[63]STMP=/lfs/h2/emc/stmp/emc.global
++++ config.base[64]export PTMP=/lfs/h2/emc/ptmp/emc.global
++++ config.base[64]PTMP=/lfs/h2/emc/ptmp/emc.global
++++ config.base[65]export NOSCRUB=/lfs/h2/emc/global/noscrub/emc.global
++++ config.base[65]NOSCRUB=/lfs/h2/emc/global/noscrub/emc.global
++++ config.base[68]export BASE_GIT=/lfs/h2/emc/global/save/emc.global/git
++++ config.base[68]BASE_GIT=/lfs/h2/emc/global/save/emc.global/git
++++ config.base[71]export BASE_DATA=/lfs/h2/emc/global/noscrub/emc.global/data
++++ config.base[71]BASE_DATA=/lfs/h2/emc/global/noscrub/emc.global/data
++++ config.base[74]export DO_PREP_SFC=NO
++++ config.base[74]DO_PREP_SFC=NO
++++ config.base[77]export DO_GOES=NO
++++ config.base[77]DO_GOES=NO
++++ config.base[78]export DO_BUFRSND=NO
++++ config.base[78]DO_BUFRSND=NO
++++ config.base[79]export DO_GEMPAK=NO
++++ config.base[79]DO_GEMPAK=NO
++++ config.base[80]export DO_AWIPS=NO
++++ config.base[80]DO_AWIPS=NO
++++ config.base[81]export DO_NPOESS=NO
++++ config.base[81]DO_NPOESS=NO
++++ config.base[82]export DO_TRACKER=YES
++++ config.base[82]DO_TRACKER=YES
++++ config.base[83]export DO_GENESIS=YES
++++ config.base[83]DO_GENESIS=YES
++++ config.base[84]export DO_GENESIS_FSU=NO
++++ config.base[84]DO_GENESIS_FSU=NO
++++ config.base[85]export DO_VERFOZN=YES
++++ config.base[85]DO_VERFOZN=YES
++++ config.base[86]export DO_VERFRAD=YES
++++ config.base[86]DO_VERFRAD=YES
++++ config.base[87]export DO_VMINMON=YES
++++ config.base[87]DO_VMINMON=YES
++++ config.base[88]export DO_ANLSTAT=NO
++++ config.base[88]DO_ANLSTAT=NO
++++ config.base[91]export MODE=cycled
++++ config.base[91]MODE=cycled
++++ config.base[92]export DO_TEST_MODE=NO
++++ config.base[92]DO_TEST_MODE=NO
++++ config.base[101]export FIXgsi=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi
++++ config.base[101]FIXgsi=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi
++++ config.base[102]export HOMEpost=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602
++++ config.base[102]HOMEpost=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602
++++ config.base[103]export HOMEobsproc=/lfs/h2/emc/global/save/emc.global/git/obsproc/v1.2.0
++++ config.base[103]HOMEobsproc=/lfs/h2/emc/global/save/emc.global/git/obsproc/v1.2.0
++++ config.base[106]export NMV=/bin/mv
++++ config.base[106]NMV=/bin/mv
++++ config.base[107]export 'NLN=/bin/ln -sf'
++++ config.base[107]NLN='/bin/ln -sf'
++++ config.base[108]export VERBOSE=YES
++++ config.base[108]VERBOSE=YES
++++ config.base[109]export KEEPDATA=NO
++++ config.base[109]KEEPDATA=NO
++++ config.base[110]export DEBUG_POSTSCRIPT=NO
++++ config.base[110]DEBUG_POSTSCRIPT=NO
++++ config.base[111]export CHGRP_RSTPROD=YES
++++ config.base[111]CHGRP_RSTPROD=YES
++++ config.base[112]export 'CHGRP_CMD=chgrp rstprod'
++++ config.base[112]CHGRP_CMD='chgrp rstprod'
++++ config.base[113]export NCDUMP=/apps/prod/hpc-stack/intel-19.1.3.304/cray-mpich-8.1.4/netcdf/4.7.4/bin/ncdump
++++ config.base[113]NCDUMP=/apps/prod/hpc-stack/intel-19.1.3.304/cray-mpich-8.1.4/netcdf/4.7.4/bin/ncdump
++++ config.base[114]export NCLEN=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/getncdimlen
++++ config.base[114]NCLEN=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/getncdimlen
++++ config.base[117]export BASE_ENV=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/env
++++ config.base[117]BASE_ENV=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/env
++++ config.base[120]export SDATE=2024111506
++++ config.base[120]SDATE=2024111506
++++ config.base[121]export EDATE=2025011600
++++ config.base[121]EDATE=2025011600
++++ config.base[122]export EXP_WARM_START=.true.
++++ config.base[122]EXP_WARM_START=.true.
++++ config.base[123]export assim_freq=6
++++ config.base[123]assim_freq=6
++++ config.base[124]export PSLOT=retrotestgfs10
++++ config.base[124]PSLOT=retrotestgfs10
++++ config.base[125]export EXPDIR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10
++++ config.base[125]EXPDIR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10
++++ config.base[126]export ROTDIR=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10
++++ config.base[126]ROTDIR=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10
++++ config.base[127]export DUMP_SUFFIX=
++++ config.base[127]DUMP_SUFFIX=
++++ config.base[128][[ 2024112418 -ge 2019092100 ]]
++++ config.base[128][[ 2024112418 -le 2019110700 ]]
++++ config.base[132]export ARCDIR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/archive/retrotestgfs10
++++ config.base[132]ARCDIR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/archive/retrotestgfs10
++++ config.base[134]export ATARDIR=/5year/NCEPDEV/emc-global/emc.glopara/WCOSS2/GFSv17/retrotestgfs10
++++ config.base[134]ATARDIR=/5year/NCEPDEV/emc-global/emc.glopara/WCOSS2/GFSv17/retrotestgfs10
++++ config.base[136]export 'FETCHDIR={{ FETCHDIR }}'
++++ config.base[136]FETCHDIR='{{ FETCHDIR }}'
++++ config.base[139]export envir=prod
++++ config.base[139]envir=prod
++++ config.base[140]export NET=gfs
++++ config.base[140]NET=gfs
++++ config.base[141]export RUN=gdas
++++ config.base[141]RUN=gdas
++++ config.base[144]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.com
+++++ config.com[4]echo 'BEGIN: config.com'
+BEGIN: config.com
+++++ config.com[38][[ emc == \n\c\o ]]
+++++ config.com[43]COM_OBSPROC_TMPL='${DMPDIR}/${RUN}${DUMP_SUFFIX}.${YMD}/${HH}/atmos'
+++++ config.com[44]COM_RTOFS_TMPL='${DMPDIR}'
+++++ config.com[45]COM_TCVITAL_TMPL='${DMPDIR}/${RUN}.${YMD}/${HH}/atmos'
+++++ config.com[47]declare -rx 'COM_OBS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/obs'
+++++ config.com[48]declare -rx COM_OBSPROC_TMPL COM_RTOFS_TMPL
+++++ config.com[50]COM_BASE='${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}'
+++++ config.com[52]declare -rx 'COM_TOP_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}'
+++++ config.com[54]declare -rx 'COM_CONF_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/conf'
+++++ config.com[55]declare -rx 'COM_OBS_JEDI=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/obs_jedi'
+++++ config.com[57]declare -rx 'COM_ATMOS_INPUT_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/atmos/input'
+++++ config.com[58]declare -rx 'COM_ATMOS_RESTART_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/atmos/restart'
+++++ config.com[59]declare -rx 'COM_ATMOS_ANALYSIS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/atmos'
+++++ config.com[60]declare -rx 'COM_SNOW_ANALYSIS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/snow'
+++++ config.com[61]declare -rx 'COM_SNOW_ANLMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/snow/anlmon'
+++++ config.com[62]declare -rx 'COM_ATMOS_HISTORY_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/atmos/history'
+++++ config.com[63]declare -rx 'COM_ATMOS_MASTER_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/atmos/master'
+++++ config.com[64]declare -rx 'COM_ATMOS_GRIB_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/grib2'
+++++ config.com[65]declare -rx 'COM_ATMOS_GRIB_GRID_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/grib2/${GRID}'
+++++ config.com[66]declare -rx 'COM_ATMOS_BUFR_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/bufr'
+++++ config.com[67]declare -rx 'COM_ATMOS_GEMPAK_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/gempak/${GRID}'
+++++ config.com[68]declare -rx 'COM_ATMOS_GENESIS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/cyclone/genesis_vital'
+++++ config.com[69]declare -rx 'COM_ATMOS_TRACK_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/cyclone/tracks'
+++++ config.com[70]declare -rx 'COM_ATMOS_GOES_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/goes_sim'
+++++ config.com[71]declare -rx 'COM_ATMOS_IMAGERY_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/imagery'
+++++ config.com[72]declare -rx 'COM_ATMOS_OZNMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/oznmon'
+++++ config.com[73]declare -rx 'COM_ATMOS_RADMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/radmon'
+++++ config.com[74]declare -rx 'COM_ATMOS_MINMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/minmon'
+++++ config.com[75]declare -rx 'COM_ATMOS_ANLMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/anlmon'
+++++ config.com[76]declare -rx 'COM_ATMOS_WMO_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/atmos/wmo'
+++++ config.com[78]declare -rx 'COM_WAVE_RESTART_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/wave/restart'
+++++ config.com[79]declare -rx 'COM_WAVE_PREP_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/wave/prep'
+++++ config.com[80]declare -rx 'COM_WAVE_HISTORY_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/wave/history'
+++++ config.com[81]declare -rx 'COM_WAVE_GRID_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/wave/gridded'
+++++ config.com[82]declare -rx 'COM_WAVE_GRID_RES_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/wave/gridded/${GRDRESNAME}'
+++++ config.com[83]declare -rx 'COM_WAVE_STATION_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/wave/station'
+++++ config.com[84]declare -rx 'COM_WAVE_GEMPAK_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/wave/gempak'
+++++ config.com[85]declare -rx 'COM_WAVE_WMO_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/wave/wmo'
+++++ config.com[87]declare -rx 'COM_OCEAN_HISTORY_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/ocean/history'
+++++ config.com[88]declare -rx 'COM_OCEAN_RESTART_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/ocean/restart'
+++++ config.com[89]declare -rx 'COM_OCEAN_INPUT_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/ocean/input'
+++++ config.com[90]declare -rx 'COM_OCEAN_ANALYSIS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/ocean'
+++++ config.com[91]declare -rx 'COM_OCEAN_ANLMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ocean/anlmon'
+++++ config.com[92]declare -rx 'COM_OCEAN_LETKF_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/ocean/letkf'
+++++ config.com[93]declare -rx 'COM_OCEAN_BMATRIX_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/bmatrix/ocean'
+++++ config.com[94]declare -rx 'COM_OCEAN_NETCDF_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ocean/netcdf'
+++++ config.com[95]declare -rx 'COM_OCEAN_GRIB_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ocean/grib2'
+++++ config.com[96]declare -rx 'COM_OCEAN_GRIB_GRID_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ocean/grib2/${GRID}'
+++++ config.com[98]declare -rx 'COM_ICE_ANALYSIS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/ice'
+++++ config.com[99]declare -rx 'COM_ICE_LETKF_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/ice/letkf'
+++++ config.com[100]declare -rx 'COM_ICE_ANLMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ice/anlmon'
+++++ config.com[101]declare -rx 'COM_ICE_BMATRIX_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/bmatrix/ice'
+++++ config.com[102]declare -rx 'COM_ICE_INPUT_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/ice/input'
+++++ config.com[103]declare -rx 'COM_ICE_HISTORY_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/ice/history'
+++++ config.com[104]declare -rx 'COM_ICE_RESTART_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/ice/restart'
+++++ config.com[105]declare -rx 'COM_ICE_NETCDF_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ice/netcdf'
+++++ config.com[106]declare -rx 'COM_ICE_GRIB_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ice/grib2'
+++++ config.com[107]declare -rx 'COM_ICE_GRIB_GRID_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/ice/grib2/${GRID}'
+++++ config.com[109]declare -rx 'COM_CHEM_HISTORY_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/chem/history'
+++++ config.com[110]declare -rx 'COM_CHEM_ANALYSIS_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/chem'
+++++ config.com[111]declare -rx 'COM_CHEM_BMAT_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/analysis/chem/bmatrix'
+++++ config.com[112]declare -rx 'COM_CHEM_ANLMON_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/products/chem/anlmon'
+++++ config.com[114]declare -rx 'COM_MED_RESTART_TMPL=${ROTDIR}/${RUN}.${YMD}/${HH}/${MEMDIR}/model/med/restart'
++++ config.base[146]export LOGSCRIPT=
++++ config.base[146]LOGSCRIPT=
++++ config.base[148]export 'REDOUT=1>'
++++ config.base[148]REDOUT='1>'
++++ config.base[149]export 'REDERR=2>'
++++ config.base[149]REDERR='2>'
++++ config.base[151]export SENDECF=NO
++++ config.base[151]SENDECF=NO
++++ config.base[152]export SENDSDM=NO
++++ config.base[152]SENDSDM=NO
++++ config.base[153]export SENDDBN_NTC=NO
++++ config.base[153]SENDDBN_NTC=NO
++++ config.base[154]export SENDDBN=NO
++++ config.base[154]SENDDBN=NO
++++ config.base[155]export DBNROOT=/apps/ops/prod/nco/core/prod_util.v2.0.9/fakedbn
++++ config.base[155]DBNROOT=/apps/ops/prod/nco/core/prod_util.v2.0.9/fakedbn
++++ config.base[158]export APP=S2SW
++++ config.base[158]APP=S2SW
++++ config.base[160]shopt -s extglob
++++ config.base[163]case "${RUN}" in
++++ config.base[170]shopt -u extglob
++++ config.base[173]export DO_ATM=YES
++++ config.base[173]DO_ATM=YES
++++ config.base[174]export DO_COUPLED=NO
++++ config.base[174]DO_COUPLED=NO
++++ config.base[175]export DO_WAVE=NO
++++ config.base[175]DO_WAVE=NO
++++ config.base[176]export DO_OCN=NO
++++ config.base[176]DO_OCN=NO
++++ config.base[177]export DO_ICE=NO
++++ config.base[177]DO_ICE=NO
++++ config.base[178]DO_AERO=NO
++++ config.base[179]export DO_PREP_OBS_AERO=NO
++++ config.base[179]DO_PREP_OBS_AERO=NO
++++ config.base[180]aero_fcst_runs=gdas
++++ config.base[181]aero_anl_runs='gdas gfs'
++++ config.base[182]export DO_AERO_FCST=NO
++++ config.base[182]DO_AERO_FCST=NO
++++ config.base[183]export DO_AERO_ANL=NO
++++ config.base[183]DO_AERO_ANL=NO
++++ config.base[184]export DOBNDPNT_WAVE=YES
++++ config.base[184]DOBNDPNT_WAVE=YES
++++ config.base[185]export DOIBP_WAV=NO
++++ config.base[185]DOIBP_WAV=NO
++++ config.base[186]export FRAC_GRID=.true.
++++ config.base[186]FRAC_GRID=.true.
++++ config.base[187]export DO_NEST=NO
++++ config.base[187]DO_NEST=NO
++++ config.base[188][[ NO == \Y\E\S ]]
++++ config.base[194]export ntiles=6
++++ config.base[194]ntiles=6
++++ config.base[195]export FIXugwd=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/ugwd
++++ config.base[195]FIXugwd=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/ugwd
++++ config.base[196]export FIXorog=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog
++++ config.base[196]FIXorog=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog
++++ config.base[200]export OPS_RES=C768
++++ config.base[200]OPS_RES=C768
++++ config.base[203]export LEVS=128
++++ config.base[203]LEVS=128
++++ config.base[204]export CASE=C1152
++++ config.base[204]CASE=C1152
++++ config.base[205]export CASE_ENS=C384
++++ config.base[205]CASE_ENS=C384
++++ config.base[206]export OCNRES=025
++++ config.base[206]OCNRES=025
++++ config.base[207]export ICERES=025
++++ config.base[207]ICERES=025
++++ config.base[210]case "${CASE}" in
++++ config.base[221]export waveGRD=uglo_15km
++++ config.base[221]waveGRD=uglo_15km
++++ config.base[229]case "${APP}" in
++++ config.base[245]export DO_COUPLED=YES
++++ config.base[245]DO_COUPLED=YES
++++ config.base[246]export DO_OCN=YES
++++ config.base[246]DO_OCN=YES
++++ config.base[247]export DO_ICE=YES
++++ config.base[247]DO_ICE=YES
++++ config.base[249][[ S2SW =~ A$ ]]
++++ config.base[253][[ S2SW =~ ^S2SW ]]
++++ config.base[254]export DO_WAVE=YES
++++ config.base[254]DO_WAVE=YES
++++ config.base[264][[ NO == \Y\E\S ]]
++++ config.base[274][[ gdas =~ gdas ]]
++++ config.base[275]export FHCYC=1
++++ config.base[275]FHCYC=1
++++ config.base[276]export FTSFS=10
++++ config.base[276]FTSFS=10
++++ config.base[282]export FHMIN=0
++++ config.base[282]FHMIN=0
++++ config.base[283]export FHMAX=9
++++ config.base[283]FHMAX=9
++++ config.base[284]export FHOUT=3
++++ config.base[284]FHOUT=3
++++ config.base[285]export FHOUT_OCN=3
++++ config.base[285]FHOUT_OCN=3
++++ config.base[286]export FHOUT_ICE=3
++++ config.base[286]FHOUT_ICE=3
++++ config.base[287]export FHOUT_AERO=3
++++ config.base[287]FHOUT_AERO=3
++++ config.base[290]export EUPD_CYC=both
++++ config.base[290]EUPD_CYC=both
++++ config.base[293]export INTERVAL_GFS=6
++++ config.base[293]INTERVAL_GFS=6
++++ config.base[294]export SDATE_GFS=2024111512
++++ config.base[294]SDATE_GFS=2024111512
++++ config.base[297]export FHMIN_GFS=0
++++ config.base[297]FHMIN_GFS=0
++++ config.base[298]export FHMAX_GFS=384
++++ config.base[298]FHMAX_GFS=384
++++ config.base[300]breakpnts=
++++ config.base[301]export FCST_SEGMENTS=0,384
++++ config.base[301]FCST_SEGMENTS=0,384
++++ config.base[302]export FHOUT_GFS=3
++++ config.base[302]FHOUT_GFS=3
++++ config.base[303]export FHMAX_HF_GFS=120
++++ config.base[303]FHMAX_HF_GFS=120
++++ config.base[304]export FHOUT_HF_GFS=1
++++ config.base[304]FHOUT_HF_GFS=1
++++ config.base[305]export FHOUT_OCN_GFS=6
++++ config.base[305]FHOUT_OCN_GFS=6
++++ config.base[306]export FHOUT_ICE_GFS=6
++++ config.base[306]FHOUT_ICE_GFS=6
++++ config.base[307]export FHMIN_WAV=0
++++ config.base[307]FHMIN_WAV=0
++++ config.base[308]export FHOUT_WAV=3
++++ config.base[308]FHOUT_WAV=3
++++ config.base[309]export FHMAX_HF_WAV=120
++++ config.base[309]FHMAX_HF_WAV=120
++++ config.base[310]export FHOUT_HF_WAV=1
++++ config.base[310]FHOUT_HF_WAV=1
++++ config.base[311]export FHMAX_WAV=9
++++ config.base[311]FHMAX_WAV=9
++++ config.base[312]export FHMAX_WAV_GFS=384
++++ config.base[312]FHMAX_WAV_GFS=384
++++ config.base[313]export FHMAX_HF_GFS=120
++++ config.base[313]FHMAX_HF_GFS=120
++++ config.base[314]export FHMAX_WAV=9
++++ config.base[314]FHMAX_WAV=9
++++ config.base[315]export FHMAX_WAV_GFS=384
++++ config.base[315]FHMAX_WAV_GFS=384
++++ config.base[316]export FHMAX_HF_WAV=120
++++ config.base[316]FHMAX_HF_WAV=120
++++ config.base[319]export ILPOST=1
++++ config.base[319]ILPOST=1
++++ config.base[320]((  FHMAX_HF_GFS < 120  ))
++++ config.base[325]export FHMAX_GOES=180
++++ config.base[325]FHMAX_GOES=180
++++ config.base[326]export FHOUT_GOES=3
++++ config.base[326]FHOUT_GOES=3
++++ config.base[327]((  FHMAX_GOES > FHMAX_GFS  ))
++++ config.base[332]export restart_interval_gfs=12
++++ config.base[332]restart_interval_gfs=12
++++ config.base[337]export QUILTING=.true.
++++ config.base[337]QUILTING=.true.
++++ config.base[338]export OUTPUT_GRID=gaussian_grid
++++ config.base[338]OUTPUT_GRID=gaussian_grid
++++ config.base[339]export WRITE_DOPOST=.true.
++++ config.base[339]WRITE_DOPOST=.true.
++++ config.base[340]export WRITE_NSFLIP=.true.
++++ config.base[340]WRITE_NSFLIP=.true.
++++ config.base[343]export DOIAU=YES
++++ config.base[343]DOIAU=YES
++++ config.base[344]export IAUFHRS=3,6,9
++++ config.base[344]IAUFHRS=3,6,9
++++ config.base[345]export IAU_FHROT=3
++++ config.base[345]IAU_FHROT=3
++++ config.base[346]export IAU_DELTHRS=6
++++ config.base[346]IAU_DELTHRS=6
++++ config.base[347]export IAU_OFFSET=6
++++ config.base[347]IAU_OFFSET=6
++++ config.base[348]export DOIAU_ENKF=YES
++++ config.base[348]DOIAU_ENKF=YES
++++ config.base[349]export IAUFHRS_ENKF=3,6,9
++++ config.base[349]IAUFHRS_ENKF=3,6,9
++++ config.base[350]export IAU_DELTHRS_ENKF=6
++++ config.base[350]IAU_DELTHRS_ENKF=6
++++ config.base[353]export lobsdiag_forenkf=.true.
++++ config.base[353]lobsdiag_forenkf=.true.
++++ config.base[361]export imp_physics=8
++++ config.base[361]imp_physics=8
++++ config.base[365]export DO_JEDIATMVAR=NO
++++ config.base[365]DO_JEDIATMVAR=NO
++++ config.base[366]export DO_JEDIATMENS=NO
++++ config.base[366]DO_JEDIATMENS=NO
++++ config.base[367]export DO_JEDIOCNVAR=YES
++++ config.base[367]DO_JEDIOCNVAR=YES
++++ config.base[368]export DO_JEDISNOWDA=YES
++++ config.base[368]DO_JEDISNOWDA=YES
++++ config.base[369]export DO_MERGENSST=NO
++++ config.base[369]DO_MERGENSST=NO
++++ config.base[370]export DO_STARTMEM_FROM_JEDIICE=YES
++++ config.base[370]DO_STARTMEM_FROM_JEDIICE=YES
++++ config.base[373]export DOHYBVAR=YES
++++ config.base[373]DOHYBVAR=YES
++++ config.base[374]export DOHYBVAR_OCN=YES
++++ config.base[374]DOHYBVAR_OCN=YES
++++ config.base[375]export DOLETKF_OCN=NO
++++ config.base[375]DOLETKF_OCN=NO
++++ config.base[376]export NMEM_ENS=80
++++ config.base[376]NMEM_ENS=80
++++ config.base[377]export SMOOTH_ENKF=NO
++++ config.base[377]SMOOTH_ENKF=NO
++++ config.base[378]export l4densvar=.true.
++++ config.base[378]l4densvar=.true.
++++ config.base[379]export lwrite4danl=.true.
++++ config.base[379]lwrite4danl=.true.
++++ config.base[380]export DO_CALC_INCREMENT=NO
++++ config.base[380]DO_CALC_INCREMENT=NO
++++ config.base[383]export NMEM_ENS_GFS=30
++++ config.base[383]NMEM_ENS_GFS=30
++++ config.base[384]export NMEM_ENS_GFS_OFFSET=20
++++ config.base[384]NMEM_ENS_GFS_OFFSET=20
++++ config.base[385]export DO_CALC_INCREMENT_ENKF_GFS=NO
++++ config.base[385]DO_CALC_INCREMENT_ENKF_GFS=NO
++++ config.base[388][[ YES = \Y\E\S ]]
++++ config.base[389]export FHMIN_ENKF=3
++++ config.base[389]FHMIN_ENKF=3
++++ config.base[390]export FHMAX_ENKF=9
++++ config.base[390]FHMAX_ENKF=9
++++ config.base[391]export FHMAX_ENKF_GFS=12
++++ config.base[391]FHMAX_ENKF_GFS=12
++++ config.base[392]export FHOUT_ENKF_GFS=3
++++ config.base[392]FHOUT_ENKF_GFS=3
++++ config.base[393][[ .true. = \.\t\r\u\e\. ]]
++++ config.base[394]export FHOUT=1
++++ config.base[394]FHOUT=1
++++ config.base[395]export FHOUT_ENKF=1
++++ config.base[395]FHOUT_ENKF=1
++++ config.base[402][[ YES == \N\O ]]
++++ config.base[410]export ENKF_SPREAD=YES
++++ config.base[410]ENKF_SPREAD=YES
++++ config.base[413][[ cycled = \c\y\c\l\e\d ]]
++++ config.base[413][[ 2024111506 = \2\0\2\4\1\1\2\4\1\8 ]]
++++ config.base[413][[ YES = \N\O ]]
++++ config.base[413][[ cycled = \f\o\r\e\c\a\s\t\-\o\n\l\y ]]
++++ config.base[419][[ YES = \N\O ]]
++++ config.base[423][[ YES == \Y\E\S ]]
++++ config.base[424]export restart_interval_enkfgdas=3
++++ config.base[424]restart_interval_enkfgdas=3
++++ config.base[429]export restart_interval_enkfgfs=3
++++ config.base[429]restart_interval_enkfgfs=3
++++ config.base[431][[ YES == \Y\E\S ]]
++++ config.base[432]export restart_interval_gdas=3
++++ config.base[432]restart_interval_gdas=3
++++ config.base[437]export DO_GSISOILDA=YES
++++ config.base[437]DO_GSISOILDA=YES
++++ config.base[440]export DONST=YES
++++ config.base[440]DONST=YES
++++ config.base[441][[ YES = \Y\E\S ]]
++++ config.base[441]export 'FNTSFA=        '
++++ config.base[441]FNTSFA='        '
++++ config.base[444]export nst_anl=.true.
++++ config.base[444]nst_anl=.true.
++++ config.base[447]export MAKE_NSSTBUFR=NO
++++ config.base[447]MAKE_NSSTBUFR=NO
++++ config.base[450]export MAKE_ACFTBUFR=NO
++++ config.base[450]MAKE_ACFTBUFR=NO
++++ config.base[453]export 'INCREMENTS_TO_ZERO='\''liq_wat_inc'\'','\''icmr_inc'\'','\''rwmr_inc'\'','\''snmr_inc'\'','\''grle_inc'\'''
++++ config.base[453]INCREMENTS_TO_ZERO=''\''liq_wat_inc'\'','\''icmr_inc'\'','\''rwmr_inc'\'','\''snmr_inc'\'','\''grle_inc'\'''
++++ config.base[456]export 'INCVARS_ZERO_STRAT='\''sphum_inc'\'','\''liq_wat_inc'\'','\''icmr_inc'\'','\''rwmr_inc'\'','\''snmr_inc'\'','\''grle_inc'\'''
++++ config.base[456]INCVARS_ZERO_STRAT=''\''sphum_inc'\'','\''liq_wat_inc'\'','\''icmr_inc'\'','\''rwmr_inc'\'','\''snmr_inc'\'','\''grle_inc'\'''
++++ config.base[457]export INCVARS_EFOLD=5
++++ config.base[457]INCVARS_EFOLD=5
++++ config.base[462]export netcdf_diag=.true.
++++ config.base[462]netcdf_diag=.true.
++++ config.base[463]export binary_diag=.false.
++++ config.base[463]binary_diag=.false.
++++ config.base[466]export DO_CA=YES
++++ config.base[466]DO_CA=YES
++++ config.base[469]export DO_METP=YES
++++ config.base[469]DO_METP=YES
++++ config.base[470]export DO_FIT2OBS=YES
++++ config.base[470]DO_FIT2OBS=YES
++++ config.base[473]export FHMAX_FITS=132
++++ config.base[473]FHMAX_FITS=132
++++ config.base[474][[ 132 -gt 384 ]]
++++ config.base[480]export DO_FETCH_HPSS=NO
++++ config.base[480]DO_FETCH_HPSS=NO
++++ config.base[481]export DO_FETCH_LOCAL=NO
++++ config.base[481]DO_FETCH_LOCAL=NO
++++ config.base[484]export DO_ARCHCOM=YES
++++ config.base[484]DO_ARCHCOM=YES
++++ config.base[485]export ARCHCOM_TO=hpss
++++ config.base[485]ARCHCOM_TO=hpss
++++ config.base[488]export 'CLIENT_GLOBUS_UUID={{ CLIENT_GLOBUS_UUID }}'
++++ config.base[488]CLIENT_GLOBUS_UUID='{{ CLIENT_GLOBUS_UUID }}'
++++ config.base[491][[ NO = \Y\E\S ]]
++++ config.base[498][[ NO = \Y\E\S ]]
++++ config.base[498][[ YES = \Y\E\S ]]
++++ config.base[499]export DO_ANLSTAT=YES
++++ config.base[499]DO_ANLSTAT=YES
++++ config.base[504]export REPLAY_ICS=NO
++++ config.base[504]REPLAY_ICS=NO
++++ config.base[505]export OFFSET_START_HOUR=0
++++ config.base[505]OFFSET_START_HOUR=0
++++ config.base[508]export NUM_SND_COLLECTIVES=9
++++ config.base[508]NUM_SND_COLLECTIVES=9
++++ config.base[510]echo 'END: config.base'
+END: config.base
+++ jjob_header.sh[106]true
+++ jjob_header.sh[107]export err=0
+++ jjob_header.sh[107]err=0
+++ jjob_header.sh[108][[ 0 -ne 0 ]]
+++ jjob_header.sh[105]for config in "${configs[@]:-''}"
+++ jjob_header.sh[106]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.anal
++++ config.anal[6]echo 'BEGIN: config.anal'
+BEGIN: config.anal
++++ config.anal[9]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.resources anal
+++++ config.resources[10]((  1 != 1  ))
+++++ config.resources[34]step=anal
+++++ config.resources[36]echo 'BEGIN: config.resources'
+BEGIN: config.resources
+++++ config.resources[38]case ${machine} in
+++++ config.resources[40]max_tasks_per_node=128
+++++ config.resources[43]mem_node_max=500GB
+++++ config.resources[106]export max_tasks_per_node
+++++ config.resources[108]case ${step} in
+++++ config.resources[680][[ gdas = *gdas ]]
+++++ config.resources[681]walltime=01:20:00
+++++ config.resources[682]case ${CASE} in
+++++ config.resources[684]ntasks=780
+++++ config.resources[685]threads_per_task=5
+++++ config.resources[686]walltime=01:40:00
+++++ config.resources[721]tasks_per_node=25
+++++ config.resources[722]export threads_per_task_cycle=5
+++++ config.resources[722]threads_per_task_cycle=5
+++++ config.resources[723]export tasks_per_node_cycle=25
+++++ config.resources[723]tasks_per_node_cycle=25
+++++ config.resources[724]export is_exclusive=True
+++++ config.resources[724]is_exclusive=True
+++++ config.resources[1400][[ -f /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.resources.WCOSS2 ]]
+++++ config.resources[1401]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.resources.WCOSS2
++++++ config.resources.WCOSS2[5]case ${step} in
++++++ config.resources.WCOSS2[13][[ C1152 == \C\7\6\8 ]]
++++++ config.resources.WCOSS2[13][[ C1152 == \C\1\1\5\2 ]]
++++++ config.resources.WCOSS2[14]export threads_per_task=8
++++++ config.resources.WCOSS2[14]threads_per_task=8
++++++ config.resources.WCOSS2[16][[ gdas = *gdas ]]
++++++ config.resources.WCOSS2[17]ntasks=784
++++++ config.resources.WCOSS2[21]export ntasks_gdas=784
++++++ config.resources.WCOSS2[21]ntasks_gdas=784
++++++ config.resources.WCOSS2[22]export ntasks_gfs=832
++++++ config.resources.WCOSS2[22]ntasks_gfs=832
++++++ config.resources.WCOSS2[23]export tasks_per_node=16
++++++ config.resources.WCOSS2[23]tasks_per_node=16
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=threads_per_task_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export threads_per_task
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=ntasks_gdas
+++++ config.resources[1407][[ -n 0 ]]
+++++ config.resources[1408]declare -x ntasks=784
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=tasks_per_node_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export tasks_per_node
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=NTASKS_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n '' ]]
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=memory_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n '' ]]
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=walltime_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export walltime
+++++ config.resources[1414]echo 'END: config.resources'
+END: config.resources
++++ config.anal[11][[ YES = \Y\E\S ]]
++++ config.anal[12]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.nsst
+++++ config.nsst[6]echo 'BEGIN: config.nsst'
+BEGIN: config.nsst
+++++ config.nsst[11]export NST_MODEL=2
+++++ config.nsst[11]NST_MODEL=2
+++++ config.nsst[14][[ NO == \Y\E\S ]]
+++++ config.nsst[14][[ NO == \Y\E\S ]]
+++++ config.nsst[19]export NST_SPINUP=0
+++++ config.nsst[19]NST_SPINUP=0
+++++ config.nsst[20]cdate=2024112418
+++++ config.nsst[21]((  cdate < 2017072000  ))
+++++ config.nsst[26]export NST_RESV=0
+++++ config.nsst[26]NST_RESV=0
+++++ config.nsst[29]export ZSEA1=0
+++++ config.nsst[29]ZSEA1=0
+++++ config.nsst[30]export ZSEA2=0
+++++ config.nsst[30]ZSEA2=0
+++++ config.nsst[32]export NST_GSI=3
+++++ config.nsst[32]NST_GSI=3
+++++ config.nsst[36]export NSTINFO=0
+++++ config.nsst[36]NSTINFO=0
+++++ config.nsst[37]((  NST_GSI > 0  ))
+++++ config.nsst[37]export NSTINFO=4
+++++ config.nsst[37]NSTINFO=4
+++++ config.nsst[39]echo 'END: config.nsst'
+END: config.nsst
++++ config.anal[15][[ gdas == \g\f\s ]]
++++ config.anal[23][[ 128 = \1\2\8 ]]
++++ config.anal[24]export 'GRIDOPTS=nlayers(63)=1,nlayers(64)=1,'
++++ config.anal[24]GRIDOPTS='nlayers(63)=1,nlayers(64)=1,'
++++ config.anal[25]export SETUP=gpstop=55,nsig_ext=45,
++++ config.anal[25]SETUP=gpstop=55,nsig_ext=45,
++++ config.anal[29]export lobsdiag_forenkf=.false.
++++ config.anal[29]lobsdiag_forenkf=.false.
++++ config.anal[33][[ NO = \Y\E\S ]]
++++ config.anal[38]export GSNDBF=/dev/null
++++ config.anal[38]GSNDBF=/dev/null
++++ config.anal[39]export AMSREBF=/dev/null
++++ config.anal[39]AMSREBF=/dev/null
++++ config.anal[40]export SSMITBF=/dev/null
++++ config.anal[40]SSMITBF=/dev/null
++++ config.anal[41]export AMSR2BF=/dev/null
++++ config.anal[41]AMSR2BF=/dev/null
++++ config.anal[46]export CONVINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_convinfo.txt
++++ config.anal[46]CONVINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_convinfo.txt
++++ config.anal[47]export OZINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_ozinfo.txt
++++ config.anal[47]OZINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_ozinfo.txt
++++ config.anal[48]export SATINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_satinfo.txt
++++ config.anal[48]SATINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_satinfo.txt
++++ config.anal[49]export OBERROR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/prepobs_errtable.global
++++ config.anal[49]OBERROR=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/prepobs_errtable.global
++++ config.anal[51][[ YES = \Y\E\S ]]
++++ config.anal[52]export hofx_2m_sfcfile=.true.
++++ config.anal[52]hofx_2m_sfcfile=.true.
++++ config.anal[53]export reducedgrid=.false.
++++ config.anal[53]reducedgrid=.false.
++++ config.anal[55]export CONVINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_convinfo_2mObs.txt
++++ config.anal[55]CONVINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_convinfo_2mObs.txt
++++ config.anal[56]export ANAVINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_anavinfo_soilanal.l127.txt
++++ config.anal[56]ANAVINFO=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/gsi/global_anavinfo_soilanal.l127.txt
++++ config.anal[60][[ emc == \e\m\c ]]
++++ config.anal[62][[ 2024112418 -ge 2019021900 ]]
++++ config.anal[62][[ 2024112418 -lt 2019110706 ]]
++++ config.anal[68][[ 2024112418 -ge 2019110706 ]]
++++ config.anal[68][[ 2024112418 -lt 2020040718 ]]
++++ config.anal[74][[ 2024112418 -ge 2020040718 ]]
++++ config.anal[74][[ 2024112418 -lt 2020052612 ]]
++++ config.anal[80][[ 2024112418 -ge 2020052612 ]]
++++ config.anal[80][[ 2024112418 -lt 2020082412 ]]
++++ config.anal[86][[ 2024112418 -ge 2020082412 ]]
++++ config.anal[86][[ 2024112418 -lt 2020091612 ]]
++++ config.anal[91][[ 2024112418 -ge 2020091612 ]]
++++ config.anal[91][[ 2024112418 -lt 2021031712 ]]
++++ config.anal[96][[ 2024112418 -ge 2021031712 ]]
++++ config.anal[96][[ 2024112418 -lt 2021091612 ]]
++++ config.anal[110][[ 2024112418 -ge 2020011600 ]]
++++ config.anal[110][[ 2024112418 -lt 2020011806 ]]
++++ config.anal[116][[ 2024112418 -ge 2019021900 ]]
++++ config.anal[116][[ 2024112418 -lt 2019110706 ]]
++++ config.anal[121][[ 2024112418 -ge 2019110706 ]]
++++ config.anal[121][[ 2024112418 -lt 2020022012 ]]
++++ config.anal[126][[ 2024112418 -ge 2020022012 ]]
++++ config.anal[126][[ 2024112418 -lt 2021052118 ]]
++++ config.anal[131][[ 2024112418 -ge 2021052118 ]]
++++ config.anal[131][[ 2024112418 -lt 2021092206 ]]
++++ config.anal[136][[ 2024112418 -ge 2021092206 ]]
++++ config.anal[136][[ 2024112418 -lt 2021102612 ]]
++++ config.anal[153]export AIRS_CADS=.false.
++++ config.anal[153]AIRS_CADS=.false.
++++ config.anal[154]export CRIS_CADS=.false.
++++ config.anal[154]CRIS_CADS=.false.
++++ config.anal[155]export IASI_CADS=.false.
++++ config.anal[155]IASI_CADS=.false.
++++ config.anal[157]echo 'END: config.anal'
+END: config.anal
+++ jjob_header.sh[106]true
+++ jjob_header.sh[107]export err=0
+++ jjob_header.sh[107]err=0
+++ jjob_header.sh[108][[ 0 -ne 0 ]]
+++ jjob_header.sh[105]for config in "${configs[@]:-''}"
+++ jjob_header.sh[106]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.analcalc
++++ config.analcalc[6]echo 'BEGIN: config.analcalc'
+BEGIN: config.analcalc
++++ config.analcalc[9]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.resources analcalc
+++++ config.resources[10]((  1 != 1  ))
+++++ config.resources[34]step=analcalc
+++++ config.resources[36]echo 'BEGIN: config.resources'
+BEGIN: config.resources
+++++ config.resources[38]case ${machine} in
+++++ config.resources[40]max_tasks_per_node=128
+++++ config.resources[43]mem_node_max=500GB
+++++ config.resources[106]export max_tasks_per_node
+++++ config.resources[108]case ${step} in
+++++ config.resources[752]walltime=00:15:00
+++++ config.resources[753]ntasks=127
+++++ config.resources[754]export ntasks_calcanl=127
+++++ config.resources[754]ntasks_calcanl=127
+++++ config.resources[755]threads_per_task=1
+++++ config.resources[756]tasks_per_node=128
+++++ config.resources[757][[ gdas = *gdas ]]
+++++ config.resources[758]export threads_per_task_echgres=4
+++++ config.resources[758]threads_per_task_echgres=4
+++++ config.resources[762]export is_exclusive=True
+++++ config.resources[762]is_exclusive=True
+++++ config.resources[763]memory=48GB
+++++ config.resources[764][[ C1152 == \C\3\8\4 ]]
+++++ config.resources[764][[ C1152 == \C\7\6\8 ]]
+++++ config.resources[764][[ C1152 == \C\1\1\5\2 ]]
+++++ config.resources[765]memory=500GB
+++++ config.resources[1400][[ -f /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.resources.WCOSS2 ]]
+++++ config.resources[1401]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10/config.resources.WCOSS2
++++++ config.resources.WCOSS2[5]case ${step} in
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=threads_per_task_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export threads_per_task
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=ntasks_gdas
+++++ config.resources[1407][[ -n 0 ]]
+++++ config.resources[1408]declare -x ntasks=784
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=tasks_per_node_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export tasks_per_node
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=NTASKS_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n '' ]]
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=memory_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export memory
+++++ config.resources[1405]for resource_var in threads_per_task ntasks tasks_per_node NTASKS memory walltime
+++++ config.resources[1406]run_resource_var=walltime_gdas
+++++ config.resources[1407][[ -n '' ]]
+++++ config.resources[1409][[ -n 0 ]]
+++++ config.resources[1410]export walltime
+++++ config.resources[1414]echo 'END: config.resources'
+END: config.resources
++++ config.analcalc[11]echo 'END: config.analcalc'
+END: config.analcalc
+++ jjob_header.sh[106]true
+++ jjob_header.sh[107]export err=0
+++ jjob_header.sh[107]err=0
+++ jjob_header.sh[108][[ 0 -ne 0 ]]
+++ jjob_header.sh[117]source /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/env/WCOSS2.env analcalc
++++ WCOSS2.env[3][[ 1 -ne 1 ]]
++++ WCOSS2.env[10]step=analcalc
++++ WCOSS2.env[13]export 'launcher=mpiexec -l'
++++ WCOSS2.env[13]launcher='mpiexec -l'
++++ WCOSS2.env[14]export 'mpmd_opt=--cpu-bind verbose,core cfp'
++++ WCOSS2.env[14]mpmd_opt='--cpu-bind verbose,core cfp'
++++ WCOSS2.env[18][[ -n 784 ]]
++++ WCOSS2.env[18][[ -n 128 ]]
++++ WCOSS2.env[18][[ -n 128 ]]
++++ WCOSS2.env[19]max_threads_per_task=1
++++ WCOSS2.env[20]NTHREADSmax=1
++++ WCOSS2.env[21]NTHREADS1=1
++++ WCOSS2.env[22][[ 1 -gt 1 ]]
++++ WCOSS2.env[25][[ 1 -gt 1 ]]
++++ WCOSS2.env[28]APRUN_default='mpiexec -l -n 784'
++++ WCOSS2.env[34][[ analcalc = \p\r\e\p ]]
++++ WCOSS2.env[34][[ analcalc = \p\r\e\p\b\u\f\r ]]
++++ WCOSS2.env[41][[ analcalc = \p\r\e\p\_\e\m\i\s\s\i\o\n\s ]]
++++ WCOSS2.env[45][[ analcalc = \w\a\v\e\i\n\i\t ]]
++++ WCOSS2.env[45][[ analcalc = \w\a\v\e\p\r\e\p ]]
++++ WCOSS2.env[45][[ analcalc = \w\a\v\e\p\o\s\t\s\b\s ]]
++++ WCOSS2.env[45][[ analcalc = \w\a\v\e\p\o\s\t\b\n\d\p\n\t ]]
++++ WCOSS2.env[45][[ analcalc = \w\a\v\e\p\o\s\t\b\n\d\p\n\t\b\l\l ]]
++++ WCOSS2.env[45][[ analcalc = \w\a\v\e\p\o\s\t\p\n\t ]]
++++ WCOSS2.env[51][[ analcalc = \a\t\m\a\n\l\v\a\r ]]
++++ WCOSS2.env[56][[ analcalc = \a\t\m\e\n\s\a\n\l\o\b\s ]]
++++ WCOSS2.env[61][[ analcalc = \a\t\m\e\n\s\a\n\l\s\o\l ]]
++++ WCOSS2.env[66][[ analcalc = \a\t\m\e\n\s\a\n\l\l\e\t\k\f ]]
++++ WCOSS2.env[71][[ analcalc = \a\t\m\e\n\s\a\n\l\f\v\3\i\n\c ]]
++++ WCOSS2.env[76][[ analcalc = \a\e\r\o\a\n\l\v\a\r ]]
++++ WCOSS2.env[83][[ analcalc = \a\e\r\o\a\n\l\g\e\n\b ]]
++++ WCOSS2.env[88][[ analcalc = \p\r\e\p\o\b\s\a\e\r\o ]]
++++ WCOSS2.env[93][[ analcalc = \s\n\o\w\a\n\l ]]
++++ WCOSS2.env[102][[ analcalc = \e\s\n\o\w\a\n\l ]]
++++ WCOSS2.env[111][[ analcalc = \m\a\r\i\n\e\b\m\a\t ]]
++++ WCOSS2.env[116][[ analcalc = \m\a\r\i\n\e\a\n\l\v\a\r ]]
++++ WCOSS2.env[121][[ analcalc = \m\a\r\i\n\e\a\n\l\c\h\k\p\t ]]
++++ WCOSS2.env[129][[ analcalc = \o\c\n\a\n\a\l\e\c\e\n ]]
++++ WCOSS2.env[134][[ analcalc = \m\a\r\i\n\e\a\n\l\l\e\t\k\f ]]
++++ WCOSS2.env[139][[ analcalc = \a\t\m\a\n\l\f\v\3\i\n\c ]]
++++ WCOSS2.env[144][[ analcalc = \a\n\l\s\t\a\t ]]
++++ WCOSS2.env[149][[ analcalc = \e\c\e\n\_\f\v\3\j\e\d\i ]]
++++ WCOSS2.env[155][[ analcalc = \a\n\a\l\c\a\l\c\_\f\v\3\j\e\d\i ]]
++++ WCOSS2.env[160][[ analcalc = \a\n\a\l ]]
++++ WCOSS2.env[160][[ analcalc = \a\n\a\l\c\a\l\c ]]
++++ WCOSS2.env[162]export OMP_PLACES=cores
++++ WCOSS2.env[162]OMP_PLACES=cores
++++ WCOSS2.env[163]export OMP_STACKSIZE=1G
++++ WCOSS2.env[163]OMP_STACKSIZE=1G
++++ WCOSS2.env[164]export FI_OFI_RXM_SAR_LIMIT=3145728
++++ WCOSS2.env[164]FI_OFI_RXM_SAR_LIMIT=3145728
++++ WCOSS2.env[166][[ analcalc = \a\n\a\l\c\a\l\c ]]
++++ WCOSS2.env[167]export 'MPICH_MPIIO_HINTS=*:romio_cb_write=disable'
++++ WCOSS2.env[167]MPICH_MPIIO_HINTS='*:romio_cb_write=disable'
++++ WCOSS2.env[170]export NTHREADS_GSI=1
++++ WCOSS2.env[170]NTHREADS_GSI=1
++++ WCOSS2.env[171]export 'APRUN_GSI=mpiexec -l -n 784 -ppn 128 --cpu-bind depth --depth 1'
++++ WCOSS2.env[171]APRUN_GSI='mpiexec -l -n 784 -ppn 128 --cpu-bind depth --depth 1'
++++ WCOSS2.env[173]export NTHREADS_CALCINC=1
++++ WCOSS2.env[173]NTHREADS_CALCINC=1
++++ WCOSS2.env[174][[ 1 -gt 1 ]]
++++ WCOSS2.env[177]export 'APRUN_CALCINC=mpiexec -l $ncmd'
++++ WCOSS2.env[177]APRUN_CALCINC='mpiexec -l $ncmd'
++++ WCOSS2.env[179]export NTHREADS_CYCLE=5
++++ WCOSS2.env[179]NTHREADS_CYCLE=5
++++ WCOSS2.env[180][[ 5 -gt 128 ]]
++++ WCOSS2.env[183]ntasks_cycle=6
++++ WCOSS2.env[184]export 'APRUN_CYCLE=mpiexec -l -n 6 -ppn 25 --cpu-bind depth --depth 5'
++++ WCOSS2.env[184]APRUN_CYCLE='mpiexec -l -n 6 -ppn 25 --cpu-bind depth --depth 5'
++++ WCOSS2.env[186]export NTHREADS_GAUSFCANL=1
++++ WCOSS2.env[186]NTHREADS_GAUSFCANL=1
++++ WCOSS2.env[187]ntasks_gausfcanl=1
++++ WCOSS2.env[188]export 'APRUN_GAUSFCANL=mpiexec -l -n 1'
++++ WCOSS2.env[188]APRUN_GAUSFCANL='mpiexec -l -n 1'
++++ WCOSS2.env[190]export NTHREADS_CHGRES=4
++++ WCOSS2.env[190]NTHREADS_CHGRES=4
++++ WCOSS2.env[191][[ 4 -gt 128 ]]
++++ WCOSS2.env[194]export APRUN_CHGRES=
++++ WCOSS2.env[194]APRUN_CHGRES=
++++ WCOSS2.env[196]export CFP_MP=NO
++++ WCOSS2.env[196]CFP_MP=NO
++++ WCOSS2.env[197]export USE_CFP=YES
++++ WCOSS2.env[197]USE_CFP=YES
++++ WCOSS2.env[198]export 'APRUNCFP=mpiexec -l -np $ncmd --cpu-bind verbose,core cfp'
++++ WCOSS2.env[198]APRUNCFP='mpiexec -l -np $ncmd --cpu-bind verbose,core cfp'
+++ jjob_header.sh[117]true
+++ jjob_header.sh[118]export err=0
+++ jjob_header.sh[118]err=0
+++ jjob_header.sh[119][[ 0 -ne 0 ]]
++ JGLOBAL_ATMOS_ANALYSIS_CALC[9]export rCDUMP=gdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[9]rCDUMP=gdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[10]export DO_CALC_ANALYSIS=YES
++ JGLOBAL_ATMOS_ANALYSIS_CALC[10]DO_CALC_ANALYSIS=YES
+++ JGLOBAL_ATMOS_ANALYSIS_CALC[18]/apps/ops/prod/nco/core/prod_util.v2.0.9/exec/ndate -6 2024112418
++ JGLOBAL_ATMOS_ANALYSIS_CALC[18]GDATE=2024112412
++ JGLOBAL_ATMOS_ANALYSIS_CALC[20]export gPDY=20241124
++ JGLOBAL_ATMOS_ANALYSIS_CALC[20]gPDY=20241124
++ JGLOBAL_ATMOS_ANALYSIS_CALC[21]export gcyc=12
++ JGLOBAL_ATMOS_ANALYSIS_CALC[21]gcyc=12
++ JGLOBAL_ATMOS_ANALYSIS_CALC[22]export GDUMP=gdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[22]GDUMP=gdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[23]export GDUMP_ENS=enkfgdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[23]GDUMP_ENS=enkfgdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[25]export OPREFIX=gdas.t18z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[25]OPREFIX=gdas.t18z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[26]export GPREFIX=gdas.t12z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[26]GPREFIX=gdas.t12z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[27]export APREFIX=gdas.t18z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[27]APREFIX=gdas.t18z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[28]export GPREFIX_ENS=enkfgdas.t12z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[28]GPREFIX_ENS=enkfgdas.t12z.
++ JGLOBAL_ATMOS_ANALYSIS_CALC[30]RUN=gdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[30]YMD=20241124
++ JGLOBAL_ATMOS_ANALYSIS_CALC[30]HH=18
++ JGLOBAL_ATMOS_ANALYSIS_CALC[30]declare_from_tmpl -rx COMIN_OBS:COM_OBS_TMPL
++ bash_utils.sh[39][[ NO == \N\O ]]
++ bash_utils.sh[39]set +x
+declare_from_tmpl :: COMIN_OBS=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18/obs
++ JGLOBAL_ATMOS_ANALYSIS_CALC[33]YMD=20241124
++ JGLOBAL_ATMOS_ANALYSIS_CALC[33]HH=18
++ JGLOBAL_ATMOS_ANALYSIS_CALC[33]declare_from_tmpl -rx COMOUT_ATMOS_ANALYSIS:COM_ATMOS_ANALYSIS_TMPL COMIN_ATMOS_RESTART:COM_ATMOS_RESTART_TMPL
++ bash_utils.sh[39][[ NO == \N\O ]]
++ bash_utils.sh[39]set +x
+declare_from_tmpl :: COMOUT_ATMOS_ANALYSIS=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos
+declare_from_tmpl :: COMIN_ATMOS_RESTART=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart
++ JGLOBAL_ATMOS_ANALYSIS_CALC[37]RUN=gdas
++ JGLOBAL_ATMOS_ANALYSIS_CALC[37]YMD=20241124
++ JGLOBAL_ATMOS_ANALYSIS_CALC[37]HH=12
++ JGLOBAL_ATMOS_ANALYSIS_CALC[37]declare_from_tmpl -rx COMIN_OBS_PREV:COM_OBS_TMPL COMIN_ATMOS_HISTORY_PREV:COM_ATMOS_HISTORY_TMPL
++ bash_utils.sh[39][[ NO == \N\O ]]
++ bash_utils.sh[39]set +x
+declare_from_tmpl :: COMIN_OBS_PREV=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12/obs
+declare_from_tmpl :: COMIN_ATMOS_HISTORY_PREV=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history
++ JGLOBAL_ATMOS_ANALYSIS_CALC[42]export ATMGES=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.nc
++ JGLOBAL_ATMOS_ANALYSIS_CALC[42]ATMGES=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.nc
++ JGLOBAL_ATMOS_ANALYSIS_CALC[43]'[' '!' -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.nc ']'
+++ JGLOBAL_ATMOS_ANALYSIS_CALC[49]/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/getncdimlen /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.nc pfull
++ JGLOBAL_ATMOS_ANALYSIS_CALC[49]export LEVS=127
++ JGLOBAL_ATMOS_ANALYSIS_CALC[49]LEVS=127
++ JGLOBAL_ATMOS_ANALYSIS_CALC[49]true
++ JGLOBAL_ATMOS_ANALYSIS_CALC[50]export err=0
++ JGLOBAL_ATMOS_ANALYSIS_CALC[50]err=0
++ JGLOBAL_ATMOS_ANALYSIS_CALC[51][[ 0 -ne 0 ]]
++ JGLOBAL_ATMOS_ANALYSIS_CALC[56]export DOGAUSFCANL=YES
++ JGLOBAL_ATMOS_ANALYSIS_CALC[56]DOGAUSFCANL=YES
++ JGLOBAL_ATMOS_ANALYSIS_CALC[62]/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/scripts/exglobal_atmos_analysis_calc.sh
++ bash[8]'[' -z '' ']'
++ bash[9]case "$-" in
++ bash[12]__lmod_vx=x
++ bash[16]'[' -n x ']'
++ bash[16]set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/usr/share/lmod/lmod/init/bash)
+Shell debugging restarted
++ bash[169]unset __lmod_vx
+++ exglobal_atmos_analysis_calc.sh[23]pwd
++ exglobal_atmos_analysis_calc.sh[23]pwd=/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ exglobal_atmos_analysis_calc.sh[26]rCDUMP=gdas
++ exglobal_atmos_analysis_calc.sh[27]GDUMP=gdas
++ exglobal_atmos_analysis_calc.sh[30]export 'CHGRP_CMD=chgrp rstprod'
++ exglobal_atmos_analysis_calc.sh[30]CHGRP_CMD='chgrp rstprod'
++ exglobal_atmos_analysis_calc.sh[31]export NCLEN=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/getncdimlen
++ exglobal_atmos_analysis_calc.sh[31]NCLEN=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/getncdimlen
++ exglobal_atmos_analysis_calc.sh[32]COMPRESS=gzip
++ exglobal_atmos_analysis_calc.sh[33]UNCOMPRESS=gunzip
++ exglobal_atmos_analysis_calc.sh[34]APRUNCFP='mpiexec -l -np $ncmd --cpu-bind verbose,core cfp'
++ exglobal_atmos_analysis_calc.sh[37]netcdf_diag=.true.
++ exglobal_atmos_analysis_calc.sh[38]binary_diag=.false.
++ exglobal_atmos_analysis_calc.sh[41]DOIAU=YES
++ exglobal_atmos_analysis_calc.sh[42]export IAUFHRS=3,6,9
++ exglobal_atmos_analysis_calc.sh[42]IAUFHRS=3,6,9
++ exglobal_atmos_analysis_calc.sh[45]export NTHREADS_CALCINC=1
++ exglobal_atmos_analysis_calc.sh[45]NTHREADS_CALCINC=1
++ exglobal_atmos_analysis_calc.sh[46]export 'APRUN_CALCINC=mpiexec -l $ncmd'
++ exglobal_atmos_analysis_calc.sh[46]APRUN_CALCINC='mpiexec -l $ncmd'
++ exglobal_atmos_analysis_calc.sh[47]export APRUN_CALCANL=
++ exglobal_atmos_analysis_calc.sh[47]APRUN_CALCANL=
++ exglobal_atmos_analysis_calc.sh[48]export APRUN_CHGRES=
++ exglobal_atmos_analysis_calc.sh[48]APRUN_CHGRES=
++ exglobal_atmos_analysis_calc.sh[50]export CALCANLEXEC=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/calc_analysis.x
++ exglobal_atmos_analysis_calc.sh[50]CALCANLEXEC=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/calc_analysis.x
++ exglobal_atmos_analysis_calc.sh[51]export CHGRESNCEXEC=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/enkf_chgres_recenter_nc.x
++ exglobal_atmos_analysis_calc.sh[51]CHGRESNCEXEC=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/enkf_chgres_recenter_nc.x
++ exglobal_atmos_analysis_calc.sh[52]export CHGRESINCEXEC=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x
++ exglobal_atmos_analysis_calc.sh[52]CHGRESINCEXEC=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x
++ exglobal_atmos_analysis_calc.sh[53]export NTHREADS_CHGRES=4
++ exglobal_atmos_analysis_calc.sh[53]NTHREADS_CHGRES=4
++ exglobal_atmos_analysis_calc.sh[54]CALCINCPY=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/calcinc_gfs.py
++ exglobal_atmos_analysis_calc.sh[55]CALCANLPY=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/calcanl_gfs.py
++ exglobal_atmos_analysis_calc.sh[57]DOGAUSFCANL=YES
++ exglobal_atmos_analysis_calc.sh[58]GAUSFCANLSH=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/gaussian_sfcanl.sh
++ exglobal_atmos_analysis_calc.sh[59]export GAUSFCANLEXE=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ exglobal_atmos_analysis_calc.sh[59]GAUSFCANLEXE=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ exglobal_atmos_analysis_calc.sh[60]NTHREADS_GAUSFCANL=1
++ exglobal_atmos_analysis_calc.sh[61]APRUN_GAUSFCANL='mpiexec -l -n 1'
++ exglobal_atmos_analysis_calc.sh[64]RUN=gdas
++ exglobal_atmos_analysis_calc.sh[65]SENDECF=NO
++ exglobal_atmos_analysis_calc.sh[66]SENDDBN=NO
++ exglobal_atmos_analysis_calc.sh[69]GPREFIX=gdas.t12z.
++ exglobal_atmos_analysis_calc.sh[70]ATMG03=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf003.nc
++ exglobal_atmos_analysis_calc.sh[71]ATMG04=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf004.nc
++ exglobal_atmos_analysis_calc.sh[72]ATMG05=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf005.nc
++ exglobal_atmos_analysis_calc.sh[73]ATMGES=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.nc
++ exglobal_atmos_analysis_calc.sh[74]ATMG07=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf007.nc
++ exglobal_atmos_analysis_calc.sh[75]ATMG08=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf008.nc
++ exglobal_atmos_analysis_calc.sh[76]ATMG09=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf009.nc
++ exglobal_atmos_analysis_calc.sh[79]export APREFIX=gdas.t18z.
++ exglobal_atmos_analysis_calc.sh[79]APREFIX=gdas.t18z.
++ exglobal_atmos_analysis_calc.sh[80]SFCANL=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.sfcanl.nc
++ exglobal_atmos_analysis_calc.sh[81]DTFANL=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.dtfanl.nc
++ exglobal_atmos_analysis_calc.sh[82]ATMANL=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmanl.nc
++ exglobal_atmos_analysis_calc.sh[85]ATMINC=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atminc.nc
++ exglobal_atmos_analysis_calc.sh[88]DOHYBVAR=YES
++ exglobal_atmos_analysis_calc.sh[89]lrun_subdirs=.true.
++ exglobal_atmos_analysis_calc.sh[90][[ YES == \Y\E\S ]]
++ exglobal_atmos_analysis_calc.sh[91]l_hyb_ens=.true.
++ exglobal_atmos_analysis_calc.sh[92]export l4densvar=.true.
++ exglobal_atmos_analysis_calc.sh[92]l4densvar=.true.
++ exglobal_atmos_analysis_calc.sh[93]export lwrite4danl=.true.
++ exglobal_atmos_analysis_calc.sh[93]lwrite4danl=.true.
++ exglobal_atmos_analysis_calc.sh[101][[ YES == \Y\E\S ]]
++ exglobal_atmos_analysis_calc.sh[101][[ .true. == \.\t\r\u\e\. ]]
++ exglobal_atmos_analysis_calc.sh[101][[ .true. == \.\t\r\u\e\. ]]
++ exglobal_atmos_analysis_calc.sh[102]ATMA03=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma003.nc
++ exglobal_atmos_analysis_calc.sh[103]ATMI03=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi003.nc
++ exglobal_atmos_analysis_calc.sh[104]ATMA04=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma004.nc
++ exglobal_atmos_analysis_calc.sh[105]ATMI04=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi004.nc
++ exglobal_atmos_analysis_calc.sh[106]ATMA05=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma005.nc
++ exglobal_atmos_analysis_calc.sh[107]ATMI05=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi005.nc
++ exglobal_atmos_analysis_calc.sh[108]ATMA07=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma007.nc
++ exglobal_atmos_analysis_calc.sh[109]ATMI07=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi007.nc
++ exglobal_atmos_analysis_calc.sh[110]ATMA08=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma008.nc
++ exglobal_atmos_analysis_calc.sh[111]ATMI08=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi008.nc
++ exglobal_atmos_analysis_calc.sh[112]ATMA09=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma009.nc
++ exglobal_atmos_analysis_calc.sh[113]ATMI09=/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi009.nc
++ exglobal_atmos_analysis_calc.sh[118]rm -rf 'dir.*'
++ exglobal_atmos_analysis_calc.sh[122][[ YES == \Y\E\S ]]
++ exglobal_atmos_analysis_calc.sh[124]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmanl.nc siganl
++ exglobal_atmos_analysis_calc.sh[125]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atminc.nc siginc.nc
++ exglobal_atmos_analysis_calc.sh[126][[ YES == \Y\E\S ]]
++ exglobal_atmos_analysis_calc.sh[126][[ .true. == \.\t\r\u\e\. ]]
++ exglobal_atmos_analysis_calc.sh[126][[ .true. == \.\t\r\u\e\. ]]
++ exglobal_atmos_analysis_calc.sh[127]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma003.nc siga03
++ exglobal_atmos_analysis_calc.sh[128]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi003.nc sigi03.nc
++ exglobal_atmos_analysis_calc.sh[129]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma004.nc siga04
++ exglobal_atmos_analysis_calc.sh[130]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi004.nc sigi04.nc
++ exglobal_atmos_analysis_calc.sh[131]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma005.nc siga05
++ exglobal_atmos_analysis_calc.sh[132]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi005.nc sigi05.nc
++ exglobal_atmos_analysis_calc.sh[133]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma007.nc siga07
++ exglobal_atmos_analysis_calc.sh[134]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi007.nc sigi07.nc
++ exglobal_atmos_analysis_calc.sh[135]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma008.nc siga08
++ exglobal_atmos_analysis_calc.sh[136]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi008.nc sigi08.nc
++ exglobal_atmos_analysis_calc.sh[137]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma009.nc siga09
++ exglobal_atmos_analysis_calc.sh[138]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmi009.nc sigi09.nc
++ exglobal_atmos_analysis_calc.sh[141]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf003.nc sigf03
++ exglobal_atmos_analysis_calc.sh[142]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.nc sigf06
++ exglobal_atmos_analysis_calc.sh[143]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf009.nc sigf09
++ exglobal_atmos_analysis_calc.sh[145][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf004.nc ]]
++ exglobal_atmos_analysis_calc.sh[146]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf004.nc sigf04
++ exglobal_atmos_analysis_calc.sh[148][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf005.nc ]]
++ exglobal_atmos_analysis_calc.sh[149]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf005.nc sigf05
++ exglobal_atmos_analysis_calc.sh[151][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf007.nc ]]
++ exglobal_atmos_analysis_calc.sh[152]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf007.nc sigf07
++ exglobal_atmos_analysis_calc.sh[154][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf008.nc ]]
++ exglobal_atmos_analysis_calc.sh[155]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf008.nc sigf08
++ exglobal_atmos_analysis_calc.sh[159][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf004.nc ]]
++ exglobal_atmos_analysis_calc.sh[159][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf005.nc ]]
++ exglobal_atmos_analysis_calc.sh[159][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf007.nc ]]
++ exglobal_atmos_analysis_calc.sh[159][[ -f /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf008.nc ]]
++ exglobal_atmos_analysis_calc.sh[160]nhr_obsbin=1
++ exglobal_atmos_analysis_calc.sh[163]/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/calcanl_gfs.py
+{'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x14a59b308c40>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, '__file__': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/calcanl_gfs.py', '__cached__': None, 'os': <module 'os' from '/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/lib/python3.8/os.py'>, 'shutil': <module 'shutil' from '/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/lib/python3.8/shutil.py'>, 'subprocess': <module 'subprocess' from '/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/lib/python3.8/subprocess.py'>, 'sys': <module 'sys' (built-in)>, 'gsi_utils': <module 'gsi_utils' from '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/gsi_utils.py'>, 'OrderedDict': <class 'collections.OrderedDict'>, 'datetime': <module 'datetime' from '/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/lib/python3.8/datetime.py'>, 'cast_as_dtype': <function cast_as_dtype at 0x14a598b36d30>, 'python2fortran_bool': {True: '.true.', False: '.false.'}, 'calcanl_gfs': <function calcanl_gfs at 0x14a59abb6040>, 'DoIAU': True, 'l4DEnsVar': True, 'Write4Danl': True, 'ComIn_Ges': '/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history', 'GPrefix': 'gdas.t12z.', 'ComOut': '/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos', 'APrefix': 'gdas.t18z.', 'NThreads': '4', 'FixDir': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am', 'atmges_ens_mean': './atmges_ensmean', 'RunDir': '/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032', 'ExecCMD': '', 'ExecCMDMPI': 'mpiexec -l $ncmd', 'ExecAnl': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/calc_analysis.x', 'ExecChgresInc': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x', 'NEMSGet': 'nemsio_get', 'IAUHrs': [3, 6, 9], 'Run': 'gdas', 'JEDI': False}
+calcanl_gfs beginning at:  2025-06-16 18:45:53.351199
+mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03
+mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma003.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.03
+/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.03 exists, unlinking.
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/siga03 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.03
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigi03.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/siginc.nc.03
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/inc.fullres.03 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/inc.fullres.03
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigf03 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/ges.03
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigf03 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/ges.03
+cp /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/chgres_inc.x
+mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_03
+mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma003.ensres.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/anl.ensres.03
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigi03.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/siginc.nc.03
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf003.ensres.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.ensres.03
+cp /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/calc_analysis.x /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/calc_anl.x
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/siginc.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/siginc.nc.06
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigf06 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/ges.06
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/siganl /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.06
+cp /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/chgres_inc.x
+cp /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/calc_analysis.x /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/siginc.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/siginc.nc.06
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atmanl.ensres.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/anl.ensres.06
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf006.ensres.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.ensres.06
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigf06 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.06
+mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma009.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.09
+/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.09 exists, unlinking.
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/siga09 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/anl.09
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigi09.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/siginc.nc.09
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/inc.fullres.09 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/inc.fullres.09
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigf09 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/ges.09
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigf09 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/ges.09
+cp /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/chgres_inc.x
+mkdir -p /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_09
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.atma009.ensres.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/anl.ensres.09
+ln -s /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/sigi09.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/siginc.nc.09
+ln -s /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history/gdas.t12z.atmf009.ensres.nc /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.ensres.09
+will process increment file: /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/siginc.nc.03
+will process increment file: /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/siginc.nc.06
+will process increment file: /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/siginc.nc.09
+nhosts,tasks= 1 127
+Interpolating increment for f003
+interp_inc 3 OrderedDict([('setup', {'lon_out': 4608, 'lat_out': 2304, 'lev': 127, 'infile': "'siginc.nc.03'", 'outfile': "'inc.fullres.03'"})])
+mpiexec -l -n 13 --cpu-bind depth --depth 4 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/chgres_inc.x submitted on nid003713.dogwood.wcoss2.ncep.noaa.gov
++ Unknown[0]mpiexec -l -n 13 --cpu-bind depth --depth 4 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_03/chgres_inc.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM INTERP_INC HAS BEGUN. COMPILED 2019100.00     ORG: EMC
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:      STARTING DATE-TIME  JUN 16,2025  18:46:08.895  167  MON   2460843
+
+
+ - READ SETUP NAMELIST
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - WILL INTERPOLATE TO GAUSSIAN GRID OF DIMENSION         4608        2304
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - OPEN OUTPUT FILE: inc.fullres.03
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - OPEN INPUT FILE: siginc.nc.03
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - PROCESS RECORD: u_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 2:  - PROCESS RECORD: delp_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 3:  - PROCESS RECORD: delz_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 4:  - PROCESS RECORD: T_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 5:  - PROCESS RECORD: sphum_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 6:  - PROCESS RECORD: liq_wat_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 7:  - PROCESS RECORD: o3mr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 8:  - PROCESS RECORD: icmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 9:  - PROCESS RECORD: rwmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 10:  - PROCESS RECORD: snmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 11:  - PROCESS RECORD: grle_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - WRITE OUTPUT FILE: inc.fullres.03
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - NORMAL TERMINATION
+
+
+     ENDING DATE-TIME    JUN 16,2025  18:47:56.379  167  MON   2460843
+     PROGRAM INTERP_INC HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 107.484574
+The total amount of time in user mode                = 33.343750
+The total amount of time in sys mode                 = 75.333213
+The maximum resident set size (KB)                   = 15998740
+Number of page faults without I/O activity           = 12852
+Number of page faults with I/O activity              = 334
+Number of times filesystem performed INPUT           = 43382
+Number of times filesystem performed OUTPUT          = 126406864
+Number of Voluntary Context Switches                 = 1116
+Number of InVoluntary Context Switches               = 458
+*****************END OF RESOURCE STATISTICS*************************
+
+Interpolating increment for f006
+interp_inc 6 OrderedDict([('setup', {'lon_out': 4608, 'lat_out': 2304, 'lev': 127, 'infile': "'siginc.nc.06'", 'outfile': "'inc.fullres.06'"})])
+mpiexec -l -n 13 --cpu-bind depth --depth 4 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/chgres_inc.x submitted on nid003713.dogwood.wcoss2.ncep.noaa.gov
++ Unknown[0]mpiexec -l -n 13 --cpu-bind depth --depth 4 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/chgres_inc.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM INTERP_INC HAS BEGUN. COMPILED 2019100.00     ORG: EMC
+     STARTING DATE-TIME  JUN 16,2025  18:47:56.861  167  MON   2460843
+
+
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - READ SETUP NAMELIST
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - WILL INTERPOLATE TO GAUSSIAN GRID OF DIMENSION         4608        2304
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - OPEN OUTPUT FILE: inc.fullres.06
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - OPEN INPUT FILE: siginc.nc.06
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - PROCESS RECORD: u_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 2:  - PROCESS RECORD: delp_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 3:  - PROCESS RECORD: delz_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 4:  - PROCESS RECORD: T_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 5:  - PROCESS RECORD: sphum_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 6:  - PROCESS RECORD: liq_wat_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 7:  - PROCESS RECORD: o3mr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 8:  - PROCESS RECORD: icmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 9:  - PROCESS RECORD: rwmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 10:  - PROCESS RECORD: snmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 11:  - PROCESS RECORD: grle_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - WRITE OUTPUT FILE: inc.fullres.06
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - NORMAL TERMINATION
+
+
+     ENDING DATE-TIME    JUN 16,2025  18:49:52.946  167  MON   2460843
+     PROGRAM INTERP_INC HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 116.085170
+The total amount of time in user mode                = 34.885434
+The total amount of time in sys mode                 = 80.759980
+The maximum resident set size (KB)                   = 15999032
+Number of page faults without I/O activity           = 13096
+Number of page faults with I/O activity              = 68
+Number of times filesystem performed INPUT           = 56
+Number of times filesystem performed OUTPUT          = 126406872
+Number of Voluntary Context Switches                 = 97
+Number of InVoluntary Context Switches               = 554
+*****************END OF RESOURCE STATISTICS*************************
+
+Interpolating increment for f009
+interp_inc 9 OrderedDict([('setup', {'lon_out': 4608, 'lat_out': 2304, 'lev': 127, 'infile': "'siginc.nc.09'", 'outfile': "'inc.fullres.09'"})])
+mpiexec -l -n 13 --cpu-bind depth --depth 4 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/chgres_inc.x submitted on nid003713.dogwood.wcoss2.ncep.noaa.gov
++ Unknown[0]mpiexec -l -n 13 --cpu-bind depth --depth 4 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/chgres_inc.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM INTERP_INC HAS BEGUN. COMPILED 2019100.00     ORG: EMC
+     STARTING DATE-TIME  JUN 16,2025  18:49:53.430  167  MON   2460843
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: 
+
+ - READ SETUP NAMELIST
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - WILL INTERPOLATE TO GAUSSIAN GRID OF DIMENSION         4608        2304
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - OPEN OUTPUT FILE: inc.fullres.09
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - OPEN INPUT FILE: siginc.nc.09
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - PROCESS RECORD: u_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 2:  - PROCESS RECORD: delp_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 3:  - PROCESS RECORD: delz_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 4:  - PROCESS RECORD: T_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 5:  - PROCESS RECORD: sphum_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 6:  - PROCESS RECORD: liq_wat_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 7:  - PROCESS RECORD: o3mr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 8:  - PROCESS RECORD: icmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 9:  - PROCESS RECORD: rwmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 10:  - PROCESS RECORD: snmr_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 11:  - PROCESS RECORD: grle_inc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - WRITE OUTPUT FILE: inc.fullres.09
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12:  - NORMAL TERMINATION
+
+
+     ENDING DATE-TIME    JUN 16,2025  18:52:03.795  167  MON   2460843
+     PROGRAM INTERP_INC HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 12: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 130.365996
+The total amount of time in user mode                = 37.151280
+The total amount of time in sys mode                 = 92.636348
+The maximum resident set size (KB)                   = 15996888
+Number of page faults without I/O activity           = 1888948
+Number of page faults with I/O activity              = 67
+Number of times filesystem performed INPUT           = 96
+Number of times filesystem performed OUTPUT          = 126406864
+Number of Voluntary Context Switches                 = 118
+Number of InVoluntary Context Switches               = 650
+*****************END OF RESOURCE STATISTICS*************************
+
+fullres_calc_anl OrderedDict([('setup', {'datapath': "'./'", 'analysis_filename': "'anl'", 'firstguess_filename': "'ges'", 'increment_filename': "'inc.fullres'", 'fhr': 6, 'jedi': '.false.'})])
+mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/calc_anl.x submitted
++ Unknown[0]mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_06/calc_anl.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM CALC_ANALYSIS HAS BEGUN. COMPILED 2019300.00     ORG: EMC
+     STARTING DATE-TIME  JUN 16,2025  18:52:04.629  167  MON   2460843
+
+
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Analysis File    = .//anl.06
+ First Guess File = .//ges.06
+ Increment File   = .//inc.fullres.06
+ Forecast Hour    =            6
+ Number of PEs    =          127
+ input guess file and increment file should be in netCDF format
+ writing analysis in netCDF format
+ Use JEDI format  =  F
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Background initialization date=        2024          11          24          12
+           0           0
+ nlon=        4608
+ nlat=        2304
+ nlev=         127
+ Analysis valid date=        2024          11          24          18
+           0           0
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_xt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_yt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background pfull  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background phalf  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to clwmr  liq_wat
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to delz   delz   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to dpres  delp   
+ Copying from Background dzdt   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to grle   grle   
+ Copying from Background hgtsfc 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to icmr   icmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to o3mr   o3mr   
+ Computing and Adding Surface Pressure Increment
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to rwmr   rwmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to snmr   snmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to spfh   sphum  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to tmp    T      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to ugrd   u      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to vgrd   v      
+ Copying from Background cld_amt
+ cld_amtnot in background file, skipping...
+ Copying from Background nccice 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background nconrd 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background omga   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+     ENDING DATE-TIME    JUN 16,2025  18:53:51.394  167  MON   2460843
+     PROGRAM CALC_ANALYSIS HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 106.765773
+The total amount of time in user mode                = 52.952317
+The total amount of time in sys mode                 = 23.711603
+The maximum resident set size (KB)                   = 5701536
+Number of page faults without I/O activity           = 178371
+Number of page faults with I/O activity              = 189
+Number of times filesystem performed INPUT           = 727696
+Number of times filesystem performed OUTPUT          = 1003968
+Number of Voluntary Context Switches                 = 1599
+Number of InVoluntary Context Switches               = 656
+*****************END OF RESOURCE STATISTICS*************************
+
+/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.ensres.03
+Calculating analysis on ensemble resolution for f003
+ensres_calc_anl OrderedDict([('setup', {'datapath': "'./'", 'analysis_filename': "'anl.ensres'", 'firstguess_filename': "'ges.ensres'", 'increment_filename': "'siginc.nc'", 'fhr': 3, 'jedi': '.false.'})])
+mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x submitted
++ Unknown[0]mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM CALC_ANALYSIS HAS BEGUN. COMPILED 2019300.00     ORG: EMC
+     STARTING DATE-TIME  JUN 16,2025  18:53:52.134  167  MON   2460843
+
+
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Analysis File    = .//anl.ensres.03
+ First Guess File = .//ges.ensres.03
+ Increment File   = .//siginc.nc.03
+ Forecast Hour    =            3
+ Number of PEs    =          127
+ input guess file and increment file should be in netCDF format
+ writing analysis in netCDF format
+ Use JEDI format  =  F
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Background initialization date=        2024          11          24          12
+           0           0
+ nlon=        1536
+ nlat=         768
+ nlev=         127
+ Analysis valid date=        2024          11          24          15
+           0           0
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_xt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_yt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background pfull  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background phalf  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to clwmr  liq_wat
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to delz   delz   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to dpres  delp   
+ Copying from Background dzdt   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to grle   grle   
+ Copying from Background hgtsfc 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to icmr   icmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to o3mr   o3mr   
+ Computing and Adding Surface Pressure Increment
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to rwmr   rwmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to snmr   snmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to spfh   sphum  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to tmp    T      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to ugrd   u      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to vgrd   v      
+ Copying from Background cld_amt
+ cld_amtnot in background file, skipping...
+ Copying from Background nccice 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background nconrd 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background omga   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+     ENDING DATE-TIME    JUN 16,2025  18:54:33.038  167  MON   2460843
+     PROGRAM CALC_ANALYSIS HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 40.904361
+The total amount of time in user mode                = 20.311137
+The total amount of time in sys mode                 = 12.603464
+The maximum resident set size (KB)                   = 211220
+Number of page faults without I/O activity           = 13735
+Number of page faults with I/O activity              = 754
+Number of times filesystem performed INPUT           = 379008
+Number of times filesystem performed OUTPUT          = 350392
+Number of Voluntary Context Switches                 = 3345
+Number of InVoluntary Context Switches               = 476
+*****************END OF RESOURCE STATISTICS*************************
+
+/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.ensres.06
+Calculating analysis on ensemble resolution for f006
+ensres_calc_anl OrderedDict([('setup', {'datapath': "'./'", 'analysis_filename': "'anl.ensres'", 'firstguess_filename': "'ges.ensres'", 'increment_filename': "'siginc.nc'", 'fhr': 6, 'jedi': '.false.'})])
+mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x submitted
++ Unknown[0]mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM CALC_ANALYSIS HAS BEGUN. COMPILED 2019300.00     ORG: EMC
+     STARTING DATE-TIME  JUN 16,2025  18:54:33.888  167  MON   2460843
+
+
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Analysis File    = .//anl.ensres.06
+ First Guess File = .//ges.ensres.06
+ Increment File   = .//siginc.nc.06
+ Forecast Hour    =            6
+ Number of PEs    =          127
+ input guess file and increment file should be in netCDF format
+ writing analysis in netCDF format
+ Use JEDI format  =  F
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Background initialization date=        2024          11          24          12
+           0           0
+ nlon=        1536
+ nlat=         768
+ nlev=         127
+ Analysis valid date=        2024          11          24          18
+           0           0
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_xt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_yt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background pfull  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background phalf  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to clwmr  liq_wat
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to delz   delz   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to dpres  delp   
+ Copying from Background dzdt   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to grle   grle   
+ Copying from Background hgtsfc 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to icmr   icmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to o3mr   o3mr   
+ Computing and Adding Surface Pressure Increment
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to rwmr   rwmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to snmr   snmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to spfh   sphum  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to tmp    T      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to ugrd   u      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to vgrd   v      
+ Copying from Background cld_amt
+ cld_amtnot in background file, skipping...
+ Copying from Background nccice 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background nconrd 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background omga   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+     ENDING DATE-TIME    JUN 16,2025  18:55:12.561  167  MON   2460843
+     PROGRAM CALC_ANALYSIS HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 38.672787
+The total amount of time in user mode                = 17.139470
+The total amount of time in sys mode                 = 13.262685
+The maximum resident set size (KB)                   = 211220
+Number of page faults without I/O activity           = 14683
+Number of page faults with I/O activity              = 1332
+Number of times filesystem performed INPUT           = 373648
+Number of times filesystem performed OUTPUT          = 350384
+Number of Voluntary Context Switches                 = 4297
+Number of InVoluntary Context Switches               = 359
+*****************END OF RESOURCE STATISTICS*************************
+
+/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/ges.ensres.09
+Calculating analysis on ensemble resolution for f009
+ensres_calc_anl OrderedDict([('setup', {'datapath': "'./'", 'analysis_filename': "'anl.ensres'", 'firstguess_filename': "'ges.ensres'", 'increment_filename': "'siginc.nc'", 'fhr': 9, 'jedi': '.false.'})])
+mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x submitted
++ Unknown[0]mpiexec -l -n 127 /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06/calc_anl.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM CALC_ANALYSIS HAS BEGUN. COMPILED 2019300.00     ORG: EMC
+     STARTING DATE-TIME  JUN 16,2025  18:55:13.355  167  MON   2460843
+
+
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Analysis File    = .//anl.ensres.09
+ First Guess File = .//ges.ensres.09
+ Increment File   = .//siginc.nc.09
+ Forecast Hour    =            9
+ Number of PEs    =          127
+ input guess file and increment file should be in netCDF format
+ writing analysis in netCDF format
+ Use JEDI format  =  F
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Background initialization date=        2024          11          24          12
+           0           0
+ nlon=        1536
+ nlat=         768
+ nlev=         127
+ Analysis valid date=        2024          11          24          21
+           0           0
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_xt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background grid_yt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background pfull  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background phalf  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to clwmr  liq_wat
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to delz   delz   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to dpres  delp   
+ Copying from Background dzdt   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to grle   grle   
+ Copying from Background hgtsfc 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to icmr   icmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to o3mr   o3mr   
+ Computing and Adding Surface Pressure Increment
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to rwmr   rwmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to snmr   snmr   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to spfh   sphum  
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to tmp    T      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to ugrd   u      
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Adding Increment to vgrd   v      
+ Copying from Background cld_amt
+ cld_amtnot in background file, skipping...
+ Copying from Background nccice 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background nconrd 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  Copying from Background omga   
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+     ENDING DATE-TIME    JUN 16,2025  18:55:50.818  167  MON   2460843
+     PROGRAM CALC_ANALYSIS HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 37.462886
+The total amount of time in user mode                = 19.120164
+The total amount of time in sys mode                 = 11.705242
+The maximum resident set size (KB)                   = 211220
+Number of page faults without I/O activity           = 11329
+Number of page faults with I/O activity              = 493
+Number of times filesystem performed INPUT           = 355800
+Number of times filesystem performed OUTPUT          = 350384
+Number of Voluntary Context Switches                 = 2927
+Number of InVoluntary Context Switches               = 312
+*****************END OF RESOURCE STATISTICS*************************
+
+calcanl_gfs successfully completed at:  2025-06-16 18:55:50.871168
+{'DoIAU': True, 'l4DEnsVar': True, 'Write4Danl': True, 'ComOut': '/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos', 'APrefix': 'gdas.t18z.', 'ComIn_Ges': '/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/12//model/atmos/history', 'GPrefix': 'gdas.t12z.', 'FixDir': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am', 'atmges_ens_mean': './atmges_ensmean', 'RunDir': '/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032', 'NThreads': '4', 'NEMSGet': 'nemsio_get', 'IAUHrs': [3, 6, 9], 'ExecCMD': '', 'ExecCMDMPI': 'mpiexec -l 3', 'ExecAnl': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/calc_analysis.x', 'ExecChgresInc': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/interp_inc.x', 'run': 'gdas', 'JEDI': False, 'IAUHH': [3, 6, 9], 'fh': 9, 'CalcAnlDir': '/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09', 'CalcAnlDir6': '/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_ensres_06', 'AnlDims': {'lon': 1536, 'lat': 768, 'lev': 127, 'ilev': 128}, 'GesDims': {'grid_xt': 4608, 'grid_yt': 2304, 'pfull': 127, 'phalf': 128, 'time': 1, 'nchars': 20}, 'levs': 127, 'LonA': 1536, 'LatA': 768, 'LonB': 4608, 'LatB': 2304, 'levs2': 128, 'siglevel': '/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am/global_hyblev.l128.txt', 'nFH': 3, 'ExecCMDMPI1': 'mpiexec -l 1', 'ExecCMDLevs': 'mpiexec -l 3', 'ExecCMDMPI13': 'mpiexec -l 3', 'launcher': 'mpiexec', 'hostfile': <_io.TextIOWrapper name='/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032/calcanl_09/hosts' mode='w' encoding='UTF-8'>, 'f': <_io.TextIOWrapper name='/var/spool/pbs/aux/46054179.dbqs01' mode='r' encoding='UTF-8'>, 'hosts_tmp': ['nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov', 'nid003713.dogwood.wcoss2.ncep.noaa.gov'], 'nhosts': 1, 'ExecCMDMPI_host': 'mpiexec -l -n 3', 'tasks': 127, 'ExecCMDMPILevs_host': 'mpiexec -l -n 127', 'ExecCMDMPILevs_nohost': 'mpiexec -l -n 127', 'ExecCMDMPI1_host': 'mpiexec -l -n 1 --cpu-bind depth --depth 4', 'ExecCMDMPI13_host': 'mpiexec -l -n 13 --cpu-bind depth --depth 4', 'ihost': 0, 'namelist': OrderedDict([('setup', {'datapath': "'./'", 'analysis_filename': "'anl.ensres'", 'firstguess_filename': "'ges.ensres'", 'increment_filename': "'siginc.nc'", 'fhr': 9, 'jedi': '.false.'})]), 'job': <subprocess.Popen object at 0x14a597262fd0>, 'ec': 0, 'fullres_anl_job': <subprocess.Popen object at 0x14a5982aab20>, 'exit_fullres': 0, 'chgres_jobs': [], 'ensres_anl_job': <subprocess.Popen object at 0x14a596fe5e20>, 'exit_ensres': 0, 'hosts': ['nid003713.dogwood.wcoss2.ncep.noaa.gov']}
++ exglobal_atmos_analysis_calc.sh[164]export err=0
++ exglobal_atmos_analysis_calc.sh[164]err=0
++ exglobal_atmos_analysis_calc.sh[165][[ 0 -ne 0 ]]
++ exglobal_atmos_analysis_calc.sh[174][[ YES == \Y\E\S ]]
++ exglobal_atmos_analysis_calc.sh[175]export 'APRUNSFC=mpiexec -l -n 1'
++ exglobal_atmos_analysis_calc.sh[175]APRUNSFC='mpiexec -l -n 1'
++ exglobal_atmos_analysis_calc.sh[176]export OMP_NUM_THREADS_SFC=1
++ exglobal_atmos_analysis_calc.sh[176]OMP_NUM_THREADS_SFC=1
++ exglobal_atmos_analysis_calc.sh[178]/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/ush/gaussian_sfcanl.sh
++ bash[8]'[' -z '' ']'
++ bash[9]case "$-" in
++ bash[12]__lmod_vx=x
++ bash[16]'[' -n x ']'
++ bash[16]set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/usr/share/lmod/lmod/init/bash)
+Shell debugging restarted
++ bash[169]unset __lmod_vx
++ gaussian_sfcanl.sh[100]CASE=C1152
+++ gaussian_sfcanl.sh[101]cut -c2-
+++ gaussian_sfcanl.sh[101]echo C1152
++ gaussian_sfcanl.sh[101]res=1152
++ gaussian_sfcanl.sh[102]LONB_CASE=4608
++ gaussian_sfcanl.sh[103]LATB_CASE=2304
++ gaussian_sfcanl.sh[104]LONB_SFC=4608
++ gaussian_sfcanl.sh[105]LATB_SFC=2304
++ gaussian_sfcanl.sh[106]DONST=YES
++ gaussian_sfcanl.sh[107]LEVS=127
++ gaussian_sfcanl.sh[108]LEVSP1=128
++ gaussian_sfcanl.sh[109]FIXWGTS=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/fv3_SCRIP_C1152_GRIDSPEC_lon4608_lat2304.gaussian.neareststod.nc
++ gaussian_sfcanl.sh[110]DATA=/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ gaussian_sfcanl.sh[113]XC=
++ gaussian_sfcanl.sh[114]GAUSFCANLEXE=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ gaussian_sfcanl.sh[115]SIGLEVEL=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am/global_hyblev.l128.txt
++ gaussian_sfcanl.sh[117]CDATE=2024112418
++ gaussian_sfcanl.sh[120]export PGMOUT=OUTPUT.45588
++ gaussian_sfcanl.sh[120]PGMOUT=OUTPUT.45588
++ gaussian_sfcanl.sh[121]export PGMERR=errfile
++ gaussian_sfcanl.sh[121]PGMERR=errfile
++ gaussian_sfcanl.sh[122]export 'REDOUT=1>'
++ gaussian_sfcanl.sh[122]REDOUT='1>'
++ gaussian_sfcanl.sh[123]export 'REDERR=2>'
++ gaussian_sfcanl.sh[123]REDERR='2>'
+++ gaussian_sfcanl.sh[129]pwd
++ gaussian_sfcanl.sh[129]pwd=/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ gaussian_sfcanl.sh[130]cd /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ gaussian_sfcanl.sh[131][[ ! -d /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos ]]
++ gaussian_sfcanl.sh[137]export PGM=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ gaussian_sfcanl.sh[137]PGM=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ gaussian_sfcanl.sh[138]export pgm=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ gaussian_sfcanl.sh[138]pgm=/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
++ gaussian_sfcanl.sh[141]iy=2024
++ gaussian_sfcanl.sh[142]im=11
++ gaussian_sfcanl.sh[143]id=24
++ gaussian_sfcanl.sh[144]ih=18
++ gaussian_sfcanl.sh[146]export OMP_NUM_THREADS=1
++ gaussian_sfcanl.sh[146]OMP_NUM_THREADS=1
++ gaussian_sfcanl.sh[149]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/fv3_SCRIP_C1152_GRIDSPEC_lon4608_lat2304.gaussian.neareststod.nc ./weights.nc
++ gaussian_sfcanl.sh[152]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart/20241124.180000.sfcanl_data.tile1.nc ./anal.tile1.nc
++ gaussian_sfcanl.sh[153]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart/20241124.180000.sfcanl_data.tile2.nc ./anal.tile2.nc
++ gaussian_sfcanl.sh[154]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart/20241124.180000.sfcanl_data.tile3.nc ./anal.tile3.nc
++ gaussian_sfcanl.sh[155]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart/20241124.180000.sfcanl_data.tile4.nc ./anal.tile4.nc
++ gaussian_sfcanl.sh[156]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart/20241124.180000.sfcanl_data.tile5.nc ./anal.tile5.nc
++ gaussian_sfcanl.sh[157]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//model/atmos/restart/20241124.180000.sfcanl_data.tile6.nc ./anal.tile6.nc
++ gaussian_sfcanl.sh[160]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/C1152.mx025_oro_data.tile1.nc ./orog.tile1.nc
++ gaussian_sfcanl.sh[161]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/C1152.mx025_oro_data.tile2.nc ./orog.tile2.nc
++ gaussian_sfcanl.sh[162]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/C1152.mx025_oro_data.tile3.nc ./orog.tile3.nc
++ gaussian_sfcanl.sh[163]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/C1152.mx025_oro_data.tile4.nc ./orog.tile4.nc
++ gaussian_sfcanl.sh[164]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/C1152.mx025_oro_data.tile5.nc ./orog.tile5.nc
++ gaussian_sfcanl.sh[165]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/orog/C1152/C1152.mx025_oro_data.tile6.nc ./orog.tile6.nc
++ gaussian_sfcanl.sh[167]/bin/ln -sf /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/fix/am/global_hyblev.l128.txt ./vcoord.txt
++ gaussian_sfcanl.sh[170]/bin/ln -sf /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/gdas.20241124/18//analysis/atmos/gdas.t18z.sfcanl.nc ./sfc.gaussian.analysis.file
++ gaussian_sfcanl.sh[173][[ YES == \Y\E\S ]]
++ gaussian_sfcanl.sh[173]do_nst=.true.
++ gaussian_sfcanl.sh[176]cat
++ gaussian_sfcanl.sh[188]mpiexec -l -n 1 /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/exec/gaussian_sfcanl.x
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: 
+
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+     PROGRAM GAUSSIAN_SFCANL HAS BEGUN. COMPILED 2018179.55     ORG: NP20
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:      STARTING DATE-TIME  JUN 16,2025  18:55:51.853  167  MON   2460843
+
+
+ - BEGIN EXECUTION
+ 
+ - READ SETUP NAMELIST
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INTERPOLATION WEIGHT FILE
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT SFC DATA FOR TILE:            1
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLMSK:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TSEA:     340.814798915862        262.749310291188     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHELEG:    28.9328822460652       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TG3:    302.386016845703        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ZORL:    148.515001416206       9.066577495637874E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVSF:   0.586180090904236       1.430881861597300E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVWF:   0.585969090461731       1.324080489575863E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNSF:   0.703757405281067       3.786995261907578E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNWF:   0.696199893951416       3.786995261907578E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACSF:    1.00000011920929       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACWF:    1.00000000000000      -1.192092895507812E-007
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VFRAC:   0.967906672446454       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - CANOPY:    1.18238387459334       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - F10M:    1.01048336057550       0.935899703628058     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - T2M:    313.344997536253        262.218783804761     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Q2M:   2.320305099310627E-002  1.299735316147542E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VTYPE:    19.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STYPE:    12.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - UUSTAR:    2.10401616402787       1.845902322878048E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFMM:    21.6723539506148        1.74099103213397     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFHH:    20.8044641249059        1.54017564075702     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - HICE:   0.000000000000000E+000  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FICE:   0.000000000000000E+000  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TISFC:    340.814798915862        262.749310291188     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TPRCP:   3.726983116347595E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SRFLAG:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNWDPH:    117.516120349328       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMIN:   0.838093996047974       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMAX:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLOPE:    7.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNOALB:   0.830000162124634       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_0:   7.630452173720149E-002  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_D:   0.000000000000000E+000  -209.243223809271     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - D_CONV:    4.42329493554721       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DT_COOL:    1.04990587417386       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - QRAIN:    54.8092418396619      -0.813304108459259     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TREF:    306.314117431641        269.788299560547     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_0:   0.896986221939357       -2.82782506004872     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_D:    1.87675700665522      -0.608315767252824     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XS:   8.439004748244588E-002 -7.919406476594054E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XT:    5.14655733618201       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XTTS:    1.47423199063630       -5.64204947350901     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZTS:    7615.16060729569       -91.0996811891918     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XU:    1.24221760361794       -1.60048525759137     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XV:    1.29619501724797       -1.60592596552668     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZ:    30.0000000000000       0.456870902918118     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Z_C:   3.412432830108452E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SMC:    1.00000000000000       3.333333200878572E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STC:    328.681971887353        272.312650034921     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLC:    1.00000000000000       3.333333200878572E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT OROG DATA FOR TILE:            1
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - OROG:    4135.25000000000       -117.290321350098     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT SFC DATA FOR TILE:            2
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLMSK:    2.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TSEA:     308.441818741209        221.828828440921     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHELEG:    305.650760040912       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TG3:    300.993469238281        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ZORL:    148.515001416206       5.115054651698555E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVSF:   0.885945379734039       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVWF:   0.856489837169647       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNSF:   0.647192597389221       4.585877060890198E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNWF:   0.638877868652344       4.455422610044479E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACSF:    1.00000011920929       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACWF:    1.00000000000000      -1.192092895507812E-007
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VFRAC:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - CANOPY:   1.998000000000000E+021  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - F10M:    1.04904203714323       0.949575339134906     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - T2M:    307.641805476941        235.805922058118     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Q2M:   2.097251913401358E-002  1.242473232362298E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VTYPE:    20.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STYPE:    16.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - UUSTAR:    1.67865712795890       1.847207744084249E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFMM:    21.6646154638610        1.91642737142530     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFHH:    19.3620299114650        2.16825139686545     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - HICE:   0.200000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FICE:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TISFC:    308.441818741209        221.828828440921     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TPRCP:   5.332389021893451E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SRFLAG:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNWDPH:    1266.74583552590       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMIN:   0.816530644893646       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMAX:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLOPE:    9.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNOALB:   0.840000033378601       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_0:   8.301269825955317E-002  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_D:   0.000000000000000E+000  -311.487698407643     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - D_CONV:    5.81675779775248       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DT_COOL:    1.12630924750432       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - QRAIN:    85.4650762421326       -3.49946824149687     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TREF:    323.934265136719        234.304611206055     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_0:   0.100051962160413       -6.75127844168590     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_D:   0.853792251659070      -0.122521075080527     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XS:   3.980556219503945E-002 -4.831157206396283E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XT:    4.46797948862327       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XTTS:   0.000000000000000E+000 -0.990611270175038     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZTS:    299929.211621095       -7778.06811086552     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XU:   0.889172182284880      -0.131043065182646     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XV:   0.528152099408303      -0.447157276309464     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZ:    30.0000000000000        1.09771551441214     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Z_C:   5.046405494791286E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SMC:    1.00000000000000       9.999999850988390E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STC:    315.748818654673        238.896673341984     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLC:    1.00000000000000       1.443709596989804E-005
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT OROG DATA FOR TILE:            2
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - OROG:    6937.36669921875       -412.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT SFC DATA FOR TILE:            3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLMSK:    2.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TSEA:     297.487869760623        225.635036468161     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHELEG:    573.676504884178      -3.205552761901741E-018
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TG3:    292.848052978516        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ZORL:    100.765324505958       7.264836717799643E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVSF:   0.679053962230682       9.000000543892384E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVWF:   0.669891238212585       9.000000543892384E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNSF:   0.597570598125458       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNWF:   0.578843951225281       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACSF:    1.00000011920929       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACWF:    1.00000000000000      -1.192092895507812E-007
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VFRAC:   0.679284004402942       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - CANOPY:   1.998000000000000E+021  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - F10M:    1.07350736470137       0.974564003636595     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - T2M:    293.990338214056        232.528189875177     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Q2M:   1.425740819297630E-002  7.979987353905758E-005
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VTYPE:    20.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STYPE:    16.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - UUSTAR:    2.21302268769786       1.856730643452991E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFMM:    21.5939321015188        1.88445282428543     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFHH:    22.3657111922354        1.65667649968359     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - HICE:    5.00048981146729       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FICE:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TISFC:    297.487869760623        225.635036468161     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TPRCP:   1.712554283712867E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SRFLAG:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNWDPH:    2049.83253795540      -1.059903973602331E-016
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMIN:   0.678064703941345       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMAX:   0.990000069141388       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLOPE:    9.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNOALB:   0.840000033378601       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_0:   6.258951810058025E-002  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_D:   0.000000000000000E+000  -242.401853885043     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - D_CONV:    2.71245634556493       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DT_COOL:    1.41053594765609       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - QRAIN:    23.5731057412258       -10.3160125200486     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TREF:    298.380739558888        224.542083740234     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_0:   0.157231436163414       -43.9818681945946     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_D:    7.38137173175229      -2.529039654584145E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XS:   2.948898932713685E-003 -0.117117264701179     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XT:   0.756182633602047       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XTTS:    1.92088458440269       -4.12394044195671     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZTS:    4755416.13185513       -1443.04512849163     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XU:   0.353033036537465      -0.398756869702081     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XV:   0.598949790734787      -0.330042605899491     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZ:    30.0000000000000       0.624556500368062     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Z_C:   5.532669916003443E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SMC:    1.00000000000000       1.000638668083659E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STC:    300.865864741403        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLC:    1.00000000000000       2.764237342581400E-009
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT OROG DATA FOR TILE:            3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - OROG:    4607.08300781250       -131.278488159180     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT SFC DATA FOR TILE:            4
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLMSK:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TSEA:     305.858501840467        257.030947342490     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHELEG:    189.979915983432       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TG3:    301.100036621094        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ZORL:    148.515001416206       6.642379820249466E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVSF:   0.639699757099152       1.126356050372124E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVWF:   0.639537215232849       1.100270450115204E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNSF:   0.500759243965149       2.023235708475113E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNWF:   0.491596519947052       1.923235692083836E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACSF:    1.00000011920929       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACWF:    1.00000000000000      -1.192092895507812E-007
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VFRAC:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - CANOPY:   1.998000000000000E+021  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - F10M:    1.02308475519142       0.949864055092828     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - T2M:    304.137866272377        260.907136887296     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Q2M:   2.110811772859921E-002  1.454251437785244E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VTYPE:    20.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STYPE:    16.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - UUSTAR:    1.48818221828497       1.847197557355503E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFMM:    21.6544244770792        1.70000059103054     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFHH:    19.3518389199775        1.51081977388151     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - HICE:   0.000000000000000E+000  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FICE:   0.000000000000000E+000  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TISFC:    305.858501840467        257.030947342490     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TPRCP:   5.788736795500961E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SRFLAG:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNWDPH:    1074.33282077892       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMIN:   0.812248110771179       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMAX:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLOPE:    7.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNOALB:   0.830000102519989       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_0:   8.400076916129297E-002  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_D:   0.000000000000000E+000  -263.585932672911     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - D_CONV:    3.33069752795736       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DT_COOL:    1.16539245531612       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - QRAIN:    89.2059806909443       -1.64335225112499     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TREF:    333.339996337891        273.149993896484     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_0:   0.561623452401771       -20.2643824872234     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_D:    14.4986942034450       -2.27958969009643     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XS:   7.443103957862309E-003 -0.134171011294145     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XT:   0.530358660752571       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XTTS:    1.10428173244434       -12.8812471484607     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZTS:    2927920.74781605       -38357.5034483883     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XU:   0.517772500095338      -0.296795153115940     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XV:   0.192150332269168      -0.248101298769761     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZ:    30.0000000000000       0.200000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Z_C:   5.661026539856154E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SMC:    1.00000000000000       9.071150332253697E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STC:    314.437525257289        263.510653885458     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLC:    1.00000000000000       9.071150332253697E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT OROG DATA FOR TILE:            4
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - OROG:    4115.19482421875       -13.0000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT SFC DATA FOR TILE:            5
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLMSK:    2.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TSEA:     353.701859641372        259.355775358750     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHELEG:    443.772040334724       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TG3:    300.092102050781        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ZORL:    148.515001416206       6.757302237999144E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVSF:   0.753261387348175       1.005372032523155E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVWF:   0.749218285083771       1.005372032523155E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNSF:   0.606206834316254       1.653504930436611E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNWF:   0.590628206729889       1.581678353250027E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACSF:    1.00000011920929       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACWF:    1.00000000000000      -1.192092895507812E-007
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VFRAC:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - CANOPY:   1.998000000000000E+021  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - F10M:    1.01701693806318       0.937801665360524     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - T2M:    315.053313712567        258.949346997753     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Q2M:   2.402221380921441E-002  4.753499946954843E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VTYPE:    20.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STYPE:    16.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - UUSTAR:    2.29332510318232       1.846368053562608E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFMM:    21.6844736591116        1.73547933447685     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFHH:    19.3818881157485        1.53987755252633     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - HICE:   0.000000000000000E+000  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FICE:   0.000000000000000E+000  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TISFC:    353.701859641372        259.355775358750     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TPRCP:   5.132563215839612E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SRFLAG:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNWDPH:    1872.72508178037       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMIN:   0.889902412891388       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMAX:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLOPE:    7.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNOALB:   0.839919865131378       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_0:   7.767358773608267E-002  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_D:   0.000000000000000E+000  -213.084935465073     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - D_CONV:    4.31386653752070       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DT_COOL:   0.822845447619699       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - QRAIN:    56.5844494330377      -0.823533474025559     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TREF:    306.316009521484        255.340515136719     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_0:    2.19449989605758       -116.901886179617     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_D:    37.1592135357384       -3.94020218912086     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XS:   6.160582609402430E-002 -0.170943504584302     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XT:    4.03647389399943       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XTTS:    23.8151919107946       -514.476047951797     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZTS:    5217.16934260983       -436.646699981228     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XU:    1.27289141388374       -1.26700103525574     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XV:    1.48299761886512       -1.47357403888458     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZ:    30.0000000000000       0.200000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Z_C:   4.450479738093692E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SMC:    1.00000000000000       9.999999850988390E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STC:    330.993937188246        259.615392348984     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLC:    1.00000000000000       9.999999850988390E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT OROG DATA FOR TILE:            5
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - OROG:    5912.10791015625       -70.2619018554688     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT SFC DATA FOR TILE:            6
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLMSK:    2.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TSEA:     341.061303058480        229.577798981426     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHELEG:    4999.87540594595       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TG3:    287.725189208984        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ZORL:    148.515001416206       6.841149168500409E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVSF:   0.854534566402435       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALVWF:   0.845667481422424       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNSF:   0.435767829418182       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - ALNWF:   0.429265290498734       1.000000000000000E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACSF:    1.00000011920929       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FACWF:    1.00000000000000      -1.192092895507812E-007
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VFRAC:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - CANOPY:   1.998000000000000E+021  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - F10M:    1.04241586810295       0.965377829456108     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - T2M:    305.207014006946        235.082078768330     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Q2M:   1.525151420176428E-002  1.399098936093544E-004
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - VTYPE:    20.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STYPE:    16.0000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - UUSTAR:    1.38243094764225       1.853058936193696E-002
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFMM:    21.6475162316962        1.95318644404030     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FFHH:    19.3449306713773        2.02713603052501     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - HICE:    5.00011234790351       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - FICE:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TISFC:    341.061303058480        229.577798981426     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TPRCP:   1.969222121737302E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SRFLAG:    1.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNWDPH:    10765.6444442070       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMIN:   0.586508035659790       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SHDMAX:   0.990000009536743       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLOPE:    9.00000000000000       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SNOALB:   0.840000033378601       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_0:   6.624119886787225E-002  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - C_D:   0.000000000000000E+000  -144.204331951458     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - D_CONV:    2.66294509473540       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DT_COOL:   0.963910813109295       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - QRAIN:    13.8745327210938       -22.0509391186505     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - TREF:    302.939666748047        215.412399291992     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_0:   0.734623162434795       -2.79682532016102     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - W_D:    8.28204915676371      -0.732824686140572     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XS:   6.477545767861903E-002 -0.152112823803570     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XT:    5.07909132553716       0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XTTS:    5.29380808173462       -32.7682877258945     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZTS:    1313170.88665335       -2101.37699961814     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XU:    1.62658545538060       -1.15436039555017     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XV:    1.36500481114203       -1.71805045476628     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - XZ:    30.0000000000000       0.239237503455852     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - Z_C:   4.920536056714176E-003  0.000000000000000E+000
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SMC:    1.00000000000000       9.999999850988390E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - STC:    319.424530735122        200.000000000000     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - SLC:    1.00000000000000       9.999999850988390E-003
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - READ INPUT OROG DATA FOR TILE:            6
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - OROG:    4080.76586914062       -80.0199966430664     
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE SURFACE DATA TO NETCDF FILE: ./sfc.gaussian.analysis.file
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DEFINE VARIABLE alnsf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DEFINE VARIABLE alnwf
+ - DEFINE VARIABLE alvsf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DEFINE VARIABLE alvwf
+ - DEFINE VARIABLE cnwat
+ - DEFINE VARIABLE crain
+ - DEFINE VARIABLE f10m
+ - DEFINE VARIABLE facsf
+ - DEFINE VARIABLE facwf
+ - DEFINE VARIABLE ffhh
+ - DEFINE VARIABLE ffmm
+ - DEFINE VARIABLE fricv
+ - DEFINE VARIABLE icec
+ - DEFINE VARIABLE icetk
+ - DEFINE VARIABLE land
+ - DEFINE VARIABLE orog
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DEFINE VARIABLE sfcr
+ - DEFINE VARIABLE shdmax
+ - DEFINE VARIABLE shdmin
+ - DEFINE VARIABLE sltyp
+ - DEFINE VARIABLE snoalb
+ - DEFINE VARIABLE snod
+ - DEFINE VARIABLE soill1
+ - DEFINE VARIABLE soill2
+ - DEFINE VARIABLE soill3
+ - DEFINE VARIABLE soill4
+ - DEFINE VARIABLE soilt1
+ - DEFINE VARIABLE soilt2
+ - DEFINE VARIABLE soilt3
+ - DEFINE VARIABLE soilt4
+ - DEFINE VARIABLE soilw1
+ - DEFINE VARIABLE soilw2
+ - DEFINE VARIABLE soilw3
+ - DEFINE VARIABLE soilw4
+ - DEFINE VARIABLE sotyp
+ - DEFINE VARIABLE spfh2m
+ - DEFINE VARIABLE tg3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DEFINE VARIABLE tisfc
+ - DEFINE VARIABLE tmp2m
+ - DEFINE VARIABLE tmpsfc
+ - DEFINE VARIABLE tprcp
+ - DEFINE VARIABLE veg
+ - DEFINE VARIABLE vtype
+ - DEFINE VARIABLE weasd
+ - DEFINE VARIABLE c0
+ - DEFINE VARIABLE cd
+ - DEFINE VARIABLE dconv
+ - DEFINE VARIABLE dtcool
+ - DEFINE VARIABLE qrain
+ - DEFINE VARIABLE tref
+ - DEFINE VARIABLE w0
+ - DEFINE VARIABLE wd
+ - DEFINE VARIABLE xs
+ - DEFINE VARIABLE xt
+ - DEFINE VARIABLE xtts
+ - DEFINE VARIABLE xu
+ - DEFINE VARIABLE xv
+ - DEFINE VARIABLE xz
+ - DEFINE VARIABLE xzts
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - DEFINE VARIABLE zc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE alnsf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE alnwf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE alvsf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE alvwf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE cnwat
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE crain
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE f10m
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE facsf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE facwf
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE ffhh
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE ffmm
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE fricv
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE icec
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE icetk
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE land
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE orog
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE sfcr
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE shdmax
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE shdmin
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE sltyp
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE snoalb
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE snod
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soill1
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soill2
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soill3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soill4
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilt1
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilt2
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilt3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilt4
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilw1
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilw2
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilw3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE soilw4
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE sotyp
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE spfh2m
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE tg3
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE tisfc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE tmp2m
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE tmpsfc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE tprcp
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE veg
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE vtype
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE weasd
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE c0
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE cd
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE dconv
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE dtcool
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE qrain
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE tref
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE w0
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE wd
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xs
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xt
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xtts
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xu
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xv
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xz
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE xzts
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  - WRITE VARIABLE zc
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0:  
+ - NORMAL TERMINATION
+
+
+     ENDING DATE-TIME    JUN 16,2025  18:56:45.895  167  MON   2460843
+     PROGRAM GAUSSIAN_SFCANL HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+nid003713.dogwood.wcoss2.ncep.noaa.gov 0: *****************RESOURCE STATISTICS*******************************
+The total amount of wall time                        = 54.042356
+The total amount of time in user mode                = 22.553957
+The total amount of time in sys mode                 = 3.707062
+The maximum resident set size (KB)                   = 9152080
+Number of page faults without I/O activity           = 130039
+Number of page faults with I/O activity              = 43
+Number of times filesystem performed INPUT           = 8925944
+Number of times filesystem performed OUTPUT          = 1464672
+Number of Voluntary Context Switches                 = 661
+Number of InVoluntary Context Switches               = 58
+*****************END OF RESOURCE STATISTICS*************************
+
++ gaussian_sfcanl.sh[190]export err=0
++ gaussian_sfcanl.sh[190]err=0
++ gaussian_sfcanl.sh[191][[ 0 -ne 0 ]]
++ gaussian_sfcanl.sh[198]cd /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ gaussian_sfcanl.sh[200]exit 0
++ exglobal_atmos_analysis_calc.sh[179]export err=0
++ exglobal_atmos_analysis_calc.sh[179]err=0
++ exglobal_atmos_analysis_calc.sh[180][[ 0 -ne 0 ]]
+++ exglobal_atmos_analysis_calc.sh[185]date
++ exglobal_atmos_analysis_calc.sh[185]echo 'gdas 2024112418 atmanl and sfcanl done at Mon Jun 16 18:56:45 UTC 2025'
++ exglobal_atmos_analysis_calc.sh[189]cd /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ exglobal_atmos_analysis_calc.sh[191]exit 0
++ JGLOBAL_ATMOS_ANALYSIS_CALC[62]true
++ JGLOBAL_ATMOS_ANALYSIS_CALC[63]export err=0
++ JGLOBAL_ATMOS_ANALYSIS_CALC[63]err=0
++ JGLOBAL_ATMOS_ANALYSIS_CALC[64][[ 0 -ne 0 ]]
++ JGLOBAL_ATMOS_ANALYSIS_CALC[75][[ -e OUTPUT.45588 ]]
++ JGLOBAL_ATMOS_ANALYSIS_CALC[82]cd /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418
++ JGLOBAL_ATMOS_ANALYSIS_CALC[83][[ NO == \N\O ]]
++ JGLOBAL_ATMOS_ANALYSIS_CALC[84]rm -rf /lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418/analcalc.45032
++ JGLOBAL_ATMOS_ANALYSIS_CALC[88]exit 0
++ JGLOBAL_ATMOS_ANALYSIS_CALC[1]postamble /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/jobs/JGLOBAL_ATMOS_ANALYSIS_CALC 1750099545 0
++ preamble.sh[62]set +x
+End /lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/jobs/JGLOBAL_ATMOS_ANALYSIS_CALC at 18:57:06 with error code 0 (time elapsed: 00:11:21)
++ status=0
++ exit 0
+PBS: Running epilogue on parent mom node: nid003713...
+##### Job 46054179.dbqs01 - PBS Job Script:
+(Note: Duplicate #PBS entries are a function how PBS interprets and caches the original job script.)
+
+#! /bin/sh
+#PBS -N retrotestgfs10_gdas_analcalc_18
+#PBS -A GFS-DEV
+#PBS -q devmax
+#PBS -l walltime=00:15:00
+#PBS -l select=1:mpiprocs=128:ompthreads=1:ncpus=128:mem=500GB
+#PBS -j oe -o /lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot/retrotestgfs10/logs/2024112418/gdas_analcalc.log
+#PBS -l place=vscatter:exclhost
+export RUN_ENVIR='emc'
+export HOMEgfs='/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602'
+export EXPDIR='/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/expdir/retrotestgfs10'
+export NET='gfs'
+export RUN='gdas'
+export CDATE='2024112418'
+export PDY='20241124'
+export cyc='18'
+export COMROOT='/lfs/h2/emc/ptmp/emc.global/RETRO_GFSv17/comroot'
+export DATAROOT='/lfs/h2/emc/stmp/emc.global/RUNDIRS/retrotestgfs10/gdas.2024112418'
+set -x
+/lfs/h2/emc/global/noscrub/emc.global/RETRO_GFSv17/git/global-workflow/develop_20250602/dev/jobs/analcalc.sh
+##### End of job script
+------------------------------------------------------------------
+
