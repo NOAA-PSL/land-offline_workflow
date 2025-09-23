@@ -1,7 +1,9 @@
 #!/bin/bash
-driver_git='https://github.com/NOAA-PSL/land-offline_workflow.git'
+workflow_git='https://github.com/NOAA-PSL/land-offline_workflow.git'
+workflow_branch=''
 flag_dl_workflow='YES'
 flag_dl_gdasapp='YES'
+flag_build_all="YES"
 #************************************
 #if set flag_dl_gdasapp to 'NO', please specify 
 #GDASApp_path in DA_update/make_links.sh
@@ -26,7 +28,13 @@ if [ $flag_dl_workflow = 'YES' ]; then
 echo '--------------------------------'
 echo "Clone the repo"
   cd $directory
-  git clone -b develop --recurse-submodules $driver_git
+  git clone -b develop --recurse-submodules $workflow_git
+fi
+if [ ! $workflow_branch = "" ]; then
+  echo '--------------------------------'
+  echo "Pull the repo branch"
+  cd $new_dir
+  git pull origin $workflow_branch
 fi
 if [ $flag_dl_gdasapp = 'YES' ]; then
   cd $new_dir/DA_update
@@ -44,22 +52,26 @@ module load stack-oneapi/2024.2.1 stack-intel-oneapi-mpi/2021.13 netcdf-fortran/
 EOF1
 fi
 source $new_dir/land_mods
-echo '--------------------------------'
-echo "compile ufs-land-driver"
-cd $new_dir/ufs-land-driver
-if [ $machine = 'ursa' ]; then
-  echo 1 | ./configure # 1=ursa-parallel
-elif [ $machine = 'hera' ]; then
-  echo 2 | ./configure # 2=hera-parallel
+if [ $flag_build_all = 'YES' ]; then
+  echo '--------------------------------'
+  echo "compile ufs-land-driver"
+  cd $new_dir/ufs-land-driver
+  if [ $machine = 'ursa' ]; then
+    git pull origin ursa_configure
+    ./configure 1 #1=ursa-parallel
+  #elif [ $machine = 'hera' ]; then
+  #  ./configure 2 #2=hera-parallel
+  fi
+  make
+  echo '--------------------------------'
+  echo "compile vector2tile"
+  cd $new_dir/vector2tile
+  cp ../ufs-land-driver/user_build_config .
+  make
+  echo '--------------------------------'
+  echo "compile DA_update"
+  cd $new_dir/DA_update
+  #if set flag_dl_gdasapp to 'NO', please modify make_links.sh
+  ./make_links.sh
+  ./build_all.sh
 fi
-make
-echo '--------------------------------'
-echo "compile vector2tile"
-cd $new_dir/vector2tile
-make
-echo '--------------------------------'
-echo "compile DA_update"
-cd $new_dir/DA_update
-#if set flag_dl_gdasapp to 'NO', please modify make_links.sh
-./make_links.sh
-./build_all.sh
