@@ -95,6 +95,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
         sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
         sed -i -e "s/XXRES/${RES}/g" vector2tile.namelist
+	sed -i -e "s/XXORES/${ORES}/g" vector2tile.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" vector2tile.namelist
 
@@ -150,6 +151,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXDD/${DD}/g" tile2vector.namelist
         sed -i -e "s/XXHH/${HH}/g" tile2vector.namelist
         sed -i -e "s/XXRES/${RES}/g" tile2vector.namelist
+	sed -i -e "s/XXORES/${ORES}/g" tile2vector.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
 
@@ -173,6 +175,8 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXMM/${MM}/g" ufs-land.namelist
     sed -i -e "s/XXDD/${DD}/g" ufs-land.namelist
     sed -i -e "s/XXHH/${HH}/g" ufs-land.namelist
+    sed -i -e "s/XXRES/${RES}/g" ufs-land.namelist
+    sed -i -e "s/XXORES/${ORES}/g" ufs-land.namelist
     sed -i -e "s/XXFREQ/${FREQ}/g" ufs-land.namelist
     sed -i -e "s/XXRDD/${RDD}/g" ufs-land.namelist
     sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
