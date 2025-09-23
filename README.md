@@ -1,3 +1,10 @@
+Script to run cycling DA using GDASApp in cube sphere space, and offline Noah-MP model in vector space.
+#############################
+1. Download the shell script build_landDA.sh and use the script to clone and build the workflow;
+2. Edit exp_name, STARTDATE, ENDDATE, BASEDIR, RES, and ORES in settings_cycle_test;
+3. Edit account information in submit_cycle.sh, and submit the job using do_submit_test.sh;
+Zhichang Guo, September, 2025
+-----------------------------
 Script to run cycling DA using JEDI in cube sphere space, and offline Noah-MP model in vector space. 
 
 Clara Draper, Nov, 2021.
