@@ -35,7 +35,7 @@ export atmos_forc=era5
 export RES=96
 export NPZ=127   # vertical layers
 export ORES=mx100
-export TPATH=/scratch2/NCEPDEV/land/data/fix/20231027/C${RES}/
+export TPATH=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C${RES}/
 export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 # number of cycles to submit in a single job
