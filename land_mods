@@ -1,9 +1,10 @@
 module purge
 
-module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env-rocky8/install/modulefiles/Core
+module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
 
-module load stack-intel/2021.5.0
-module load stack-intel-oneapi-mpi/2021.5.1
-module load netcdf/4.7.0
-module load netcdf-hdf5parallel/4.7.4
+module load stack-oneapi/2024.2.1
+module load stack-intel-oneapi-mpi/2021.13
+module load netcdf-fortran/4.6.1
+module load nco/5.2.4
 
+module list
