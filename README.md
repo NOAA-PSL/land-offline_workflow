@@ -1,11 +1,4 @@
-Script to run cycling DA using GDASApp in cube sphere space, and offline Noah-MP model in vector space.
-#############################
-1. Download the shell script build_landDA.sh and use the script to clone and build the workflow;
-2. Edit exp_name, STARTDATE, ENDDATE, BASEDIR, RES, and ORES in settings_cycle_test;
-3. Edit account information in submit_cycle.sh, and submit the job using do_submit_test.sh;
-Zhichang Guo, September, 2025
------------------------------
-Script to run cycling DA using JEDI in cube sphere space, and offline Noah-MP model in vector space. 
+Script to run cycling DA using GDASApp in cube sphere space, and offline Noah-MP model in vector space. 
 
 Clara Draper, Nov, 2021.
 
@@ -27,19 +20,18 @@ COMPILING and TESTING.
 >source land_mods
 (these are the modules needed for steps 2b, 2c).
 
-2b.
-> cd vector2tile 
-> configure 
-     select hera
-> make 
-> cd .. 
-
-2c. 
+2b. 
 > cd ufs-land-driver
 > configure 
-  select hera parallel
+  select ursa parallel or hera parallel
 > make 
 > cd ..
+
+2c.
+> cd vector2tile 
+> cp ../ufs-land-driver/user_build_config .
+> make 
+> cd .. 
 
 2d.
 > cd DA_update
@@ -49,7 +41,7 @@ COMPILING and TESTING.
 
 3. Run the test.
 
- in settings_cycle_test check WORKDIR and OUTDIR are OK
+ in settings_cycle_test check BASEDIR, WORKDIR and OUTDIR are OK
  create OUTDIR
  in submit_cycle.sh change #SBATCH --account=gsienkf to point to your own account.
 
