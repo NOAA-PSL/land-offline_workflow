@@ -1,11 +1,11 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_test_era5
-STARTDATE=2019120100
-ENDDATE=2019120300
+export exp_name=DA_ghcn_era5_c384
+STARTDATE=2017010100
+ENDDATE=2017010400
 
-BASEDIR=/scratch4/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/ 
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -25,6 +25,10 @@ export do_enkf="NO"
 # for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
 export ensemble_size=1
 
+# number of tiles and vector size
+export num_tiles=6         # 1 for regional
+export vector_size=272699  #18320   # 1067297/1067333 C768 hr2/3?
+
 # length of each forecast
 export FCSTHR=24
 
@@ -32,18 +36,18 @@ export FCSTHR=24
 export atmos_forc=era5
 
 #FV3 resolution
-export RES=96
+export RES=384
 export NPZ=127   # vertical layers
-export ORES=mx100
+export ORES=mx025
 export TPATH=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C${RES}/
 export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=1
+export cycles_per_job=20
 
 # directory with initial conditions
-export ICSDIR=/scratch4/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/DA_test_era5_hr3/
+export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
