@@ -2,14 +2,14 @@
 #SBATCH --job-name=offline_noahmp
 #SBATCH --account=da-cpu
 #SBATCH --qos=debug
-#SBATCH --nodes=6
-#SBATCH --tasks-per-node=36
-#SBATCH --cpus-per-task=1
-##SBATCH -t 02:40:00
-##SBATCH --qos=batch
-##SBATCH --nodes=2
-##SBATCH --tasks-per-node=36
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=6
 #SBATCH -t 00:30:00
+#SBATCH --cpus-per-task=1
+##SBATCH --qos=batch
+##SBATCH --nodes=6
+##SBATCH --tasks-per-node=36
+##SBATCH -t 02:40:00
 #SBATCH -o log_noahmp.%j.log
 #SBATCH -e err_noahmp.%j.err
 

@@ -38,9 +38,9 @@ WINLEN=24
 YAML_DA=ghcn_snowanlvar.yaml  #construct
 YAML_HOFX=construct
 
-LayX=1
-LayY=1
-NPROC_JEDI=6
+LayX=6
+LayY=6
+NPROC_JEDI=216
 
 #OPTIONAL: overrides.
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
