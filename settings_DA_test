@@ -25,9 +25,9 @@ DAalg=2DVar
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SYNTH 
-OBS_TYPES=("GHCN"  )   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("IMS" "GHCN"  )   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA" )   # format ("DA" "HOFX") 
+JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX")
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
@@ -47,6 +47,6 @@ NPROC_JEDI=6
 #OBSDIR= # to override default OBSDIR
 
 # OPTIONAL : CLEAN UP 
-SAVE_IMS="NO"
+SAVE_IMS="YES"
 SAVE_INCR="YES"
 KEEPJEDIDIR="YES"
