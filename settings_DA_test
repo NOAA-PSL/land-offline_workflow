@@ -25,7 +25,7 @@ DAalg=2DVar
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SYNTH 
-OBS_TYPES=("IMS" "GHCN"  )   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("IMS" "GHCN")   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX")
 
@@ -35,7 +35,7 @@ WINLEN=24
 # YAMLS. Options, either:
 # 1. "construct" to construct the YAML name, based on requested obs types and their availability 
 # 2. enter the desired YAML name (will not test for availability of obs)
-YAML_DA=ghcn_snowanlvar.yaml  #construct
+YAML_DA=construct  #ghcn_snowanlvar.yaml  #construct
 YAML_HOFX=construct
 
 LayX=1
