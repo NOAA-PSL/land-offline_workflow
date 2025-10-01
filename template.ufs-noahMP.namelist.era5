@@ -33,8 +33,8 @@
   
   run_timesteps    = 0       ! number of timesteps to run
   
-  location_start           = 1
-  location_end           = 18320
+  location_start   = 1
+  location_end     = XXVLEN
   
 /
 

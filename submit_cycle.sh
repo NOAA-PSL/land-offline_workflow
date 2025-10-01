@@ -4,12 +4,12 @@
 #SBATCH --qos=debug
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=6
+#SBATCH -t 00:30:00
 #SBATCH --cpus-per-task=1
-##SBATCH -t 02:40:00
 ##SBATCH --qos=batch
-##SBATCH --nodes=2
+##SBATCH --nodes=6
 ##SBATCH --tasks-per-node=36
-#SBATCH -t 00:10:00
+##SBATCH -t 02:40:00
 #SBATCH -o log_noahmp.%j.log
 #SBATCH -e err_noahmp.%j.err
 
@@ -40,6 +40,11 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     this_config=DA_config$HH
     DA_config=${!this_config}
+    
+    frac_grid=.false.
+    if [[ $GFSv17 == "YES" ]]; then
+        frac_grid=.true.
+    fi
 
     if [ $DA_config == "openloop" ]; then do_jedi="NO" ; else do_jedi="YES" ; fi 
 
@@ -98,6 +103,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 	sed -i -e "s/XXORES/${ORES}/g" vector2tile.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" vector2tile.namelist
+        sed -i -e "s/XXFRACGRID/${frac_grid}/g" vector2tile.namelist
 
         # submit vec2tile 
         echo '************************************************'
@@ -154,6 +160,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 	sed -i -e "s/XXORES/${ORES}/g" tile2vector.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
+        sed -i -e "s/XXFRACGRID/${frac_grid}/g" tile2vector.namelist 
 
         $vec2tileexec tile2vector.namelist
         if [[ $? != 0 ]]; then
@@ -180,6 +187,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXFREQ/${FREQ}/g" ufs-land.namelist
     sed -i -e "s/XXRDD/${RDD}/g" ufs-land.namelist
     sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
+    sed -i -e "s#XXVLEN#${vector_size}#g" ufs-land.namelist
 
     # run for using baseline snow parameter table
     cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl noahmptable.tbl
