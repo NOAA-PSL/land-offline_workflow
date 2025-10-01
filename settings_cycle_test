@@ -5,7 +5,8 @@ export exp_name=DA_ims_ghcn_era5
 STARTDATE=2019120112
 ENDDATE=2019120400
 
-BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/ 
+# BASEDIR=/scratch4/BMC/gsienkf/${USER}/ # for PSL staff
+BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/  
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -39,7 +40,7 @@ export atmos_forc=era5
 #FV3 resolution
 export RES=96
 export NPZ=127   # vertical layers
-export ORES=mx100 
+export ORES=mx100
 export TPATH=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C${RES}/
 export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
