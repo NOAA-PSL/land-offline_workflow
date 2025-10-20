@@ -15,9 +15,6 @@ export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 
 ############################
 
-# decide if GFSv17
-export GFSv17="NO"
-
 # run (true) ensemble. NO for LETKFOI
 export do_enkf="NO"
 

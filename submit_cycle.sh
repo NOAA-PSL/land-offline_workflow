@@ -41,10 +41,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     this_config=DA_config$HH
     DA_config=${!this_config}
     
-    frac_grid=.false.
-    if [[ $GFSv17 == "YES" ]]; then
-        frac_grid=.true.
-    fi
+    frac_grid=.true.
 
     if [ $DA_config == "openloop" ]; then do_jedi="NO" ; else do_jedi="YES" ; fi 
 
