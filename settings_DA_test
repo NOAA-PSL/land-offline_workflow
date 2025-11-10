@@ -22,12 +22,15 @@ RSTRDIR=${MEM_WORKDIR}
 # DA algorithm and state being updated
 # options: "letkfoi" , "2DVar"
 DAalg=2DVar
-analVar=snow
+#analVar=snow
+analVar=smc
 
 # JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SYNTH 
-OBS_TYPES=("IMS" "GHCN")   # format: ("OBS1" "OBS2") 
+#OBS_TYPES=("IMS" "GHCN")   # format: ("OBS1" "OBS2") 
+OBS_TYPES=("SMAP")   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX")
+#JEDI_TYPES=("DA" "DA" )   # format ("DA" "HOFX")
+JEDI_TYPES=("DA")   # format ("DA" "HOFX")
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24

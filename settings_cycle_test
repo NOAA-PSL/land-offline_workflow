@@ -2,11 +2,11 @@
 
 # experiment name
 export exp_name=DA_ims_ghcn_era5
-STARTDATE=2019120112
-ENDDATE=2019120400
+STARTDATE=2021120100
+ENDDATE=2021120400
 
-# BASEDIR=/scratch4/BMC/gsienkf/${USER}/ # for PSL staff
-BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/  
+export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
+#BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -17,7 +17,7 @@ export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 ############################
 
 # decide if GFSv17
-export GFSv17="NO"
+export GFSv17="YES"
 
 # run (true) ensemble. NO for LETKFOI
 export do_enkf="NO"
@@ -49,7 +49,8 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 export cycles_per_job=20
 
 # directory with initial conditions
-export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
+#export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
+export ICSDIR=${BASEDIR}/RESTARTS/C${RES}/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
