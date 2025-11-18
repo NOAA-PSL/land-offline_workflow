@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_ims_ghcn_era5
-STARTDATE=2019120112
-ENDDATE=2019120400
+export exp_name=DA_smap_era5   #DA_ims_ghcn_era5
+STARTDATE=2021120100  #2019120112
+ENDDATE=2021120400    #2019120400
 
 # BASEDIR=/scratch4/BMC/gsienkf/${USER}/ # for PSL staff
 BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/  
