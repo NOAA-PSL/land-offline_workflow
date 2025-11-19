@@ -1,6 +1,6 @@
 #!/bin/bash -le 
 #SBATCH --job-name=offline_noahmp
-#SBATCH --account=da-cpu
+#SBATCH --account=gsienkf
 #SBATCH --qos=debug
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=6
@@ -15,6 +15,7 @@
 
 ############################
 # loop over time steps
+############################
 
 echo 'starting cycle' 
 date
@@ -36,7 +37,9 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     echo "starting $THISDATE"  
 
+    ############################
     # get DA settings
+    ############################
 
     this_config=DA_config$HH
     DA_config=${!this_config}
@@ -69,7 +72,8 @@ while [ $date_count -lt $cycles_per_job ]; do
     nHH=`echo $NEXTDATE | cut -c9-10`
 
     ############################
-    # copy restarts to workdir, convert to vector for DA (all members) 
+    # copy restarts to workdir
+    ############################
 
     mem_ens="mem000" 
 
@@ -84,6 +88,10 @@ while [ $date_count -lt $cycles_per_job ]; do
     cp $rst_in $rst_out 
 
     if [[ $do_jedi == "YES" ]]; then  
+        ############################
+        #  convert restarts from vector to tile
+        ############################
+
         echo '************************************************'
         echo 'calling tile2vector' 
 
@@ -97,7 +105,6 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXYYYY/${YYYY}/g" vector2tile.namelist
         sed -i -e "s/XXMM/${MM}/g" vector2tile.namelist
         sed -i -e "s/XXDD/${DD}/g" vector2tile.namelist
-        sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
         sed -i -e "s/XXHH/${HH}/g" vector2tile.namelist
         sed -i -e "s/XXRES/${RES}/g" vector2tile.namelist
 	sed -i -e "s/XXORES/${ORES}/g" vector2tile.namelist
@@ -114,16 +121,13 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "vec2tile failed"
             exit 
         fi
-    fi # vector2tile for DA
 
-    ############################
-    # do DA update
+        ############################
+        # do DA update
+        ############################
 
-    if [[ $do_jedi == "YES" ]]; then  
-
-        # submit snow DA 
         echo '************************************************'
-        echo 'CSD calling snow DA'
+        echo 'CSD calling land DA'
 
         cd $WORKDIR
 
@@ -133,19 +137,18 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "land DA script failed"
             exit
         fi   
-    fi 
 
-    ############################
-    #  convert back to vector, run model (all members) convert back to vector, run model (all members)
+        ############################
+        #  convert restarts from tile to vector
+        ############################
 
-    mem_ens="mem000" 
+        mem_ens="mem000"
 
-    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-    MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+        MEM_WORKDIR=${WORKDIR}/${mem_ens}
+        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
-    cd $MEM_WORKDIR
+        cd $MEM_WORKDIR
 
-    if [[ $do_jedi == "YES" ]]; then  
         echo '************************************************'
         echo 'calling tile2vector' 
         source ${CYCLEDIR}/land_mods
@@ -174,6 +177,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     ############################
     # run the forecast model
+    ############################
 
     # update model namelist 
     cp  ${CYCLEDIR}/template.ufs-noahMP.namelist.${atmos_forc}  ufs-land.namelist
@@ -206,6 +210,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     ############################
     # check model ouput (all members)
+    ############################
 
     mem_ens="mem000" 
 
@@ -229,6 +234,7 @@ done #  date_count -lt cycles_per_job
 
 ############################
 # resubmit script 
+############################
 
 if [ $THISDATE -lt $ENDDATE ]; then
     echo "STARTDATE=${THISDATE}" > ${analdate}
