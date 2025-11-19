@@ -12,9 +12,6 @@
   tile_path = "XXTPATH"
   tile_fstub = "XXTSTUB"
 
-! GFSv17 for snow depth name
-  gfsv17 = XXFRACGRID
-
 !------------------- only restart conversion -------------------
 ! Time stamp for conversion for restart conversion
 

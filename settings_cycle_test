@@ -1,9 +1,9 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_ims_ghcn_era5
-STARTDATE=2021120100
-ENDDATE=2021120400
+export exp_name=DA_smap_era5   #DA_ims_ghcn_era5
+STARTDATE=2021120100  #2019120112
+ENDDATE=2021120400    #2019120400
 
 export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 #BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/
@@ -15,9 +15,6 @@ export WORKDIR=${BASEDIR}/workdir/
 export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 
 ############################
-
-# decide if GFSv17
-export GFSv17="YES"
 
 # run (true) ensemble. NO for LETKFOI
 export do_enkf="NO"
