@@ -1,12 +1,12 @@
 # Settings file for submit_cycle, for running the DA_IMS_test 
 
 # experiment name
-export exp_name=DA_bump_smap_era5   #DA_ims_ghcn_era5
+export exp_name=jcb_2dvar_era5
 STARTDATE=2021120100  #2019120112
-ENDDATE=2021120400    #2019120400
+ENDDATE=2021120300    #2019120400
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
-BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/
+BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -14,6 +14,9 @@ export WORKDIR=${BASEDIR}/workdir/
 # directory where output is saved
 export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 
+# directory of land-offline_workflow repo
+# export CYCLEDIR=/scratch4/BMC/gsienkf/${USER}/land-offline_workflow/
+export CYCLEDIR=/scratch3/NCEPDEV/da/${USER}/land-offline_workflow/
 ############################
 
 # run (true) ensemble. NO for LETKFOI
@@ -30,12 +33,11 @@ export vector_size=18320   # hr3 land vectors C384:272699  C96:18320   C768:1067
 
 # length of each forecast
 export FCSTHR=24
-
-#forcing options: gdas, gswp3, gefs_ens, era5
-export atmos_forc=era5
+# delta to previous cycle --6 always?
+export PCYC_DEL=6
 
 #FV3 resolution
-export RES=96
+export RES=96   
 export NPZ=127   # vertical layers
 export ORES=mx100
 export TPATH=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C${RES}/
@@ -47,7 +49,7 @@ export cycles_per_job=20
 
 # directory with initial conditions
 export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
-#export ICSDIR=${BASEDIR}/RESTARTS/C${RES}/
+#export ICSDIR=${CYCLEDIR}/TESTS/RESTARTS/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
@@ -62,4 +64,33 @@ export DA_config18=${DA_config}
 
 # JEDI nproc--make sure to sync with iolayout
 export NPROC_JEDI=6
+# export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
 
+#forcing options: gdas, gswp3, gefs_ens, era5
+export atmos_forc=era5
+
+#---------- settings for ensemble forcing perturbation
+# forcing prefix
+# gdas: C${RES}_GDAS_forcing_
+export forcing_prefix=ERA5-C${RES}.${ORES}_hr3_datm_    #ERA5-C96.mx100_hr3_datm_2024-12-28.nc
+export forcing_dir=/scratch4/NCEPDEV/land/data/ufs-land-driver/datm/ERA5/C${RES}.${ORES}/
+
+export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_hr3_static_fields.nc
+export stochy_init_exist="NO"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
+export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
+# export stochy_init_found="NO" 
+
+export perturb_forcing="YES"
+export perturb_state="YES" # 
+
+# x y and io layout
+export LayX=1
+export LayY=1
+export IOLayX=1
+export IOLayY=1
+#
+export grid_type=-1         #grid type -1 for fv3 tiles 
+export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km
+export lndp_vscale=800	    #vertical correlation scale (m)
+export lndp_tscale=86400    #temporal decorrelation length (s) ~ 24hr
+#

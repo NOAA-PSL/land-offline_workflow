@@ -14,18 +14,19 @@
 # if calling from submit_cycle.sh, do not change these three:
 JEDIWORKDIR=${WORKDIR}/jedi/
 LANDDADIR=${CYCLEDIR}/DA_update/  # directory where do_landDA.sh script is 
-RSTRDIR=${MEM_WORKDIR} 
+RSTRDIR=${WORKDIR}/   
 
 ############################
 # DA options
 
 # DA algorithm and state being updated
-# options: "letkfoi" , "2DVar"
+# options: "letkfoi" , "2DVar", "letkf"
 DAalg=2DVar
-analVar=smc  #snow
+# State being updated: snow or smc
+analVar=snow
 
-# JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SYNTH 
-OBS_TYPES=("SMAP")  #"IMS" "GHCN")   # format: ("OBS1" "OBS2") 
+# JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SYNTH, SMAP 
+OBS_TYPES=("GHCN")   #SMAP")  #"IMS" "GHCN" )   # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # "DA" )   # format ("DA" "HOFX")
 
@@ -46,7 +47,80 @@ NPROC_JEDI=6
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 #OBSDIR= # to override default OBSDIR
 
-# OPTIONAL : CLEAN UP 
-SAVE_IMS="YES"
-SAVE_INCR="YES"
+# keep working dir?
 KEEPJEDIDIR="YES"
+
+# OPTIONAL : delete jedi work dirs?
+SAVE_IMS="NO"
+SAVE_TILE="NO"
+SAVE_INCR="NO"
+SAVE_ANL="NO"
+SAVE_HOFX="NO"
+
+export OBSDIR=/scratch4/NCEPDEV/land/data/DA
+
+
+# IAU related parameters
+export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
+export IAUFHRS="3,6,9"
+export IAU_FHROT=${IAUFHRS%%,*}
+export IAU_DELTHRS=6
+export IAU_OFFSET=6
+export DOIAU_ENKF=${DOIAU:-"NO"}   # Enable 4DIAU for EnKF ensemble
+export IAUFHRS_ENKF="3,6,9"
+export IAU_DELTHRS_ENKF=6
+
+export DO_JEDISNOWDA="YES"
+#Soil DA and whether it is (land) IAU
+export DO_GSISOILDA="YES"
+export DO_LAND_IAU=".true."
+export LSOIL_INCR=2
+
+export NET=gfs
+export RUN=gdas
+
+export LEVS=128
+export CASE=C96
+export CASE_ENS=C48
+export CASE_HIST=C96
+export OCNRES=100
+export ICERES=100
+export COMIN_OBS=${JEDIWORKDIR}  #${OBSDIR}/snow_depth/GHCN/processed_data
+export DATA=${JEDIWORKDIR}
+export COMOUT_SNOW_ANALYSIS=${OUTDIR}/comout
+export COMOUT_CONF=${OUTDIR}/conf
+export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
+export FIXorog=${TPATH}/../
+export FIXgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/fix
+
+export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
+export PARMgdas=${LANDDADIR}/GDASApp/parm/
+export HOMEgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/
+export USHgfs=${HOMEgfs}/ush
+export SCRgfs=${HOMEgfs}/scripts  #update to dev/scripts
+export PARMgfs=${HOMEgfs}/parm
+export NMEM_ENS=1
+export cycle=t00z
+export APRUN_SNOWANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
+export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
+export EXECgfs=${EXECgdas}
+export ntiles=6
+export bkgtime=2021120100
+
+# Name of the executable that applies increment to bkg and its namelist template
+export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
+export APPLY_INCR_NML_TMPL="${PARMgfs}/gdas/snow/apply_incr_nml.j2"
+
+export TASK_CONFIG_YAML="${PARMgfs}/gdas/snow/snow_det_config.yaml.j2"
+export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
+
+export PREP_SNOCVR_SNOMAD_YAML="${PARMgfs}/gdas/snow/prep/prep_snocvr_snomad.yaml.j2"
+export OBSBUILDER="${USHgfs}/bufr_snocvr_snomad.py"
+
+export io_layout_x="1"
+export io_layout_y="1"
+
+export ens_size=1
+export noincr_threshold=9999999.9
+export print_debug=".false."
+export truncate_incr=".true."
