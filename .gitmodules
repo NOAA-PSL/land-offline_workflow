@@ -9,4 +9,11 @@
 [submodule "vector2tile"]
 	path = vector2tile
 	url = https://github.com/NOAA-PSL/land-vector2tile.git
+	branch = develop
+[submodule "wxflow"]
+        path = wxflow
+        url = https://github.com/NOAA-EMC/wxflow
         branch = develop
+[submodule "gw_pygfs"]
+	path = gw_pygfs
+	url = https://github.com/NOAA-EMC/global-workflow
