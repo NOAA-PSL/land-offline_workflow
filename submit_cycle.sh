@@ -106,7 +106,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXRES/${RES}/g" vector2tile.namelist
 	sed -i -e "s/XXORES/${ORES}/g" vector2tile.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
-        sed -i -e "s#XXTPATH#${TPATH}#g" vector2tile.namelist
+        sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" vector2tile.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" vector2tile.namelist
 
         # submit vec2tile 
@@ -159,7 +159,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXRES/${RES}/g" tile2vector.namelist
 	sed -i -e "s/XXORES/${ORES}/g" tile2vector.namelist
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
-        sed -i -e "s#XXTPATH#${TPATH}#g" tile2vector.namelist
+        sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" tile2vector.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" tile2vector.namelist 
 
         $vec2tileexec tile2vector.namelist

@@ -22,26 +22,30 @@ export CYCLEDIR=/scratch3/NCEPDEV/da/${USER}/land-offline_workflow/
 # run (true) ensemble. NO for LETKFOI
 export do_enkf="NO"
 
-# for LETKF, this is size of ensemble.
-# for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=1
+# for LETKF, this is size of ensemble, 1 for non-ensemble runs 
+export ens_size=1
 
 # number of tiles
-export num_tiles=6         # 1 for regional
+export ntiles=6         # 1 for regional
 # vector size (from static file)
 export vector_size=18320   # hr3 land vectors C384:272699  C96:18320   C768:1067333 (hr2:1067297?)
 
 # length of each forecast
 export FCSTHR=24
-# delta to previous cycle --6 always?
+# delta to previous cycle --6 often, but can be 24
 export PCYC_DEL=6
 
 #FV3 resolution
 export RES=96   
 export NPZ=127   # vertical layers
 export ORES=mx100
-export TPATH=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C${RES}/
 export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
+
+export LEVS=128
+export CASE=C96
+export CASE_ENS=C48
+export OCNRES=100
+export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CASE}/
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
@@ -53,7 +57,7 @@ export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
-export DA_config="settings_DA_test"
+export DA_config="settings_soilDA_test"
 #export DA_config="openloop"
 
 # if want different DA at different times, list here. 
@@ -84,10 +88,10 @@ export perturb_forcing="YES"
 export perturb_state="YES" # 
 
 # x y and io layout
-export LayX=1
-export LayY=1
-export IOLayX=1
-export IOLayY=1
+export layout_x=1
+export layout_y=1
+export io_layout_x="1"
+export io_layout_y="1"
 #
 export grid_type=-1         #grid type -1 for fv3 tiles 
 export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km

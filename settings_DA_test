@@ -7,7 +7,7 @@
 # THISDATE= # date YYYYMMDDHH
 # OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/  # temporary directory where experiment is run from
 # RES= #FV3 resolution
-#export TPATH=
+#export FIXorog= orog file location
 #export TSTUB= # file stub for orography files in $TPATH
               # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
 
@@ -20,15 +20,15 @@ RSTRDIR=${WORKDIR}/
 # DA options
 
 # DA algorithm and state being updated
-# options: "letkfoi" , "2DVar", "letkf"
+# options: "2DVar", "letkf"
 DAalg=2DVar
-# State being updated: snow or smc
+# Analysis type: snow or smc
 analVar=snow
 
-# JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SYNTH, SMAP 
-OBS_TYPES=("GHCN")   #SMAP")  #"IMS" "GHCN" )   # format: ("OBS1" "OBS2") 
+# JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SMAP 
+OBS_TYPES=("GHCN")  # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA")  # "DA" )   # format ("DA" "HOFX")
+JEDI_TYPES=("DA")  # format ("DA" "HOFX")
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
@@ -90,7 +90,7 @@ export DATA=${JEDIWORKDIR}
 export COMOUT_SNOW_ANALYSIS=${OUTDIR}/comout
 export COMOUT_CONF=${OUTDIR}/conf
 export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
-export FIXorog=${TPATH}/../
+export FIXorog=
 export FIXgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/fix
 
 export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
@@ -105,7 +105,7 @@ export APRUN_SNOWANL='srun -l --export=ALL --hint=nomultithread --distribution=b
 export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
 export EXECgfs=${EXECgdas}
 export ntiles=6
-export bkgtime=2021120100
+#export bkgtime=2021120100
 
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
