@@ -57,8 +57,8 @@ class SoilAnalysis(Analysis):
                 'npy_ges': _res + 1,
                 'npz_ges': self.task_config.LEVS - 1,
                 'npz': self.task_config.LEVS - 1,
-                'land_bkg_path': os.path.join('self.task_config.DATA', 'bkg/'),
-                'land_prepobs_path': os.path.join(self.task_config.DATA, 'prep/'),
+                'soil_bkg_path': os.path.join('./', 'bkg'),
+                'soil_prepobs_path': os.path.join(self.task_config.DATA, 'prep'),
             }
         ))
 
@@ -66,7 +66,7 @@ class SoilAnalysis(Analysis):
         self.task_config.update(parse_j2yaml(self.task_config.TASK_CONFIG_YAML, self.task_config))
 
         # Create JEDI object dictionary
-        expected_keys = ['soilanlvar']
+        expected_keys = ['soilanlvar', 'soilanladdinc']
         self.jedi_dict = Jedi.get_jedi_dict(self.task_config.jedi_config, self.task_config, expected_keys)
 
     @logit(logger)
@@ -94,6 +94,7 @@ class SoilAnalysis(Analysis):
         # initialize JEDI variational application
         logger.info(f"Initializing JEDI applications")
         self.jedi_dict['soilanlvar'].initialize(self.task_config, clean_empty_obsspaces=False)
+        self.jedi_dict['soilanladdinc'].initialize(self.task_config)
 
     @logit(logger)
     def execute(self, jedi_dict_key: str) -> None:
@@ -127,7 +128,7 @@ class SoilAnalysis(Analysis):
         """
 
         # Compress and tar diag files into COM directory
-        self.tar_diag_files(self.task_config.COMOUT_SNOW_ANALYSIS,
+        self.tar_diag_files(self.task_config.COMOUT_SOIL_ANALYSIS,
                             f"{self.task_config.APREFIX}soil_analysis.ioda_hofx.tar")
 
         # Save files to COM
@@ -168,8 +169,8 @@ class SoilAnalysis(Analysis):
 
         if self.task_config.DOIAU:
             logger.info("Copying increments to beginning of window")
-            template_in = f'self.task_config.INCPREFIX.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
-            template_out = f'self.task_config.INCPREFIX.{to_fv3time(self.task_config.WINDOW_BEGIN)}.sfc_data.tile{{tilenum}}.nc'
+            template_in = f'soilinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
+            template_out = f'soilinc.{to_fv3time(self.task_config.WINDOW_BEGIN)}.sfc_data.tile{{tilenum}}.nc'
             inclist = []
             for itile in range(1, self.task_config.ntiles + 1):
                 filename_in = template_in.format(tilenum=itile)

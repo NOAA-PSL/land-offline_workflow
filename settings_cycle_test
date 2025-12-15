@@ -15,8 +15,7 @@ export WORKDIR=${BASEDIR}/workdir/
 export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 
 # directory of land-offline_workflow repo
-# export CYCLEDIR=/scratch4/BMC/gsienkf/${USER}/land-offline_workflow/
-export CYCLEDIR=/scratch3/NCEPDEV/da/${USER}/land-offline_workflow/
+export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ############################
 
 # run (true) ensemble. NO for LETKFOI
@@ -70,6 +69,12 @@ export DA_config18=${DA_config}
 export NPROC_JEDI=6
 # export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
 
+# x y and io layout
+export layout_x=1
+export layout_y=1
+export io_layout_x="1"
+export io_layout_y="1"
+
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
 
@@ -81,7 +86,7 @@ export forcing_dir=/scratch4/NCEPDEV/land/data/ufs-land-driver/datm/ERA5/C${RES}
 
 export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_hr3_static_fields.nc
 export stochy_init_exist="NO"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
-export stochy_init_dir="${CYCLEDIR}/STOCHY/RESTART/"
+export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
 # export stochy_init_found="NO" 
 
 export perturb_forcing="YES"
