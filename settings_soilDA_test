@@ -22,7 +22,7 @@ RSTRDIR=${WORKDIR}/
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
 DAalg=2DVar
-# State being updated: snow or smc 
+# TODO: fix this: State being updated: snow or smc(soil moisture content) 
 analType=smc
 
 # JEDI input obs. 

@@ -1,4 +1,5 @@
-# Settings file for submit_cycle, for running the DA_IMS_test 
+# Settings file for submit_cycle, for running the DA_IMS_test,
+# station snow (e.g., GHCN), or soil (SMAP) DA
 
 # experiment name
 export exp_name=2dvar_soil_test
@@ -56,8 +57,9 @@ export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
+# settings_soilDA_test or settings_snowDA_test depending on DA type
 export DA_config="settings_soilDA_test"
-#export DA_config="openloop"
+#export DA_config="openloop" 
 
 # if want different DA at different times, list here. 
 export DA_config00=${DA_config} 

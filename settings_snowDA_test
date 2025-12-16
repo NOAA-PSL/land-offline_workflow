@@ -22,13 +22,15 @@ RSTRDIR=${WORKDIR}/
 # DA algorithm and state being updated
 # options: "2DVar", "letkf"
 DAalg=2DVar
-# Analysis type: snow or smc
+# ToDO: fix this:  Analysis type: snow or smc(soil moisture content)
 analVar=snow
 
 # JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SMAP 
 OBS_TYPES=("GHCN")  # format: ("OBS1" "OBS2") 
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX")
+
+ANLVARS="totalSoilDepth"
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
