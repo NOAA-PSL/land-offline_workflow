@@ -67,8 +67,6 @@ export DA_config06=${DA_config}
 export DA_config12=${DA_config} 
 export DA_config18=${DA_config} 
 
-# JEDI nproc--make sure to sync with iolayout
-export NPROC_JEDI=6
 # export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
 
 # x y and io layout
@@ -94,12 +92,6 @@ export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
 export perturb_forcing="YES"
 export perturb_state="YES" # 
 
-# x y and io layout
-export layout_x=1
-export layout_y=1
-export io_layout_x="1"
-export io_layout_y="1"
-#
 export grid_type=-1         #grid type -1 for fv3 tiles 
 export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km
 export lndp_vscale=800	    #vertical correlation scale (m)

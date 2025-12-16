@@ -7,7 +7,7 @@
 # THISDATE= # date YYYYMMDDHH
 # OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/  # temporary directory where experiment is run from
 # RES= #FV3 resolution
-#export FIXorog= orog file location
+#export FIXorog= orog file location`
 #export TSTUB= # file stub for orography files in $TPATH
               # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
 
@@ -19,36 +19,91 @@ RSTRDIR=${WORKDIR}/
 ############################
 # DA options
 
-# DA algorithm and state being updated
-# options: "2DVar", "letkf"
+# DA algorithm and state type being updated
+# options: "2DVar", "letkf", "hybenkf"
 DAalg=2DVar
-# ToDO: fix this:  Analysis type: snow or smc(soil moisture content)
-analVar=snow
+# TODO: fix this: State being updated: snow or smc(soil moisture content) 
+analType=snow
 
-# JEDI input obs. options : IMS, GHCN, SFCSNO, MADIS, SMAP 
-OBS_TYPES=("GHCN")  # format: ("OBS1" "OBS2") 
+# JEDI input obs. 
+# options : IMS, GHCN, SFCSNO, MADIS, SMAP 
+OBS_TYPES=("GHCN")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA")  # format ("DA" "HOFX")
+JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
 ANLVARS="totalSoilDepth"
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
 
-# YAMLS. Options, either:
-# 1. "construct" to construct the YAML name, based on requested obs types and their availability 
-# 2. enter the desired YAML name (will not test for availability of obs)
-YAML_DA=construct  #ghcn_snowanlvar.yaml  #construct
-YAML_HOFX=construct
-
-LayX=1
-LayY=1
+# JEDI nproc--make sure to sync with iolayout
 NPROC_JEDI=6
 
-#OPTIONAL: overrides.
+#OPTIONAL: overrides. TODO: this may no longer apply
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
-#OBSDIR= # to override default OBSDIR
 
+# this is no longer optional
+export OBSDIR=/scratch4/NCEPDEV/land/data/DA
+# berr dir
+export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_snow/"  #TODO change to soil B
+
+# IAU related parameters
+export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
+export IAUFHRS="3,6,9"
+export IAU_DELTHRS=6
+export IAU_OFFSET=6
+
+export DO_SNOWDA="YES"
+export DO_SOILDA="NO"
+export DO_LAND_IAU=".false."  #should remain false for now
+export LSOIL_INCR=2
+export DO_ADD_SOILINC=".True."
+export DO_FINAL_SOILANL=".True."
+
+export NET=gfs
+export RUN=gdas
+
+export DATA=${JEDIWORKDIR}
+export COMIN_OBS=${JEDIWORKDIR}     #${OBSDIR}/processed_data
+export COMOUT_SNOW_ANALYSIS=${OUTDIR}/DA/jedi_anl
+export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
+export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
+export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
+
+export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
+export PARMgdas=${LANDDADIR}/GDASApp/parm/
+export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
+
+export APRUN_SNOWANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
+export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
+export EXECgfs=${EXECgdas}
+
+# Name of the executable that applies increment to bkg and its namelist template
+export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
+export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
+export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
+export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
+
+#-----------------------------
+export CASE_HIST=C96
+export ICERES=100
+
+export FIXgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/fix
+
+export HOMEgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/
+export USHgfs=${HOMEgfs}/ush
+export SCRgfs=${HOMEgfs}/scripts  #update to dev/scripts
+export PARMgfs=${HOMEgfs}/parm
+
+export OBSBUILDER="${USHgfs}/bufr_snocvr_snomad.py"
+
+#-------------------------------------------------------
+
+export noincr_threshold=9999999.9
+export print_debug=".false."
+export truncate_incr=".true."
+
+## Clean up settings: TODO: some of these may be taken care of by analysis
 # keep working dir?
 KEEPJEDIDIR="YES"
 
@@ -58,71 +113,3 @@ SAVE_TILE="NO"
 SAVE_INCR="NO"
 SAVE_ANL="NO"
 SAVE_HOFX="NO"
-
-export OBSDIR=/scratch4/NCEPDEV/land/data/DA
-
-
-# IAU related parameters
-export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
-export IAUFHRS="3,6,9"
-export IAU_FHROT=${IAUFHRS%%,*}
-export IAU_DELTHRS=6
-export IAU_OFFSET=6
-export DOIAU_ENKF=${DOIAU:-"NO"}   # Enable 4DIAU for EnKF ensemble
-export IAUFHRS_ENKF="3,6,9"
-export IAU_DELTHRS_ENKF=6
-
-export DO_JEDISNOWDA="YES"
-#Soil DA and whether it is (land) IAU
-export DO_GSISOILDA="YES"
-export DO_LAND_IAU=".true."
-export LSOIL_INCR=2
-
-export NET=gfs
-export RUN=gdas
-
-export LEVS=128
-export CASE=C96
-export CASE_ENS=C48
-export CASE_HIST=C96
-export OCNRES=100
-export ICERES=100
-export COMIN_OBS=${JEDIWORKDIR}  #${OBSDIR}/snow_depth/GHCN/processed_data
-export DATA=${JEDIWORKDIR}
-export COMOUT_SNOW_ANALYSIS=${OUTDIR}/comout
-export COMOUT_CONF=${OUTDIR}/conf
-export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
-export FIXorog=
-export FIXgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/fix
-
-export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
-export PARMgdas=${LANDDADIR}/GDASApp/parm/
-export HOMEgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/
-export USHgfs=${HOMEgfs}/ush
-export SCRgfs=${HOMEgfs}/scripts  #update to dev/scripts
-export PARMgfs=${HOMEgfs}/parm
-export NMEM_ENS=1
-export cycle=t00z
-export APRUN_SNOWANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
-export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
-export EXECgfs=${EXECgdas}
-export ntiles=6
-#export bkgtime=2021120100
-
-# Name of the executable that applies increment to bkg and its namelist template
-export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
-export APPLY_INCR_NML_TMPL="${PARMgfs}/gdas/snow/apply_incr_nml.j2"
-
-export TASK_CONFIG_YAML="${PARMgfs}/gdas/snow/snow_det_config.yaml.j2"
-export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
-
-export PREP_SNOCVR_SNOMAD_YAML="${PARMgfs}/gdas/snow/prep/prep_snocvr_snomad.yaml.j2"
-export OBSBUILDER="${USHgfs}/bufr_snocvr_snomad.py"
-
-export io_layout_x="1"
-export io_layout_y="1"
-
-export ens_size=1
-export noincr_threshold=9999999.9
-export print_debug=".false."
-export truncate_incr=".true."

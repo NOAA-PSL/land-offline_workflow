@@ -36,6 +36,7 @@ ANLVARS="soilMoistureVolumetric"
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
 
+# JEDI nproc--make sure to sync with iolayout
 NPROC_JEDI=6
 
 #OPTIONAL: overrides. TODO: this may no longer apply
