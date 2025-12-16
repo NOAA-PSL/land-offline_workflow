@@ -63,6 +63,10 @@ export DO_FINAL_SOILANL=".True."
 export NET=gfs
 export RUN=gdas
 
+export HOMEgfs=${HOMEdir}/HOMEgfs   #until a better solution is found
+export PARMgfs=${HOMEgfs}/parm
+export FIXgfs=${HOMEgfs}/fix
+
 export DATA=${JEDIWORKDIR}
 export COMIN_OBS=${JEDIWORKDIR}     #${OBSDIR}/processed_data
 export COMOUT_SNOW_ANALYSIS=${OUTDIR}/DA/jedi_anl
@@ -84,20 +88,7 @@ export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
 export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
 
-#-----------------------------
-export CASE_HIST=C96
-export ICERES=100
-
-export FIXgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/fix
-
-export HOMEgfs=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/global-workflow/
-export USHgfs=${HOMEgfs}/ush
-export SCRgfs=${HOMEgfs}/scripts  #update to dev/scripts
-export PARMgfs=${HOMEgfs}/parm
-
-export OBSBUILDER="${USHgfs}/bufr_snocvr_snomad.py"
-
-#-------------------------------------------------------
+export ----fixme--OBSBUILDER="${USHgfs}/bufr_snocvr_snomad.py"
 
 export noincr_threshold=9999999.9
 export print_debug=".false."
