@@ -45,7 +45,7 @@ NPROC_JEDI=6
 # this is no longer optional
 export OBSDIR=/scratch4/NCEPDEV/land/data/DA
 # berr dir
-export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_soil/"  #TODO change to soil B
+export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_snow/"  #TODO change to soil B
 
 # IAU related parameters
 export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
