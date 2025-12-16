@@ -2,7 +2,7 @@
 # station snow (e.g., GHCN), or soil (SMAP) DA
 
 # experiment name
-export exp_name=2dvar_soil_test
+export exp_name=2dvar_ghcn_snow_test
 STARTDATE=2021120100  #2019120112
 ENDDATE=2021120300    #2019120400
 
@@ -58,7 +58,7 @@ export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
 # settings_soilDA_test or settings_snowDA_test depending on DA type
-export DA_config="settings_soilDA_test"
+export DA_config="settings_snowDA_test"
 #export DA_config="openloop" 
 
 # if want different DA at different times, list here. 

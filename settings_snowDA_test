@@ -88,7 +88,7 @@ export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
 export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
 
-export ----fixme--OBSBUILDER="${USHgfs}/bufr_snocvr_snomad.py"
+export OBSBUILDER="${HOMEgfs}/bufr/bufr_snocvr_snomad.py"
 
 export noincr_threshold=9999999.9
 export print_debug=".false."
