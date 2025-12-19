@@ -5,7 +5,8 @@
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=6
 #SBATCH -t 00:30:00
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=2
+####SBATCH --mem-per-cpu=8G
 ##SBATCH --qos=batch
 ##SBATCH --nodes=6
 ##SBATCH --tasks-per-node=36
