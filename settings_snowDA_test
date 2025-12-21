@@ -26,16 +26,10 @@ DAalg=2DVar
 analType=snow
 
 # JEDI input obs. 
-# options : IMS, GHCN, SFCSNO, MADIS, SMAP
-# - ims_snow
-# - ghcn_snow
-# - madis_snow
-# - sfcsno
-# - snocvr_snomad
-
-OBS_TYPES=("MADIS")  # "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+# options : IMS, GHCN, SFCSNO, MADIS, SMAP 
+OBS_TYPES=("GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA") #"DA" "DA")  # format ("DA" "HOFX"...)
+JEDI_TYPES=("DA" "DA")  # format ("DA" "HOFX"...)
 
 ANLVARS="totalSoilDepth"
 
