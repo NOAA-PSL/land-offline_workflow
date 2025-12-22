@@ -33,10 +33,9 @@ analType=snow
 # - madis_snow
 # - sfcsno
 # - snocvr_snomad
-
-OBS_TYPES=("SNOCVR_SNOMAD")  # "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("SNOCVR_SNOMAD" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA") #"DA" "DA")  # format ("DA" "HOFX"...)
+JEDI_TYPES=("DA" "DA" "DA")  # format ("DA" "HOFX"...)
 
 ANLVARS="totalSoilDepth"
 

@@ -2,7 +2,7 @@
 # station snow (e.g., GHCN), or soil (SMAP) DA
 
 # experiment name
-export exp_name=2dvar_snocvr_snomad_snow_test
+export exp_name=2dvar_snocvr_snomad_ims_ghcn_snow_test
 STARTDATE=2024121500 #2021120100  #2019120112
 ENDDATE=2024121700    #2019120400
 
