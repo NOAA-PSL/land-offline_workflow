@@ -34,9 +34,6 @@ JEDI_TYPES=("DA" "DA")  # format ("DA" "HOFX"...)
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
 
-# JEDI nproc--make sure to sync with iolayout
-NPROC_JEDI=6
-
 #OPTIONAL: overrides. TODO: this may no longer apply
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
@@ -78,8 +75,8 @@ export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
-export APRUN_SNOWANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=2'
-export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
+export APRUN_SNOWANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
+export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI}"
 export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template

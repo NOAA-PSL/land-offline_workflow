@@ -67,11 +67,10 @@ export DA_config06=${DA_config}
 export DA_config12=${DA_config} 
 export DA_config18=${DA_config} 
 
-# export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
-
 # x y and io layout
 export layout_x=1
 export layout_y=1
+export NPROC_JEDI=$(( 6 * ${layout_x} * ${layout_y} ))
 export io_layout_x="1"
 export io_layout_y="1"
 
