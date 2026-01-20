@@ -2,11 +2,11 @@
 # station snow (e.g., GHCN), or soil (SMAP) DA
 
 # experiment name
-export exp_name=
-STARTDATE=
-ENDDATE=
+export exp_name=      #2dvar_test
+STARTDATE=            #2019120112
+ENDDATE=              #2019120312
 
-BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
+BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # for EMCer
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
