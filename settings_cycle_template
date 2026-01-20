@@ -1,43 +1,61 @@
-# Template for settings for submit_cycle. 
+# Settings file for submit_cycle, for running the DA_IMS_test,
+# station snow (e.g., GHCN), or soil (SMAP) DA
 
 # experiment name
-export exp_name=
-STARTDATE=
-ENDDATE=
+export exp_name=      #2dvar_test
+STARTDATE=            #2019120112
+ENDDATE=              #2019120312
+
+BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # for EMCer
 
 # temporary directory where experiment is run from
-export WORKDIR=/scratch2/BMC/gsienkf/${USER}/workdir/
-# directory where output is saved
-export OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/
+export WORKDIR=${BASEDIR}/workdir/
 
+# directory where output is saved
+export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
+
+# directory of land-offline_workflow repo
+export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ############################
 
-# for LETKF, this is size of ensemble.
-# for LETKF-OI pseudo ensemble, or non-ensemble runs use 1 
-export ensemble_size=
+# run (true) ensemble. NO for LETKFOI
+export do_enkf=
+
+# for LETKF, this is size of ensemble, 1 for non-ensemble runs 
+export ens_size=
+
+# number of tiles
+export ntiles=         # 1 for regional, 6 for global
+# vector size (from static file)
+export vector_size=   # hr3 land vectors C384:272699  C96:18320  C768:1067333(hr2:1067297?) C1152:2381853 
 
 # length of each forecast
 export FCSTHR=
-
-#forcing options: gdas, gswp3, gefs_ens
-export atmos_forc=
+# delta to previous cycle is set to 6 often, but can be 24
+export PCYC_DEL=
 
 #FV3 resolution
-export RES=
-export TPATH=
-export TSTUB= # file stub for orography files in $TPATH
-              # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
+export RES=   
+export NPZ=   # default 127: vertical layers
+export ORES=  # mx100, mx050, mx025
+export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
+
+export LEVS=   #default: 128
+export CASE=   #C96, C384, C768, C1152
+export CASE_ENS=   #C48, C192, C384, C768
+export OCNRES=      #100, 050, 025
+export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/  
 
 # number of cycles to submit in a single job
-# on hera in the debug queue 20 is a good number.
-export cycles_per_job=20
+# on Ursa in the debug queue 20 is a good number.
+export cycles_per_job=
 
 # directory with initial conditions
-# can find some here:/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/single
-export ICSDIR=/scratch2/BMC/gsienkf/Clara.Draper/DA_test_cases/land-offline_workflow/offline_ICS/test_ICS/
+export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
+# set to "settings_soilDA_test" or "settings_snowDA_test" depending on DA type
 export DA_config=
 
 # if want different DA at different times, list here. 
@@ -46,3 +64,31 @@ export DA_config06=${DA_config}
 export DA_config12=${DA_config} 
 export DA_config18=${DA_config} 
 
+# x y and io layout
+export layout_x=
+export layout_y=
+export NPROC_JEDI=$(( 6 * ${layout_x} * ${layout_y} ))
+export io_layout_x="1"
+export io_layout_y="1"
+
+#forcing options: gdas, gswp3, gefs_ens, era5
+export atmos_forc=
+
+#---------- settings for ensemble forcing perturbation
+# forcing prefix
+# gdas: C${RES}_GDAS_forcing_
+# ERA5: ERA5-C${RES}.${ORES}_hr3_datm_
+export forcing_prefix=     
+export forcing_dir=        #/scratch4/NCEPDEV/land/data/ufs-land-driver/datm/
+
+export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_hr3_static_fields.nc
+export stochy_init_exist=      #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
+export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
+
+export perturb_forcing=
+export perturb_state= 
+
+export grid_type=         #default is -1: grid type for fv3 tiles 
+export lndp_hscale=   #default is 120000: horizontal correlation scale for forcing in m ~120Km
+export lndp_vscale=	    #default is 800: vertical correlation scale (m)
+export lndp_tscale=    #default is 86400: temporal decorrelation length (s) ~ 24hr

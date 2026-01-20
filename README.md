@@ -49,9 +49,9 @@ COMPILING and TESTING.
 
 > do_submit_test.sh 
 
-Once completed:
+Once completed, to check snow DA output:
 
-> check_test.sh
+> check_snowDA_test.sh
 
 RUNNING YOUR OWN EXPERIMENTS 
 

@@ -18,9 +18,9 @@ List the git Issue that this PR addresses:
 
 
 ## Test output 
-Is this PR expected to pass the DA_IMS_test (ie., does it change the output)? 
+Is this PR expected to pass the snowDA_GHCN_IMS_test (ie., does it change the output)? 
 
-Does it pass the DA_IMS_test? 
+Does it pass the snowDA_GHCN_IMS_test? 
 
 If changes to the test results are expected, what are these changes? Provide a link to the output directory when running the test: 
 
