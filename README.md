@@ -18,19 +18,19 @@ COMPILING and TESTING.
 
 2a. 
 >source land_mods
-(these are the modules needed for steps 2b, 2c).
+(these are the modules needed for steps 2b, 2c - only works for Ursa for now).
 
 2b. 
 > cd ufs-land-driver
 > configure 
-  select ursa parallel or hera parallel
+  select ursa parallel
 > make 
 > cd ..
 
 2c.
 > cd vector2tile 
 > configure 
-  select ursa parallel or hera parallel
+  select ursa parallel
 > make 
 > cd .. 
 
@@ -49,15 +49,15 @@ COMPILING and TESTING.
 
 > do_submit_test.sh 
 
-Once completed:
+Once completed, to check snow DA output:
 
-> check_test.sh
+> check_snowDA_test.sh
 
 RUNNING YOUR OWN EXPERIMENTS 
 
 1. Prepare a settings file, using settings_template. Must fill in all variables, unless otherwise commented. 
 
-2. If running more than 6 tasks with JEDI, need to set layout = [x,y] in yaml, such that ntasks = 6*x*y
+2. If running more than 6 tasks with JEDI, need to set layout = [x,y] in settings_cycle file. Make sure to modify submit_cycle.sh to ensure nnodes*tasks_per_node=NPROC_JEDI=6*x*y
 
 3. Make sure there is a restart in your ICSDIR.
 

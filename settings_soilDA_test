@@ -31,8 +31,6 @@ OBS_TYPES=("SMAP")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
-ANLVARS="soilMoistureVolumetric"
-
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
 

@@ -28,7 +28,7 @@ export ens_size=1
 # number of tiles
 export ntiles=6         # 1 for regional
 # vector size (from static file)
-export vector_size=18320   # hr3 land vectors C384:272699  C96:18320   C768:1067333 (hr2:1067297?)
+export vector_size=18320   # hr3 land vectors C384:272699  C96:18320  C768:1067333(hr2:1067297?) C1152:2381853 
 
 # length of each forecast
 export FCSTHR=24
@@ -67,11 +67,10 @@ export DA_config06=${DA_config}
 export DA_config12=${DA_config} 
 export DA_config18=${DA_config} 
 
-# export NPROC_NOMP=6     # This is calculated by the code--- specify only if necessary 
-
 # x y and io layout
 export layout_x=1
 export layout_y=1
+export NPROC_JEDI=$(( 6 * ${layout_x} * ${layout_y} ))
 export io_layout_x="1"
 export io_layout_y="1"
 
