@@ -62,7 +62,7 @@ export NET=gfs
 export RUN=gdas
 
 export DATA=${JEDIWORKDIR}
-export COMIN_OBS=${JEDIWORKDIR}     #${OBSDIR}/processed_data
+export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS
 export COMOUT_SOIL_ANALYSIS=${OUTDIR}/DA/jedi_anl
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts

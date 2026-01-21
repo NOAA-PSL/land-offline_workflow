@@ -26,10 +26,16 @@ DAalg=2DVar
 analType=snow
 
 # JEDI input obs. 
-# options : IMS, GHCN, SFCSNO, MADIS, SMAP 
-OBS_TYPES=("GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+# options : IMS, GHCN, MADIS, SFCSNO, SNOCVR_SNOMAD
+# Corresponding names in pygfs
+# - ims_snow
+# - ghcn_snow
+# - madis_snow
+# - sfcsno
+# - snocvr_snomad
+OBS_TYPES=("SNOCVR_SNOMAD" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA" "DA")  # format ("DA" "HOFX"...)
+JEDI_TYPES=("DA" "DA" "DA")  # format ("DA" "HOFX"...)
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
@@ -63,7 +69,7 @@ export PARMgfs=${HOMEgfs}/parm
 export FIXgfs=${HOMEgfs}/fix
 
 export DATA=${JEDIWORKDIR}
-export COMIN_OBS=${JEDIWORKDIR}     #${OBSDIR}/processed_data
+export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS     
 export COMOUT_SNOW_ANALYSIS=${OUTDIR}/DA/jedi_anl
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
@@ -85,7 +91,7 @@ export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
 export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
 
-export OBSBUILDER="${HOMEgfs}/bufr/bufr_snocvr_snomad.py"
+export OBSBUILDER="${LANDDADIR}/GDASApp/ush/snow/bufr_snocvr_snomad.py"
 
 export noincr_threshold=9999999.9
 export print_debug=".false."
