@@ -90,12 +90,16 @@ export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
 export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
 export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
-
+export PREP_GHCN_YAML="${PARMgdas}/snow/prep/prep_ghcn.yaml.j2"
+export GHCN2IODACONV="${LANDDADIR}/GDASApp/ush/snow/ghcn_snod2ioda.py"  #"${USHgfs}/ghcn_snod2ioda.py"
 export OBSBUILDER="${LANDDADIR}/GDASApp/ush/snow/bufr_snocvr_snomad.py"
 
 export noincr_threshold=9999999.9
 export print_debug=".false."
 export truncate_incr=".true."
+
+export ims_scf_obs_suffix="asc" # asc-ascii; nc-netcdf
+export fail_on_missing_snowobs=False    # False: just warn; True: fail & exit
 
 ## Clean up settings: TODO: some of these may be taken care of by analysis
 # keep working dir?

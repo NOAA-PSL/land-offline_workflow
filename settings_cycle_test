@@ -3,7 +3,7 @@
 
 # experiment name
 export exp_name=2dvar_snocvr_snomad_ims_ghcn_snow_test
-STARTDATE=2024121500 #2021120100  #2019120112
+STARTDATE=2024121500  #2021120100  #2019120112
 ENDDATE=2024121700    #2019120400
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
