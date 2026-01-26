@@ -85,8 +85,8 @@ export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${
 export stochy_init_exist=      #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
 export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
 
-export perturb_forcing=
-export perturb_state= 
+export perturb_forcing= #default is ".true."
+export perturb_state=  #default is ".false."
 
 export grid_type=         #default is -1: grid type for fv3 tiles 
 export lndp_hscale=   #default is 120000: horizontal correlation scale for forcing in m ~120Km
