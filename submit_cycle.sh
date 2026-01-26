@@ -84,7 +84,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
     rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
     cp $rst_in $rst_out 
-
+    
     if [[ $do_jedi == "YES" ]]; then  
         ############################
         #  convert restarts from vector to tile
@@ -172,7 +172,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         # save analysis restart
         cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
     fi
-
+    
     ############################
     # run the forecast model
     ############################

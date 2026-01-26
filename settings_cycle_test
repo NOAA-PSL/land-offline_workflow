@@ -2,9 +2,9 @@
 # station snow (e.g., GHCN), or soil (SMAP) DA
 
 # experiment name
-export exp_name=2dvar_ims_ghcn_snow_test
-STARTDATE=2021120100  #2019120112
-ENDDATE=2021120300    #2019120400
+export exp_name=2dvar_snocvr_snomad_ims_ghcn_snow_test
+STARTDATE=2024121500  #2021120100  #2019120112
+ENDDATE=2024121700    #2019120400
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
@@ -49,7 +49,7 @@ export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CAS
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=20
+export cycles_per_job=30
 
 # directory with initial conditions
 export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
