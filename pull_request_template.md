@@ -18,9 +18,9 @@ List the git Issue that this PR addresses:
 
 
 ## Test output 
-Is this PR expected to pass the snowDA_GHCN_IMS_test (ie., does it change the output)? 
+Is this PR expected to pass the snowDA_SFCSNO_GHCN_IMS_test (ie., does it change the output)? 
 
-Does it pass the snowDA_GHCN_IMS_test? 
+Does it pass the snowDA_SFCSNO_GHCN_IMS_test? 
 
 If changes to the test results are expected, what are these changes? Provide a link to the output directory when running the test: 
 
@@ -28,5 +28,5 @@ If changes to the test results are expected, what are these changes? Provide a l
 - [ ] My branch being merged is up to date with the latest develop. 
 - [ ] I have performed a self-review of my code by examining the differences that will be merged.
 - [ ] I have not made any unnecessary code changes / changed any default behavior.
-- [ ] My code passes the DA_IMS_test, or differences can be explained. 
+- [ ] My code passes the snowDA_test, or differences can be explained. 
 
