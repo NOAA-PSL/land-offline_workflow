@@ -78,12 +78,17 @@ while [ $date_count -lt $cycles_per_job ]; do
     MEM_WORKDIR=${WORKDIR}/${mem_ens}
     MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
-    cd $MEM_WORKDIR
+    cd $WORKDIR
 
     # copy restarts into work directory
     rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
     rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-    cp $rst_in $rst_out 
+    if [[ -e ${rst_in} ]]; then
+        cp $rst_in $rst_out
+    else
+        echo "restart not found ${rst_in}; exiting"
+        exit
+    fi
     
     if [[ $do_jedi == "YES" ]]; then  
         ############################
@@ -91,9 +96,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         ############################
 
         echo '************************************************'
-        echo 'calling tile2vector' 
-
-        export MEM_WORKDIR
+        echo 'calling vector2tile' 
 
         # update vec2tile and tile2vec namelists
         # to-do: update location_end in template, for specific res. 
@@ -109,16 +112,47 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
         sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" vector2tile.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" vector2tile.namelist
-
-        # submit vec2tile 
-        echo '************************************************'
-        echo 'calling vector2tile' 
+ 
         source ${CYCLEDIR}/land_mods
+	cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR
+
+        cd $MEM_WORKDIR
         $vec2tileexec vector2tile.namelist
         if [[ $? != 0 ]]; then
-            echo "vec2tile failed"
+            echo "vec2tile failed for mem000"
             exit 
         fi
+
+        if [[ "$ensemble_size" -gt 1  ]]; then 
+            #TODO: parallelize this 
+            for ie in $(seq $ensemble_size)
+            do
+                mem_ens="mem`printf %03i $ie`"
+                MEM_WORKDIR=${WORKDIR}/${mem_ens}
+                MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+
+                # copy restarts into work directory
+                rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+                rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+                if [[ -e ${rst_in} ]]; then
+                    cp $rst_in $rst_out 
+                else
+                    echo "restart not found ${rst_in}; exiting" 
+                    exit 
+                fi
+                cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR/vector2tile.namelist
+
+                #TODO: parallelize this 
+                cd $MEM_WORKDIR
+                $vec2tileexec vector2tile.namelist
+                if [[ $? != 0 ]]; then
+                    echo "vec2tile failed for ens mem $ie"
+                    exit 
+                fi
+               
+            done
+            # wait
+        fi	
 
         ############################
         # do DA update
@@ -145,7 +179,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
-        cd $MEM_WORKDIR
+        cd $WORKDIR
 
         echo '************************************************'
         echo 'calling tile2vector' 
@@ -163,16 +197,44 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" tile2vector.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" tile2vector.namelist 
 
+	cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
+
+        cd $MEM_WORKDIR
+
         $vec2tileexec tile2vector.namelist
         if [[ $? != 0 ]]; then
-            echo "tile2vector failed"
+            echo "tile2vector failed for $mem_ens"
             exit 
         fi
 
         # save analysis restart
         cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+
+        if [[ "$ensemble_size" -gt 1  ]]; then 
+
+            for ie in $(seq $ensemble_size)
+            do
+                mem_ens="mem`printf %03i $ie`"
+                MEM_WORKDIR=${WORKDIR}/${mem_ens}
+                MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+
+                cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
+
+                cd $MEM_WORKDIR
+                $vec2tileexec tile2vector.namelist
+                if [[ $? != 0 ]]; then
+                    echo "tile2vector failed for ens mem "$ie
+                    exit 
+                fi
+
+                # save analysis restart
+                cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+
+            done
+            # wait
+        fi       
     fi
-    
+    exit
     ############################
     # run the forecast model
     ############################
