@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=2DVar
+DAalg=letkf
 # TODO: fix this: State being updated: snow or smc(soil moisture content) 
 analType=snow
 
@@ -83,12 +83,14 @@ export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
 export APRUN_SNOWANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI}"
+export APRUN_SNOWENSANLLETKF="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
 export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
-export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
+#export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
+export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_ensda_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
 export PREP_GHCN_YAML="${PARMgdas}/snow/prep/prep_ghcn.yaml.j2"
 export GHCN2IODACONV="${LANDDADIR}/GDASApp/ush/snow/ghcn_snod2ioda.py"  #"${USHgfs}/ghcn_snod2ioda.py"
