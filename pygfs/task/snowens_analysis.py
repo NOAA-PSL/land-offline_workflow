@@ -338,7 +338,19 @@ class SnowEnsAnalysis(Analysis):
             Instance of the SnowEnsAnalysis object
         """
         
-        #TODO: copy inc fron anl to anl/mem for non-letkf (when adding same increments to all ens)
+        #Copy inc fron anl to anl/mem for non-letkf (when adding same increments to all ens)
+        if self.task_config.jcb_algo == '3dvar':
+            logger.info("Copying increments to ens dirs")
+            template_inout = f'snowinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
+            inclist = []
+            for itile in range(1, self.task_config.ntiles + 1):
+                filename_inout = template_inout.format(tilenum=itile)
+                src = os.path.join(self.task_config.DATA, 'anl', filename_inout)
+                for mem in range(1, self.task_config.NMEM_ENS + 1):
+                    dest = os.path.join(self.task_config.DATA, f'anl/mem{mem:03d}', filename_inout)
+                    inclist.append([src, dest])
+            FileHandler({'copy': inclist}).sync()
+
         if self.task_config.DOIAU:
             logger.info("Copying increments to beginning of window")
             template_in = f'snowinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
