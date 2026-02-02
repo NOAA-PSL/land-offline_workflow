@@ -33,9 +33,9 @@ analType=snow
 # - madis_snow
 # - sfcsno
 # - snocvr_snomad
-OBS_TYPES=("SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("GHCN") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA" "DA" "DA")  # format ("DA" "HOFX"...)
+JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "HOFX"...)
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
@@ -73,6 +73,8 @@ export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS
 export COMOUT_SNOW_ANALYSIS=${OUTDIR}/DA/jedi_anl
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
+export COMIN_ATMOS_RESTART_PREV_ENS=${JEDIWORKDIR}
+
 export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
 export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
 export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/  #gdas.${YYYY}${MM}${DD}/${HH}
@@ -82,13 +84,15 @@ export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
 export APRUN_SNOWANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
-export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI}"
+export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
 export APRUN_SNOWENSANLLETKF="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
 export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
+export ENS_APPLY_INCR_NML_TMPL="${PARMgdas}/snow/ens_apply_incr_nml.j2"
+
 #export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_det_config.yaml.j2"
 export TASK_CONFIG_YAML="${PARMgdas}/snow/snow_ensda_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"

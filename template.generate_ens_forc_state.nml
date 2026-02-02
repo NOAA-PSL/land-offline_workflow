@@ -1,0 +1,37 @@
+&NAMENS
+  static_filename  = "XXSTATICFILE"
+  PRINTRANK        = 0
+  print_debg_info  = .false.
+  IDIM = XXRESX
+  JDIM = XXRESY
+  NUM_TILES = XXNTIL
+  i_layout = XXLX
+  j_layout = XXLY
+  IY = YYYY
+  IM = MM
+  ID = DD
+  IH = HH
+  FH = 0.0
+  DELTSFC = XXDTSFCX
+  horz_len_scale = XXLSC
+  ver_len_scale = XXVSC
+  temp_len_scale = XXTAU
+  ens_size = XXENSZ
+  t_len = 24
+  t_indx = 2  
+  vector_size = XXVECTSZ    
+  perturb_forcing =XXPERTFORC
+  forc_inp_path = "XXFORINPATH"
+  forc_inp_file = "XXFORINFILE"
+  n_forc_vars = 6
+  forc_var_list = "precipitation", "solar_radiation", "longwave_radiation", "temperature",
+            "wind_speed", "specific_humidity"
+  std_dev_f = 0.6, 0.3, 30.0, 5.0, 0.1075, 0.1075
+  forc_ens_pert_type = 1, 1, 0, 0, 1, 1   ! 1 multiplicative, 0 additive
+  perturb_state=XXPERTSTATE
+  state_file_name="XXSTATEFILE"
+  n_state_vars = 8
+  state_var_list = 'smc1', 'smc2', 'smc3', 'smc4', 'soilt1', 'soilt2', 'soilt3', 'soilt4'
+  std_dev_s = 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 2.0, 2.0
+  state_ens_pert_type = 1, 1, 1, 1, 0, 0, 0, 0
+/

@@ -112,14 +112,15 @@ class SnowEnsAnalysis(Analysis):
         self.task_config.update(parse_j2yaml(self.task_config.TASK_CONFIG_YAML, self.task_config))
 
         # Create JEDI object dictionary
-        expected_keys = ['scf_to_ioda', 'snowanlvar', 'esnowanlensmean']
+        #expected_keys = ['scf_to_ioda', 'snowanlvar', 'esnowanlensmean']
+        expected_keys = ['snowensanlletkf', 'scf_to_ioda'] #, 'snowensanlobs', 'snowensanlsol', 'snowensanlfv3inc','snowanladdinc']
         self.jedi_dict = Jedi.get_jedi_dict(self.task_config.jedi_config, self.task_config, expected_keys)
 
         # Boolean to decide if SNOCVR_SNOMAD processing is done
         _snocvr_file = os.path.join(self.task_config.COMIN_OBS, f'{self.task_config.OPREFIX}snocvr.tm00.bufr_d')
         _snomad_file = os.path.join(self.task_config.COMIN_OBS, f'{self.task_config.OPREFIX}snomad.tm00.bufr_d')
         self.task_config.DO_SNOCVR_SNOMAD = (
-            "snocvr_snomad" in self.jedi_dict.snowanlvar.jcb_config.observations and
+            "snocvr_snomad" in self.jedi_dict.snowensanlletkf.jcb_config.observations and  #snowanlvar.jcb_config.observations and
             (os.path.exists(_snocvr_file) or os.path.exists(_snomad_file))
         )
 
@@ -144,7 +145,7 @@ class SnowEnsAnalysis(Analysis):
 
         # Stage observation files
         logger.info(f"Staging observation files")
-        self.jedi_dict['snowanlvar'].stage_obsdatain(self.task_config.COMIN_OBS)
+        self.jedi_dict['snowensanlletkf'].stage_obsdatain(self.task_config.COMIN_OBS)
 
         # Stage files from COM
         logger.info(f"Staging files from COM and creating output directories")
@@ -152,8 +153,10 @@ class SnowEnsAnalysis(Analysis):
 
         # Initialize JEDI applications
         logger.info(f"Initializing JEDI applications")
-        self.jedi_dict['snowanlvar'].initialize(clean_empty_obsspaces=False)
-        self.jedi_dict['esnowanlensmean'].initialize()
+        self.jedi_dict['snowensanlletkf'].initialize(clean_empty_obsspaces=False)
+        #self.jedi_dict['snowensanlobs'].initialize() #clean_empty_obsspaces=False)
+        #self.jedi_dict['snowensanlsol'].initialize() #clean_empty_obsspaces=False)
+        #self.jedi_dict['esnowanlensmean'].initialize()
         if self.task_config.DO_IMS_SCF:
             self.jedi_dict['scf_to_ioda'].initialize()
 
@@ -190,7 +193,7 @@ class SnowEnsAnalysis(Analysis):
 
         # Archive, compress, and save diag files in COM directory
         logger.info(f"Saving observation diag files to COM")
-        self.jedi_dict['snowanlvar'].save_obsdataout(self.task_config.COMOUT_SNOW_ANALYSIS,
+        self.jedi_dict['snowensanlletkf'].save_obsdataout(self.task_config.COMOUT_SNOW_ANALYSIS,
                                                      f"{self.task_config.APREFIX_ENS}snow_analysis.ioda_hofx.ensmean")
 
         # Save files to COM
@@ -334,19 +337,21 @@ class SnowEnsAnalysis(Analysis):
         self : Analysis
             Instance of the SnowEnsAnalysis object
         """
-
+        
+        #TODO: copy inc fron anl to anl/mem for non-letkf (when adding same increments to all ens)
         if self.task_config.DOIAU:
             logger.info("Copying increments to beginning of window")
             template_in = f'snowinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
             template_out = f'snowinc.{to_fv3time(self.task_config.WINDOW_BEGIN)}.sfc_data.tile{{tilenum}}.nc'
-            inclist = []
-            for itile in range(1, self.task_config.ntiles + 1):
-                filename_in = template_in.format(tilenum=itile)
-                filename_out = template_out.format(tilenum=itile)
-                src = os.path.join(self.task_config.DATA, 'anl', filename_in)
-                dest = os.path.join(self.task_config.DATA, 'anl', filename_out)
-                inclist.append([src, dest])
-            FileHandler({'copy': inclist}).sync()
+            for mem in range(1, self.task_config.NMEM_ENS + 1):
+                inclist = []
+                for itile in range(1, self.task_config.ntiles + 1):
+                    filename_in = template_in.format(tilenum=itile)
+                    filename_out = template_out.format(tilenum=itile)
+                    src = os.path.join(self.task_config.DATA, f'anl/mem{mem:03d}', filename_in)
+                    dest = os.path.join(self.task_config.DATA, f'anl/mem{mem:03d}', filename_out)
+                    inclist.append([src, dest])
+                FileHandler({'copy': inclist}).sync()
 
         bkgtimes = []
         if self.task_config.DOIAU:
@@ -354,55 +359,52 @@ class SnowEnsAnalysis(Analysis):
             bkgtimes.append(self.task_config.WINDOW_BEGIN)
         bkgtimes.append(self.task_config.current_cycle)
 
-        # loop over members
-        # TODO, make this better, or rewrite code to run in parallel
-        for mem in range(1, self.task_config.NMEM_ENS + 1):
-            logger.info(f"Processing member mem{mem:03d}")
-            # loop over times to apply increments
-            for bkgtime in bkgtimes:
-                logger.info(f"Processing analysis valid: {bkgtime}")
-                logger.info("Create namelist for APPLY_INCR_EXE")
-                nml_template = self.task_config.ENS_APPLY_INCR_NML_TMPL
-                nml_config = {
-                    'current_cycle': bkgtime,
-                    'CASE': self.task_config.CASE,
-                    'DATA': self.task_config.DATA,
-                    'HOMEgfs': self.task_config.HOMEgfs,
-                    'OCNRES': self.task_config.OCNRES,
-                    'MYMEM': f"{mem:03d}",
-                    'CASE_ENS': self.task_config.CASE_ENS,
-                    'ens_size': self.task_config.ens_size,
-                    'ntiles': self.task_config.ntiles,
-                    'noincr_threshold': self.task_config.noincr_threshold,
-                    'print_debug': self.task_config.print_debug,
-                    'truncate_incr': self.task_config.truncate_incr
-                }
-                nml_data = Jinja(nml_template, nml_config).render
-                logger.debug(f"apply_incr_nml:\n{nml_data}")
+        #Add ens increments in parallel
+        logger.info(f"Adding increments to {self.task_config.NMEM_ENS} members") 
+        # loop over times to apply increments
+        for bkgtime in bkgtimes:
+            logger.info(f"Processing analysis valid: {bkgtime}")
+            logger.info("Create namelist for APPLY_INCR_EXE")
+            nml_template = self.task_config.ENS_APPLY_INCR_NML_TMPL
+            nml_config = {
+                'current_cycle': bkgtime,
+                'CASE': self.task_config.CASE,
+                'DATA': self.task_config.DATA,
+                'HOMEgfs': self.task_config.HOMEgfs,
+                'OCNRES': self.task_config.OCNRES,
+                'CASE_ENS': self.task_config.CASE_ENS,
+                'ens_size': self.task_config.ens_size,
+                'ntiles': self.task_config.ntiles,
+                'noincr_threshold': self.task_config.noincr_threshold,
+                'print_debug': self.task_config.print_debug,
+                'truncate_incr': self.task_config.truncate_incr
+            }
+            nml_data = Jinja(nml_template, nml_config).render
+            logger.debug(f"apply_incr_nml:\n{nml_data}")
 
-                nml_file = os.path.join(self.task_config.DATA, "apply_incr_nml")
-                if os.path.exists(nml_file):
-                    rm_p(nml_file)
-                with open(nml_file, "w") as fho:
-                    fho.write(nml_data)
+            nml_file = os.path.join(self.task_config.DATA, "apply_incr_nml")
+            if os.path.exists(nml_file):
+                rm_p(nml_file)
+            with open(nml_file, "w") as fho:
+                fho.write(nml_data)
 
-                logger.info("Link APPLY_INCR_EXE into DATA/")
-                exe_src = self.task_config.APPLY_INCR_EXE
-                exe_dest = os.path.join(self.task_config.DATA, os.path.basename(exe_src))
-                if os.path.exists(exe_dest):
-                    rm_p(exe_dest)
-                os.symlink(exe_src, exe_dest)
+            logger.info("Link APPLY_INCR_EXE into DATA/")
+            exe_src = self.task_config.APPLY_INCR_EXE
+            exe_dest = os.path.join(self.task_config.DATA, os.path.basename(exe_src))
+            if os.path.exists(exe_dest):
+                rm_p(exe_dest)
+            os.symlink(exe_src, exe_dest)
 
-                # execute APPLY_INCR_EXE to create analysis files
-                exe = Executable(self.task_config.APRUN_APPLY_INCR)
-                exe.add_default_arg(exe_dest)
-                logger.info(f"Executing {exe}")
-                try:
-                    logger.debug(f"Executing {exe}")
-                    exe()
-                except OSError:
-                    logger.exception(f"Failed to execute {exe}")
-                    raise
-                except Exception as err:
-                    logger.exception(f"An error occured during execution of {exe}")
-                    raise WorkflowException(f"An error occured during execution of {exe}") from err
+            # execute APPLY_INCR_EXE to create analysis files
+            exe = Executable(self.task_config.APRUN_APPLY_INCR)
+            exe.add_default_arg(exe_dest)
+            logger.info(f"Executing {exe}")
+            try:
+                logger.debug(f"Executing {exe}")
+                exe()
+            except OSError:
+                logger.exception(f"Failed to execute {exe}")
+                raise
+            except Exception as err:
+                logger.exception(f"An error occured during execution of {exe}")
+                raise WorkflowException(f"An error occured during execution of {exe}") from err

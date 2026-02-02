@@ -20,7 +20,7 @@ source $config_file
 
 export KEEPWORKDIR="YES"
 
-CYCLEDIR=${CYCLEDIR:-$(pwd)} 
+export CYCLEDIR=${CYCLEDIR:-$(pwd)} 
 
 ############################
 # set executables
@@ -129,6 +129,7 @@ fi
 # and input.nml has settings right
 if [[ $do_enkf == "YES" ]]; then     
     
+    export TPATH=${FIXorog}/C${RES}	
     export stochy_init_found="NO"
     
     if [[ $stochy_init_exist == "YES" ]]; then
@@ -169,18 +170,21 @@ fi
 mem_ens="mem000"  # single member/ensemble mean, use ensemble 0
 rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+MEM_WORKDIR=${WORKDIR}/${mem_ens}
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
 if [[ ! -e ${rst_out} ]]; then 
     echo "Looking for ICS: ${rst_in}"
     if [[ -e "${rst_in}" ]]; then
        echo "ICS found, copying" 
        cp ${rst_in} ${rst_out}
+       cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
     else  # check if is in output directory structure
         rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         echo "Looking for ICS: ${rst_in}"
         if [[ -e ${rst_in} ]]; then
            echo "ICS found, copying" 
            cp ${rst_in} ${rst_out}
+	   cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         else  
            echo "ICS not found. Exiting" 
            exit 10 
@@ -195,18 +199,21 @@ if [[ "$ensemble_size" -gt 1  ]]; then
         mem_ens="mem`printf %03i $ie`"
         rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+	MEM_WORKDIR=${WORKDIR}/${mem_ens}
         # if restart not in experiment out directory, copy the restarts from the ICSDIR
         if [[ ! -e ${rst_out} ]]; then 
             echo "Looking for ICS: ${rst_in}"
             if [[ -e ${rst_in} ]]; then
             echo "ICS found, copying" 
             cp ${rst_in} ${rst_out}
+            cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
             else  # check if is in output directory structure
                 rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
                 echo "Looking for ICS: ${rst_in}"
                 if [[ -e ${rst_in} ]]; then
                 echo "ICS found, copying" 
                 cp ${rst_in} ${rst_out}
+		cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
                 else  
                 echo "ICS not found. Exiting" 
                 exit 10 
