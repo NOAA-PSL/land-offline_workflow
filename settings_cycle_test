@@ -1,5 +1,5 @@
-# Settings file for submit_cycle, for running the DA_IMS_test,
-# station snow (e.g., GHCN), or soil (SMAP) DA
+# Settings file for submit_cycle, for running the snow DA test 
+# station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
 export exp_name=letkf_ghcn_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
