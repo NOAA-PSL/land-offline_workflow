@@ -18,43 +18,6 @@
 # loop over time steps
 ############################
 
-#config_file=settings_cycle_test
-#echo "reading cycle settings from $config_file"
-#source $config_file
-#
-#export stochy_init_found="YES"
-#export KEEPWORKDIR="YES"
-#
-#export CYCLEDIR=${CYCLEDIR:-$(pwd)}
-#
-#############################
-## set executables
-#
-#export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
-#export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe
-#export EnsGenExe=${CYCLEDIR}/stochastic_physics/EnsGen.x
-#
-#export DADIR=${CYCLEDIR}/DA_update/
-#export DAscript=${DADIR}/do_landDA.sh
-#
-#export analdate=${CYCLEDIR}/analdates.sh
-#export incdate=${CYCLEDIR}/incdate.sh
-#
-#############################
-## read in dates
-#
-#export logfile=${CYCLEDIR}/cycle.log
-#touch $logfile
-#echo "***************************************" >> $logfile
-#echo "cycling from $STARTDATE to $ENDDATE" >> $logfile
-## compute the restart frequency, run_days and run_hours
-#export FREQ=$(( 3600 * $FCSTHR ))
-#export RDD=$(( $FCSTHR / 24 ))
-#export RHH=$(( $FCSTHR % 24 ))
-#
-#export TPATH=${FIXorog}/C${RES}
-
-
 echo 'starting cycle' 
 date
 source $analdate 
