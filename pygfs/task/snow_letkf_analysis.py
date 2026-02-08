@@ -25,16 +25,16 @@ from wxflow import (AttrDict,
 logger = getLogger(__name__.split('.')[-1])
 
 
-class SnowEnsAnalysis(Analysis):
+class SnowLetkfAnalysis(Analysis):
     """
-    Class for JEDI-based global snow ensemble analysis tasks
+    Class for JEDI-based global snow LETKF analysis tasks
     """
 
-    @logit(logger, name="SnowEnsAnalysis")
+    @logit(logger, name="SnowLetkfAnalysis")
     def __init__(self, config: Dict[str, Any]):
         """Constructor global snow ensemble analysis task
 
-        This method will construct a global snow ensemble analysis task.
+        This method will construct a global snow LETKF analysis task.
         This includes:
         - extending the task_config attribute AttrDict to include parameters required for this task
         - instantiate the Jedi attribute object
@@ -112,14 +112,14 @@ class SnowEnsAnalysis(Analysis):
         self.task_config.update(parse_j2yaml(self.task_config.TASK_CONFIG_YAML, self.task_config))
 
         # Create JEDI object dictionary
-        expected_keys = ['snowensanlletkf', 'scf_to_ioda'] #, 'snowensanlobs', 'snowensanlsol']
+        expected_keys = ['snowletkfanl', 'scf_to_ioda'] #, 'snowensanlobs', 'snowensanlsol']
         self.jedi_dict = Jedi.get_jedi_dict(self.task_config.jedi_config, self.task_config, expected_keys)
 
         # Boolean to decide if SNOCVR_SNOMAD processing is done
         _snocvr_file = os.path.join(self.task_config.COMIN_OBS, f'{self.task_config.OPREFIX}snocvr.tm00.bufr_d')
         _snomad_file = os.path.join(self.task_config.COMIN_OBS, f'{self.task_config.OPREFIX}snomad.tm00.bufr_d')
         self.task_config.DO_SNOCVR_SNOMAD = (
-            "snocvr_snomad" in self.jedi_dict.snowensanlletkf.jcb_config.observations and  
+            "snocvr_snomad" in self.jedi_dict.snowletkfanl.jcb_config.observations and  
             (os.path.exists(_snocvr_file) or os.path.exists(_snomad_file))
         )
 
@@ -144,7 +144,7 @@ class SnowEnsAnalysis(Analysis):
 
         # Stage observation files
         logger.info(f"Staging observation files")
-        self.jedi_dict['snowensanlletkf'].stage_obsdatain(self.task_config.COMIN_OBS)
+        self.jedi_dict['snowletkfanl'].stage_obsdatain(self.task_config.COMIN_OBS)
 
         # Stage files from COM
         logger.info(f"Staging files from COM and creating output directories")
@@ -152,7 +152,7 @@ class SnowEnsAnalysis(Analysis):
 
         # Initialize JEDI applications
         logger.info(f"Initializing JEDI applications")
-        self.jedi_dict['snowensanlletkf'].initialize(clean_empty_obsspaces=False)
+        self.jedi_dict['snowletkfanl'].initialize(clean_empty_obsspaces=False)
         #self.jedi_dict['snowensanlobs'].initialize() #clean_empty_obsspaces=False)
         #self.jedi_dict['snowensanlsol'].initialize() #clean_empty_obsspaces=False)
         if self.task_config.DO_IMS_SCF:
@@ -191,7 +191,7 @@ class SnowEnsAnalysis(Analysis):
 
         # Archive, compress, and save diag files in COM directory
         logger.info(f"Saving observation diag files to COM")
-        self.jedi_dict['snowensanlletkf'].save_obsdataout(self.task_config.COMOUT_SNOW_ANALYSIS,
+        self.jedi_dict['snowletkfanl'].save_obsdataout(self.task_config.COMOUT_SNOW_ANALYSIS,
                                                      f"{self.task_config.APREFIX_ENS}snow_analysis.ioda_hofx.ensmean")
 
         # Save files to COM
