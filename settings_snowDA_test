@@ -91,7 +91,7 @@ export EXECgfs=${EXECgdas}
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  
 export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
-export ENS_APPLY_INCR_NML_TMPL="${PARMgdas}/snow/letkf_apply_incr_nml.j2"
+export LETKF_APPLY_INCR_NML_TMPL="${PARMgdas}/snow/letkf_apply_incr_nml.j2"
 export TASK_CONFIG_YAML_DET="${PARMgdas}/snow/snow_det_config.yaml.j2"
 export TASK_CONFIG_YAML_ENS="${PARMgdas}/snow/snow_letkf_config.yaml.j2"
 export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
