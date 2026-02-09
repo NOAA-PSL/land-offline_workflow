@@ -32,7 +32,7 @@ class SnowLetkfAnalysis(Analysis):
 
     @logit(logger, name="SnowLetkfAnalysis")
     def __init__(self, config: Dict[str, Any]):
-        """Constructor global snow ensemble analysis task
+        """Constructor global snow LETKF analysis task
 
         This method will construct a global snow LETKF analysis task.
         This includes:
@@ -125,9 +125,9 @@ class SnowLetkfAnalysis(Analysis):
 
     @logit(logger)
     def initialize(self) -> None:
-        """Initialize a global snow ensemble analysis
+        """Initialize a global snow LETKF analysis
 
-        This method will initialize a global snow ensemble analysis.
+        This method will initialize a global snow LETKF analysis.
         This includes:
         - stage observation files
         - stage input files from COM and create output directories
@@ -186,7 +186,7 @@ class SnowLetkfAnalysis(Analysis):
         Parameters
         ----------
         self : Analysis
-            Instance of the SnowEnsAnalysis object
+            Instance of the SnowLetkfAnalysis object
         """
 
         # Archive, compress, and save diag files in COM directory
@@ -333,7 +333,7 @@ class SnowLetkfAnalysis(Analysis):
         Parameters
         ----------
         self : Analysis
-            Instance of the SnowEnsAnalysis object
+            Instance of the SnowLetkfAnalysis object
         """
         
         if self.task_config.DOIAU:
