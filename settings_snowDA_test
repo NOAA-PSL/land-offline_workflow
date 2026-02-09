@@ -85,7 +85,7 @@ export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
 export APRUN_SNOWANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
-export APRUN_SNOWENSANLLETKF="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
+export APRUN_SNOWLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template
