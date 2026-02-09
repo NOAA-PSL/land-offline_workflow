@@ -362,7 +362,7 @@ class SnowLetkfAnalysis(Analysis):
         for bkgtime in bkgtimes:
             logger.info(f"Processing analysis valid: {bkgtime}")
             logger.info("Create namelist for APPLY_INCR_EXE")
-            nml_template = self.task_config.ENS_APPLY_INCR_NML_TMPL
+            nml_template = self.task_config.LETKF_APPLY_INCR_NML_TMPL
             nml_config = {
                 'current_cycle': bkgtime,
                 'CASE': self.task_config.CASE,
