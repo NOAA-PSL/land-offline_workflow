@@ -52,8 +52,7 @@ export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CAS
 export cycles_per_job=40
 
 # directory with initial conditions
-#export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
-export ICSDIR=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/land-offline_workflow/TESTS/C96_2Ens/
+export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
 #export ICSDIR=${CYCLEDIR}/TESTS/RESTARTS/
 
 # namelist for do_landDA.sh
