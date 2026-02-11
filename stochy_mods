@@ -1,0 +1,23 @@
+module purge
+
+module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+
+module load stack-oneapi/2024.2.1
+module load stack-intel-oneapi-mpi/2021.13
+
+module load glibc/2.34
+module load zlib/1.2.13
+module load curl/8.10.1
+module load hdf5/1.14.3
+module load netcdf-c/4.9.2
+module load netcdf-fortran/4.6.1
+module load parallel-netcdf/1.12.3
+module load parallelio/2.6.2
+module load nco/5.2.4
+
+module load fms/2024.02
+module load esmf/8.8.0
+module load eigen/3.4.0
+module load openblas/0.3.27
+
+module list

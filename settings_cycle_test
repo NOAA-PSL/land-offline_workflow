@@ -2,13 +2,14 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=2dvar_sfcsno_ims_ghcn_snow_test
-STARTDATE=2024121500  #2021120100  #2019120112
-ENDDATE=2024121700    #2019120400
+export exp_name=letkf_ghcn_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
+STARTDATE=2024121500  #
+ENDDATE=2024121700    #
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
-
+#BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
+#
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
 
@@ -20,13 +21,13 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 ############################
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="NO"
+export do_enkf="YES"
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ens_size=1
+export ensemble_size=2
 
 # number of tiles
-export ntiles=6         # 1 for regional
+export num_tiles=6         # 1 for regional
 # vector size (from static file)
 export vector_size=18320   # hr3 land vectors C384:272699  C96:18320  C768:1067333(hr2:1067297?) C1152:2381853 
 
@@ -43,13 +44,13 @@ export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
 
 export LEVS=128
 export CASE=C96
-export CASE_ENS=C48
+export CASE_ENS=C96
 export OCNRES=100
 export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CASE}/
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=30
+export cycles_per_job=40
 
 # directory with initial conditions
 export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
@@ -71,8 +72,9 @@ export DA_config18=${DA_config}
 export layout_x=1
 export layout_y=1
 export NPROC_JEDI=$(( 6 * ${layout_x} * ${layout_y} ))
-export io_layout_x="1"
-export io_layout_y="1"
+export NPROC_INC=12
+export io_layout_x=1
+export io_layout_y=1
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -88,8 +90,8 @@ export stochy_init_exist="NO"   #YES: init patterns read from cycledir/stochy/re
 export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
 # export stochy_init_found="NO" 
 
-export perturb_forcing="YES"
-export perturb_state="YES" # 
+export perturb_forcing=.true.
+export perturb_state=.true.
 
 export grid_type=-1         #grid type -1 for fv3 tiles 
 export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km

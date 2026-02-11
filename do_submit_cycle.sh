@@ -20,13 +20,15 @@ source $config_file
 
 export KEEPWORKDIR="YES"
 
-export CYCLEDIR=$(pwd) 
+export CYCLEDIR=${CYCLEDIR:-$(pwd)} 
 
 ############################
 # set executables
 
 export vec2tileexec=${CYCLEDIR}/vector2tile/vector2tile_converter.exe
-export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe 
+export LSMexec=${CYCLEDIR}/ufs-land-driver/run/ufsLand.exe
+export EnsGenExe=${CYCLEDIR}/stochastic_physics/EnsGen.x
+
 export DADIR=${CYCLEDIR}/DA_update/
 export DAscript=${DADIR}/do_landDA.sh
 
@@ -51,7 +53,7 @@ export FREQ=$(( 3600 * $FCSTHR ))
 export RDD=$(( $FCSTHR / 24 )) 
 export RHH=$(( $FCSTHR % 24 )) 
 
-############################
+#############################
 # set up directories
 
 #workdir
@@ -60,50 +62,129 @@ if [[ -e ${WORKDIR} ]]; then
 fi
 mkdir ${WORKDIR}
 
-#outdir for model
-if [[ ! -e ${OUTDIR} ]]; then
-    mkdir -p  ${OUTDIR}
-fi 
-
 ###############################
 # create dirs and copy in ICS if needed
 
-mem_ens="mem000"  # single member, us ensemble 0
-
+mem_ens="mem000"  # single member, use ensemble 0
 MEM_WORKDIR=${WORKDIR}/${mem_ens}
-if [[ ! -e $MEM_WORKDIR ]]; then
-  mkdir $MEM_WORKDIR
-fi
+mkdir $MEM_WORKDIR
 
-# ensemble outdir (model only)
-MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir
-    mkdir -p $MEM_MODL_OUTDIR
-fi 
+#outdir for model
+if [[ ! -e ${OUTDIR} ]]; then    
 
-# outdir subdirs
-if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  # subdirectories
-    mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
-    mkdir ${MEM_MODL_OUTDIR}/restarts/tile/
+    mkdir -p  ${OUTDIR}
+
+    # ensemble outdir (model only)
+    MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}    
+    if [[ ! -e $MEM_MODL_OUTDIR ]]; then  
+        mkdir -p $MEM_MODL_OUTDIR
+    fi
+
+    # outdir subdirs
+    if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  
+        mkdir -p ${MEM_MODL_OUTDIR}/restarts/
+        mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
+        mkdir ${MEM_MODL_OUTDIR}/restarts/tile/
+    fi
+
     mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
+    ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
+
+    # stochy: ensemble forcing perturbation
+    if [[ ! -e ${OUTDIR}/STOCHY/ ]]; then  
+        mkdir -p ${OUTDIR}/STOCHY/        
+        mkdir ${OUTDIR}/STOCHY/RESTART/
+        # mkdir ${OUTDIR}/STOCHY/INPUT/
+    fi
 fi
-ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
+
+if [[ "$ensemble_size" -gt 1  ]]; then  
+
+    for ie in $(seq $ensemble_size)     
+    do
+        mem_ens="mem`printf %03i $ie`"        
+        MEM_WORKDIR=${WORKDIR}/${mem_ens}
+        mkdir $MEM_WORKDIR
+
+        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+        if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
+            mkdir -p $MEM_MODL_OUTDIR
+        fi
+
+        # outdir subdirs
+        if [[ ! -e ${MEM_MODL_OUTDIR}/restarts/ ]]; then  
+            mkdir -p ${MEM_MODL_OUTDIR}/restarts/
+            mkdir -p ${MEM_MODL_OUTDIR}/restarts/vector/ 
+            mkdir ${MEM_MODL_OUTDIR}/restarts/tile/            
+        fi
+
+        #TODO: Do we need this?
+        mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
+        ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
+    done 
+fi
+
+# Forcing perturbation 
+# Make sure the INPUT and RESTART dirs for stochy are in working dir
+# and input.nml has settings right
+if [[ $do_enkf == "YES" ]]; then     
+    
+    export TPATH=${FIXorog}/C${RES}	
+    export stochy_init_found="NO"
+    
+    if [[ $stochy_init_exist == "YES" ]]; then
+
+        if [[ -e ${stochy_init_dir} ]]; then
+	        echo "Stochy init files found. Copying..."
+            cp ${stochy_init_dir}/*.nc ${OUTDIR}/STOCHY/RESTART/ 
+            export stochy_init_found="YES"     	    
+        else
+            echo "directory for Stochy init files $stochy_init_dir doesn't exist."
+            echo "STOCH_INI_VAL will be set to FALSE "
+        fi
+    else
+        echo "STOCH_INI_VAL will be set to FALSE "
+    fi
+
+    ln -fs ${OUTDIR}/STOCHY/RESTART/ ${WORKDIR}/RESTART  
+
+    if [[ ! -e ${WORKDIR}/INPUT ]]; then
+        mkdir -p ${WORKDIR}/INPUT
+        for it in $(seq 1 $num_tiles) 
+        do
+            ln -fs ${TPATH}/C${RES}_grid.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_grid.tile${it}.nc 
+            # ln -fs ${TPATH}/C${RES}_ca_condition.tile${it}.nc  ${WORKDIR}/INPUT/C${RES}_ca_condition.tile${it}.nc 
+        done
+        if [[ -e ${TPATH}/C${RES}_grid_spec.nc ]]; then
+            ln -fs ${TPATH}/C${RES}_grid_spec.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc   
+        elif [[ -e ${TPATH}/C${RES}_mosaic.nc ]]; then
+            ln -fs ${TPATH}/C${RES}_mosaic.nc  ${WORKDIR}/INPUT/C${RES}_grid_spec.nc  
+        else
+            echo "Grid spec file not found at ${TPATH}, exiting"
+            exit 10
+        fi          
+    fi 
+fi
 
 # copy ICS into restarts, if needed 
-rst_out=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+mem_ens="mem000"  # single member/ensemble mean, use ensemble 0
+rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+MEM_WORKDIR=${WORKDIR}/${mem_ens}
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
 if [[ ! -e ${rst_out} ]]; then 
     echo "Looking for ICS: ${rst_in}"
-    if [[ -e ${rst_in} ]]; then
+    if [[ -e "${rst_in}" ]]; then
        echo "ICS found, copying" 
        cp ${rst_in} ${rst_out}
+       cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
     else  # check if is in output directory structure
         rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         echo "Looking for ICS: ${rst_in}"
         if [[ -e ${rst_in} ]]; then
            echo "ICS found, copying" 
            cp ${rst_in} ${rst_out}
+	   cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         else  
            echo "ICS not found. Exiting" 
            exit 10 
@@ -111,6 +192,37 @@ if [[ ! -e ${rst_out} ]]; then
     fi 
 fi 
 
+if [[ "$ensemble_size" -gt 1  ]]; then  
+
+    for ie in $(seq $ensemble_size)     
+    do
+        mem_ens="mem`printf %03i $ie`"
+        rst_out=${OUTDIR}/${mem_ens}/restarts/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        rst_in=${ICSDIR}/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+	MEM_WORKDIR=${WORKDIR}/${mem_ens}
+        # if restart not in experiment out directory, copy the restarts from the ICSDIR
+        if [[ ! -e ${rst_out} ]]; then 
+            echo "Looking for ICS: ${rst_in}"
+            if [[ -e ${rst_in} ]]; then
+            echo "ICS found, copying" 
+            cp ${rst_in} ${rst_out}
+            cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+            else  # check if is in output directory structure
+                rst_in=${ICSDIR}/${mem_ens}/restarts/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+                echo "Looking for ICS: ${rst_in}"
+                if [[ -e ${rst_in} ]]; then
+                echo "ICS found, copying" 
+                cp ${rst_in} ${rst_out}
+		cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+                else  
+                echo "ICS not found. Exiting" 
+                exit 10 
+                fi
+            fi 
+        fi 
+    done
+fi
+#---------------
 # create dates file 
 touch analdates.sh 
 cat << EOF > analdates.sh
@@ -120,5 +232,3 @@ EOF
 
 # submit script 
 sbatch submit_cycle.sh
-
-
