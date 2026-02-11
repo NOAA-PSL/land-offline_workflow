@@ -8,7 +8,8 @@ ENDDATE=2024121700    #
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
-
+#BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
+#
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
 
