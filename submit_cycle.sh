@@ -199,7 +199,15 @@ while [ $date_count -lt $cycles_per_job ]; do
 
 	cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
 
+        #overwrite background tile restart with analysis tile restart before converting
         cd $MEM_WORKDIR
+        ANAL_TILEFILE_BASE="../jedi/anl/${YYYY}${MM}${DD}.${HH}0000.sfc_data.tile"
+        for i in 1 2 3 4 5 6; do
+          file="${ANAL_TILEFILE_BASE}${i}.nc"
+          if [ -f "$file" ]; then
+            cp $file .
+          fi
+        done
 
         $vec2tileexec tile2vector.namelist
         if [[ $? != 0 ]]; then

@@ -67,9 +67,9 @@
  soil_temp_lower_bdy_option        = 2
  soil_temp_time_scheme_option      = 3
  thermal_roughness_scheme_option   = 2
- surface_evap_resistance_option    = 1
- glacier_option                    = 1
- tq_diagnostic_option              = 3
+ surface_evap_resistance_option    = 4
+ glacier_option                    = 2
+ tq_diagnostic_option              = 2
 /
 
 &forcing
