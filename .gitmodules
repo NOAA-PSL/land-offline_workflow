@@ -14,6 +14,3 @@
 	path = wxflow
 	url = https://github.com/NOAA-EMC/wxflow
 	branch = develop
-[submodule "stochastic_physics"]
-	path = stochastic_physics
-	url = https://github.com/tsga/stochastic_physics
