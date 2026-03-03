@@ -2,10 +2,10 @@
 #SBATCH --job-name=offline_noahmp
 #SBATCH --account=gsienkf
 #SBATCH --qos=debug
-#SBATCH --nodes=6
+#SBATCH --nodes=1
 #SBATCH --tasks-per-node=20
-#SBATCH -t 00:30:00
-#SBATCH --cpus-per-task=2
+#SBATCH -t 00:29:00
+####SBATCH --cpus-per-task=2
 ####SBATCH --mem-per-cpu=8G
 ##SBATCH --qos=batch
 ##SBATCH --nodes=6
@@ -38,17 +38,6 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     echo "starting $THISDATE"  
 
-    ############################
-    # get DA settings
-    ############################
-
-    this_config=DA_config$HH
-    DA_config=${!this_config}
-    
-    frac_grid=.true.
-
-    if [ $DA_config == "openloop" ]; then do_jedi="NO" ; else do_jedi="YES" ; fi 
-
     # substringing to get yr, mon, day, hr info
     YYYY=`echo $THISDATE | cut -c1-4`
     MM=`echo $THISDATE | cut -c5-6`
@@ -56,7 +45,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     HH=`echo $THISDATE | cut -c9-10`
 
     # substringing to get yr, mon, day, hr info for previous cycle
-    PREVDATE=`${incdate} $THISDATE -6`
+    PREVDATE=`${incdate} $THISDATE -$PCYC_DEL`
     YYYP=`echo $PREVDATE | cut -c1-4`
     MP=`echo $PREVDATE | cut -c5-6`
     DP=`echo $PREVDATE | cut -c7-8`
@@ -68,6 +57,15 @@ while [ $date_count -lt $cycles_per_job ]; do
     nMM=`echo $NEXTDATE | cut -c5-6`
     nDD=`echo $NEXTDATE | cut -c7-8`
     nHH=`echo $NEXTDATE | cut -c9-10`
+
+    ############################
+    # get DA settings
+    ############################
+
+    this_config=DA_config$HH
+    DA_config=${!this_config}
+
+    if [ $DA_config == "openloop" ]; then do_jedi="NO" ; else do_jedi="YES" ; fi    
 
     cd $WORKDIR
     
@@ -105,7 +103,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
         # copy restarts into work directory
-        rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+        rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
         rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
         if [[ -e ${rst_in} ]]; then
             cp $rst_in $rst_out 
@@ -132,7 +130,7 @@ while [ $date_count -lt $cycles_per_job ]; do
                 MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
                 # copy restarts into work directory
-                rst_in=${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+                rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
                 rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
                 if [[ -e ${rst_in} ]]; then
                     cp $rst_in $rst_out 
@@ -199,15 +197,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
 	cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
 
-        #overwrite background tile restart with analysis tile restart before converting
         cd $MEM_WORKDIR
-        ANAL_TILEFILE_BASE="../jedi/anl/${YYYY}${MM}${DD}.${HH}0000.sfc_data.tile"
-        for i in 1 2 3 4 5 6; do
-          file="${ANAL_TILEFILE_BASE}${i}.nc"
-          if [ -f "$file" ]; then
-            cp $file .
-          fi
-        done
 
         $vec2tileexec tile2vector.namelist
         if [[ $? != 0 ]]; then
@@ -216,7 +206,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         fi
 
         # save analysis restart
-        cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+        cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
 
         if [[ "$ensemble_size" -gt 1  ]]; then 
 
@@ -236,12 +226,12 @@ while [ $date_count -lt $cycles_per_job ]; do
                 fi
 
                 # save analysis restart
-                cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+                cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
 
             done
             # wait
         fi       
-    fi
+    fi #$do_jedi
     
     # Forcing perturbation goes here
     if [[ $do_enkf == "YES" ]]; then 
@@ -408,62 +398,62 @@ while [ $date_count -lt $cycles_per_job ]; do
     cd $WORKDIR
     
 
-    ############################
-    # check model ouput (all members)
-    ############################
-
-    for ie in $(seq $ensemble_size)
-    do
-        if [[ "$ensemble_size" -eq 1  ]]; then 
-            mem_ens="mem000" 
-        else 
-            mem_ens="mem`printf %03i $ie`"
-        fi 
-
-        MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
-        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-        else 
-            echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
-            echo "probably model runtime error occurred, exiting" 
-            exit 
-        fi
-
-        if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-           
-	        # delete forcing ens files
-#            rm -f ${MEM_WORKDIR}/${forc_inp_file}  
-#            rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
-
-            # needed for ensemble mean computed below
-            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
-        fi
-        
-    done
-    wait
-
-    # for enkf/letkf get ens mean 
-    if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-
-        # module load nco
-
-        MEM_WORKDIR=${WORKDIR}/mem000
-        MEM_MODL_OUTDIR=${OUTDIR}/mem000
-        
-        ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-
-        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-        else 
-            echo "Something went wrong while generating ens mean file, exiting" 
-            exit 
-        fi
-   
-        rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
-        
-    fi    
+#    ############################
+#    # check model ouput (all members)
+#    ############################
+#
+#    for ie in $(seq $ensemble_size)
+#    do
+#        if [[ "$ensemble_size" -eq 1  ]]; then 
+#            mem_ens="mem000" 
+#        else 
+#            mem_ens="mem`printf %03i $ie`"
+#        fi 
+#
+#        MEM_WORKDIR=${WORKDIR}/${mem_ens}
+#        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+#
+#        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
+#            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+#        else 
+#            echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
+#            echo "probably model runtime error occurred, exiting" 
+#            exit 
+#        fi
+#
+#        if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
+#           
+#	        # delete forcing ens files
+##            rm -f ${MEM_WORKDIR}/${forc_inp_file}  
+##            rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
+#
+#            # needed for ensemble mean computed below
+#            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
+#        fi
+#        
+#    done
+#    wait
+#
+#    # for enkf/letkf get ens mean 
+#    if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
+#
+#        # module load nco
+#
+#        MEM_WORKDIR=${WORKDIR}/mem000
+#        MEM_MODL_OUTDIR=${OUTDIR}/mem000
+#        
+#        ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+#
+#        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
+#            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+#        else 
+#            echo "Something went wrong while generating ens mean file, exiting" 
+#            exit 
+#        fi
+#   
+#        rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
+#        
+#    fi    
 
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile
 

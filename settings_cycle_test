@@ -2,9 +2,9 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=letkf_ghcn_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
-STARTDATE=2024121500  #
-ENDDATE=2024121700    #
+export exp_name=letkf_t2m_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
+STARTDATE=2024060100   #2024030100  #
+ENDDATE=2024060300    #
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
@@ -22,14 +22,15 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 
 # run (true) ensemble. NO for LETKFOI
 export do_enkf="YES"
+export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=2
+export ensemble_size=20
 
 # number of tiles
 export num_tiles=6         # 1 for regional
 # vector size (from static file)
-export vector_size=18320   # hr3 land vectors C384:272699  C96:18320  C768:1067333(hr2:1067297?) C1152:2381853 
+export vector_size=18320   #69465  # hr3 land vectors C384:272699  C96:18320 C192:69465  C768:1067333(hr2:1067297?) C1152:2381853 
 
 # length of each forecast
 export FCSTHR=24
@@ -50,17 +51,19 @@ export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CAS
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=40
+export cycles_per_job=30
 
 # directory with initial conditions
-export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
-#export ICSDIR=${CYCLEDIR}/TESTS/RESTARTS/
+#export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
+export ICSDIR=/scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest/C96
+#temp ensemble restarts at /scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call do_landDA.sh
 # settings_soilDA_test or settings_snowDA_test depending on DA type
-export DA_config="settings_snowDA_test"
-#export DA_config="openloop" 
+#export DA_config="openloop"
+#export DA_config="settings_snowDA_test"
+export DA_config="settings_soilDA_test" 
 
 # if want different DA at different times, list here. 
 export DA_config00=${DA_config} 
@@ -82,13 +85,13 @@ export atmos_forc=era5
 #---------- settings for ensemble forcing perturbation
 # forcing prefix
 # gdas: C${RES}_GDAS_forcing_
-export forcing_prefix=ERA5-C${RES}.${ORES}_hr3_datm_    #ERA5-C96.mx100_hr3_datm_2024-12-28.nc
+export forcing_prefix=ERA5-C${RES}.${ORES}_datm_    #ERA5-C96.mx100_hr3_datm_2024-12-28.nc
 export forcing_dir=/scratch4/NCEPDEV/land/data/ufs-land-driver/datm/ERA5/C${RES}.${ORES}/
 
-export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_hr3_static_fields.nc
-export stochy_init_exist="NO"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
+export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_static_fields.nc
+export stochy_init_exist="YES"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
 export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
-# export stochy_init_found="NO" 
+export stochy_init_found="NO" 
 
 export perturb_forcing=.true.
 export perturb_state=.true.
