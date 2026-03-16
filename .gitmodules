@@ -8,7 +8,7 @@
         branch = develop
 [submodule "vector2tile"]
 	path = vector2tile
-	url = https://github.com/NOAA-PSL/land-vector2tile.git
+	url = https://github.com/tsga/land-vector2tile
 	branch = develop
 [submodule "wxflow"]
 	path = wxflow
