@@ -31,22 +31,30 @@ COMPILING and TESTING.
 > cd ..
 
 2c.
-> cd vector2tile 
+> cd vector2tile
+
 > configure 
   select ursa parallel
-> make 
+
+> make
+
 > cd .. 
 
 2d.
 > cd DA_update  (We no longer build GDASApp. Instead it is installed at directory shown in make_links)
+
 > ./make_links.sh
+
 > source env_GDASApp
+
 > cd ..
 
-* Note: DA_update does not include the GDASApp submodule. Its linked above, see README in DA_update/. 
+* Note: DA_update does not include the GDASApp submodule. Its linked above, see README in DA_update 
 
 2e. If you run ensemble (open loop or DA)
+
 > cd land_ensemble_gen
+
 > ./compile_ens.ursa_intel
 
 3. Run the test.
