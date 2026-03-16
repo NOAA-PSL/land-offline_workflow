@@ -114,9 +114,10 @@ class SoilLetkfAnalysis(Analysis):
         #for obs_file in observations:
         #logger.info(f"Reading {self.task_config.PREP_OBS_YAML}")
         #prep_obs_config = parse_j2yaml(self.task_config.PREP_OBS_YAML, self.task_config)
-        obs_file = f'{self.task_config.OPREFIX}adpsfc_airTemperature_181.nc'
+        obs_file = f'{self.task_config.OPREFIX}adpsfc_air_temperature_at_2m_181_gsi.nc'  #   adpsfc_airTemperature_181.nc'
         if not os.path.isfile(f"{os.path.join(self.task_config.COMIN_OBS, obs_file)}"):
             logger.warning(f"{obs_file} not found - continuing without it.")
+            logger.warning(f"exit")
             exit(1)
         else:
             src = os.path.join(self.task_config.COMIN_OBS, obs_file)

@@ -1,6 +1,6 @@
 #!/bin/bash -le 
 #SBATCH --job-name=offline_noahmp
-#SBATCH --account=gsienkf
+#SBATCH --account=da-cpu
 #SBATCH --qos=debug
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=20
@@ -167,7 +167,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "land DA script failed"
             exit
         fi   
-
+exit
         ############################
         #  convert restarts from tile to vector
         ############################

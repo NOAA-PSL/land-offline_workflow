@@ -42,7 +42,8 @@ NPROC_JEDI=6
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
 # this is no longer optional
-export OBSDIR=/scratch3/NCEPDEV/da/Tseganeh.Gichamo/land-offline_workflow/USH
+export OBSDIR=/scratch4/NCEPDEV/land/data/DA/soil_temperature/
+#/scratch5/purged/Tseganeh.Gichamo/JEDI-GSI/obs/GSIODA/
 #/scratch4/NCEPDEV/land/data/DA
 
 # berr dir
@@ -73,7 +74,7 @@ export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS
 export COMOUT_SOIL_ANALYSIS=${OUTDIR}/DA/jedi_anl
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/restarts
-export COMIN_ATMOS_RESTART_PREV_ENS=${JEDIWORKDIR}
+export COMIN_ATMOS_RESTART_PREV_ENS=${JEDIWORKDIR}/
 export OBS_LIST_YAML="${JEDIWORKDIR}/soil_obs_list.yaml.j2"
 #export INCPREFIX="sfc_inc"
 
