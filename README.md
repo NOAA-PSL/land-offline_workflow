@@ -35,23 +35,31 @@ COMPILING and TESTING.
 > cd .. 
 
 2d.
-> cd DA_update
-> make_links.sh
-> build_all.sh 
+> cd DA_update  (We no longer build GDASApp. Instead it is installed at directory shown in make_links)
+> ./make_links.sh
+> source env_GDASApp
 > cd ..
 
-* Note: DA_update does not include the GDASApp submodule. You will need to create a link, see README in DA_update/. 
+* Note: DA_update does not include the GDASApp submodule. Its linked above, see README in DA_update/. 
+
+2e. If you run ensemble (open loop or DA)
+> cd land_ensemble_gen
+> ./compile_ens.ursa_intel
+
 3. Run the test.
 
- in settings_cycle_test check BASEDIR, WORKDIR and OUTDIR are OK
- create OUTDIR
- in submit_cycle.sh change #SBATCH --account=gsienkf to point to your own account.
+ In settings_cycle_test check BASEDIR, WORKDIR and OUTDIR are OK
+ 
+ Change the other settings (Make sure the obs dir, forcing dir, etc do exit).
+
+ In submit_cycle.sh make sure #SBATCH --account=  points to your own account. 
+ Also the number of processes, threads and time can be changed and synced with those set in settings. 
 
 > do_submit_test.sh 
 
 Once completed, to check snow DA output:
 
-> check_snowDA_test.sh
+> (For snowDA) check_snowDA_test.sh
 
 RUNNING YOUR OWN EXPERIMENTS 
 
@@ -65,7 +73,7 @@ restart filename example:ufs_land_restart.2015-09-02_18-00-00.nc
 ICSDIR points to the experiment directory with the restart. If creating a new dircetory, the structure is: 
 $ICSDIR/output/mem000/restarts/vector/ufs_land_restart.2015-09-02_18-00-00.nc 
 
-4. in submit_cycle.sh change #SBATCH --account=gsienkf to point to your own account.
+4. in submit_cycle.sh make sure #SBATCH --account=  points to your own account.
 
 5. Submit your job 
 
