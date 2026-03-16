@@ -22,9 +22,12 @@ COMPILING and TESTING.
 
 2b. 
 > cd ufs-land-driver
+
 > configure 
   select ursa parallel
-> make 
+
+> make
+
 > cd ..
 
 2c.
