@@ -167,7 +167,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             echo "land DA script failed"
             exit
         fi   
-exit
+
         ############################
         #  convert restarts from tile to vector
         ############################
