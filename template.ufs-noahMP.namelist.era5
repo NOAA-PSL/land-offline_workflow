@@ -4,8 +4,8 @@
 ! see /scratch2/NCEPDEV/land/data/fix/20231027
 ! as well as model physics options and forcing treatment method 
 
-  static_file      = "/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/CXXRES.XXORES/ufs-land_CXXRES.XXORES_hr3_static_fields.nc"
-  init_file        = "/scratch4/NCEPDEV/land/data/ufs-land-driver/cold_start/CXXRES.XXORES/ERA5-CXXRES.XXORES_hr3_cold_start_glacier_1979-12-31_23:00:00.nc"
+  static_file      = "/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/CXXRES.XXORES/ufs-land_CXXRES.XXORES_static_fields.nc"
+  init_file        = "/scratch4/NCEPDEV/land/data/ufs-land-driver/cold_start/CXXRES.XXORES/ERA5-CXXRES.XXORES_cold_start_glacier_1979-12-31_23:00:00.nc"
   forcing_dir      = "XXFORCDIR"
 !"/scratch4/NCEPDEV/land/data/ufs-land-driver/datm/ERA5/CXXRES.XXORES/"
   
@@ -67,9 +67,9 @@
  soil_temp_lower_bdy_option        = 2
  soil_temp_time_scheme_option      = 3
  thermal_roughness_scheme_option   = 2
- surface_evap_resistance_option    = 1
- glacier_option                    = 1
- tq_diagnostic_option              = 3
+ surface_evap_resistance_option    = 4
+ glacier_option                    = 2
+ tq_diagnostic_option              = 2
 /
 
 &forcing
@@ -77,10 +77,10 @@
  forcing_regrid                 = "none"
  forcing_regrid_weights_filename= ""
  forcing_type                   = "dd_1h"
- forcing_filename               = "ERA5-CXXRES.XXORES_hr3_datm_"
+ forcing_filename               = "ERA5-CXXRES.XXORES_datm_"
  forcing_interp_solar           = "zenith"          ! zenith or linear
  forcing_time_solar             = "period_average"  ! period_average or instantaneous
- forcing_name_precipitation     = "precipitation"
+ forcing_name_precipitation     = "precipitation_bilinear"
  forcing_name_temperature       = "temperature"
  forcing_name_specific_humidity = "specific_humidity"
  forcing_name_wind_speed        = "wind_speed"
