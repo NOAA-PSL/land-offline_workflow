@@ -17,3 +17,4 @@
 [submodule "land_ensemble_gen"]
 	path = land_ensemble_gen
 	url = https://github.com/NOAA-PSL/land_ensemble_gen
+	branch = develop
