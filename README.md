@@ -65,7 +65,8 @@ COMPILING and TESTING.
 
  In submit_cycle.sh make sure #SBATCH --account=  points to your own account. 
  Also the number of processes, threads and time can be changed and synced with those set in settings. 
-
+ Note that for bigger ensemble sizes (>4), you need to use large number of procs for the experiments to finish. Ideally the number of procs is set to be a multiple of 6 times the ensemble size (e.g., 120 for enssize=20, or bigger for high resolution experiments).
+ 
 > do_submit_test.sh 
 
 Once completed, to check snow DA output:
