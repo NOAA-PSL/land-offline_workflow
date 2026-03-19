@@ -42,7 +42,7 @@ NPROC_JEDI=6
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
 # this is no longer optional
-export OBSDIR=/scratch4/NCEPDEV/land/data/DA/soil_temperature/
+export OBSDIR=/scratch4/NCEPDEV/land/data/DA/T2m/
 #/scratch5/purged/Tseganeh.Gichamo/JEDI-GSI/obs/GSIODA/
 #/scratch4/NCEPDEV/land/data/DA
 
