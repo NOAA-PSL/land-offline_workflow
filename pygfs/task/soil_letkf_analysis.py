@@ -179,7 +179,6 @@ class SoilLetkfAnalysis(Analysis):
             Instance of the SoilLetkfAnalysis object
         """
 
-#TODO: figure out how to handle IAU cases for (offline) soil DA
         if self.task_config.DOIAU:
             logger.info("Copying increments to beginning of window")
             template_in = f'soilinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
