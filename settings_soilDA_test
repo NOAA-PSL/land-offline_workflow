@@ -21,14 +21,14 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=letkf
+DAalg=2DVar
 # TODO: fix this: State being updated: snow or soil
 # Take obs and assimilated var separate (snowdl, stc, smc, T2m) 
-analType=stc
+analType=smc
 
 # JEDI input obs. 
 # options : IMS, GHCN, SFCSNO, MADIS, SMAP 
-OBS_TYPES=("T2m")  #SMAP")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("SMAP")  #T2m")  #SMAP")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
@@ -42,9 +42,9 @@ NPROC_JEDI=6
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
 # this is no longer optional
-export OBSDIR=/scratch4/NCEPDEV/land/data/DA/T2m/
+#export OBSDIR=/scratch4/NCEPDEV/land/data/DA/T2m/
 #/scratch5/purged/Tseganeh.Gichamo/JEDI-GSI/obs/GSIODA/
-#/scratch4/NCEPDEV/land/data/DA
+export OBSDIR=/scratch4/NCEPDEV/land/data/DA/
 
 # berr dir
 export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_soil/"  #TODO change to soil B

@@ -2,12 +2,12 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=letkf_t2m_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
-STARTDATE=2024060100   #2024030100  #
-ENDDATE=2024060300    #
+export exp_name=smap_2dvar  #letkf_t2m_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
+STARTDATE=2024100100   #2024030100  #
+ENDDATE=2024100200    #
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
-BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
+BASEDIR=/scratch5/purged/${USER}/               # EMC
 #BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
 #
 # temporary directory where experiment is run from
@@ -21,11 +21,11 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 ############################
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="YES"
+export do_enkf="NO"
 export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=20
+export ensemble_size=1
 
 # number of tiles
 export num_tiles=6         # 1 for regional
@@ -54,8 +54,8 @@ export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CAS
 export cycles_per_job=30
 
 # directory with initial conditions
-#export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
-export ICSDIR=/scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest/C96
+export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
+#export ICSDIR=/scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest/C96
 #temp ensemble restarts at /scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest
 
 # namelist for do_landDA.sh

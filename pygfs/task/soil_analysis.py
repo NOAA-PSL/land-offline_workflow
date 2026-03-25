@@ -93,7 +93,7 @@ class SoilAnalysis(Analysis):
 
         # initialize JEDI variational application
         logger.info(f"Initializing JEDI applications")
-        self.jedi_dict['soilanlvar'].initialize(self.task_config)  #, clean_empty_obsspaces=False)
+        self.jedi_dict['soilanlvar'].initialize(clean_empty_obsspaces=False)
         self.jedi_dict['soilanladdinc'].initialize(self.task_config)
 
     @logit(logger)
