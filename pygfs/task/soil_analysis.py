@@ -167,32 +167,34 @@ class SoilAnalysis(Analysis):
 
 #TODO: Copy JEDI generated soil moisture increment files into anl/ directory
         # Copy increment files into anl/ directory
-        logger.info("Copy pre-generated incrementi files from incr_path into anl/ directory")
-        template_in = f'sfc_inc.tile{{tilenum}}.nc'
-        template_out = f'soilinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
+        logger.info("Copying increments to beginning and middle of window")
         inclist = []
-        for itile in range(1, self.task_config.ntiles + 1):
-            filename_in = template_in.format(tilenum=itile)
-            filename_out = template_out.format(tilenum=itile)
-            src = os.path.join(self.task_config.incr_path, filename_in)
-            dest = os.path.join(self.task_config.DATA, 'anl', filename_out)
-            inclist.append([src, dest])
+        for bkgtime in bkgtimes:
+            template_in = f'sfc_inc.tile{{tilenum}}.nc'
+            template_out = f'soilinc.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            for itile in range(1, self.task_config.ntiles + 1):
+                filename_in = template_in.format(tilenum=itile)
+                filename_out = template_out.format(tilenum=itile)
+                src = os.path.join(self.task_config.incr_path, filename_in)
+                dest = os.path.join(self.task_config.DATA, 'anl', filename_out)
+                inclist.append([src, dest])
         FileHandler({'copy': inclist}).sync()
 
-        # Apply increments per tile
-        logger.info("Apply increments per tile")
-        styp_template = f'{self.task_config.CASE}.{self.task_config.ORES}.soil_type.tile{{tilenum}}.nc'
-        bkg_template  = f'{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
-        inc_template  = f'soilinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
-        anl_template  = f'soilanl.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
+        # loop over times to apply increments
+        for bkgtime in bkgtimes:
+            logger.info("Processing analysis valid: {bkgtime}")
+            styp_template = f'{self.task_config.CASE}.{self.task_config.ORES}.soil_type.tile{{tilenum}}.nc'
+            bkg_template  = f'{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            inc_template  = f'soilinc.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            anl_template  = f'soilanl.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
 
-        smc_addincrements(
-            anl_dir=os.path.join(self.task_config.DATA, "anl"),
-            ntiles=self.task_config.ntiles,
-            styp_template=styp_template,
-            bkg_template=bkg_template,
-            inc_template=inc_template,
-            anl_template=anl_template,
-            logger=logger,
-        )
+            smc_addincrements(
+                anl_dir=os.path.join(self.task_config.DATA, "anl"),
+                ntiles=self.task_config.ntiles,
+                styp_template=styp_template,
+                bkg_template=bkg_template,
+                inc_template=inc_template,
+                anl_template=anl_template,
+                logger=logger,
+            )
 
