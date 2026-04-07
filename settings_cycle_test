@@ -2,9 +2,12 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=smap_2dvar  #letkf_t2m_test #2dvar_snocvr_snomad_ims_ghcn_snow_test
-STARTDATE=2024100100   #2024030100  #
-ENDDATE=2024100200    #
+export exp_name=smap_2dvar  
+STARTDATE=2024030100  
+ENDDATE=2024030300    
+
+#export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
+export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 BASEDIR=/scratch5/purged/${USER}/               # EMC
@@ -19,6 +22,8 @@ export OUTDIR=${BASEDIR}/cycle_land/${exp_name}/
 # directory of land-offline_workflow repo
 export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ############################
+
+HOMEgfs=${HOMEdir}/HOMEgfs
 
 # run (true) ensemble. NO for LETKFOI
 export do_enkf="NO"
@@ -47,14 +52,14 @@ export LEVS=128
 export CASE=C96
 export CASE_ENS=C96
 export OCNRES=100
-export FIXorog=/scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CASE}/
+export FIXorog=${HOMEgfs}/fix/orog   # /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/   #${CASE}/
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
 export cycles_per_job=30
 
 # directory with initial conditions
-export ICSDIR=/scratch4/NCEPDEV/land/data/RESTARTS/C${RES}/
+export ICSDIR=${DATADIR}/RESTARTS/C${RES}/
 #export ICSDIR=/scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest/C96
 #temp ensemble restarts at /scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest
 
@@ -86,9 +91,9 @@ export atmos_forc=era5
 # forcing prefix
 # gdas: C${RES}_GDAS_forcing_
 export forcing_prefix=ERA5-C${RES}.${ORES}_datm_    #ERA5-C96.mx100_hr3_datm_2024-12-28.nc
-export forcing_dir=/scratch4/NCEPDEV/land/data/ufs-land-driver/datm/ERA5/C${RES}.${ORES}/
+export forcing_dir=${DATADIR}/ufs-land-driver/datm/ERA5/C${RES}.${ORES}/
 
-export static_file=/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_static_fields.nc
+export static_file=${DATADIR}/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_static_fields.nc
 export stochy_init_exist="YES"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
 export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
 export stochy_init_found="NO" 

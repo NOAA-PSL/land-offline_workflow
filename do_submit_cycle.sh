@@ -156,8 +156,9 @@ fi
 
 # copy ICS if needed
 # update 2.17.26: also copy restarts to working dir to skip "do_jedi" section for openloop runs
+# update 4.7.26: to reduce multiple file copying steps, use "ufs_land_restart" vector name
 mem_ens="mem000"  # single member/ensemble mean, use ensemble 0
-rst_out=${OUTDIR}/${mem_ens}/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+rst_out=${OUTDIR}/${mem_ens}/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 rst_in=${ICSDIR}/${mem_ens}/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 MEM_WORKDIR=${WORKDIR}/${mem_ens}
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
@@ -178,7 +179,7 @@ if [[ "$ensemble_size" -gt 1  ]]; then
     for ie in $(seq $ensemble_size)     
     do
         mem_ens="mem`printf %03i $ie`"
-        rst_out=${OUTDIR}/${mem_ens}/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+        rst_out=${OUTDIR}/${mem_ens}/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
         rst_in=${ICSDIR}/${mem_ens}/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 	MEM_WORKDIR=${WORKDIR}/${mem_ens}
         # if restart not in experiment out directory, copy the restarts from the ICSDIR
