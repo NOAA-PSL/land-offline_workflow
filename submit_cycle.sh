@@ -1,18 +1,26 @@
 #!/bin/bash -le 
 #SBATCH --job-name=offline_noahmp
-#SBATCH --account=da-cpu
+#SBATCH -o log_noahmp.%j.log
+#SBATCH -e err_noahmp.%j.err
+#############------------------debug 
 #SBATCH --qos=debug
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=20
 #SBATCH -t 00:29:00
-####SBATCH --cpus-per-task=2
-####SBATCH --mem-per-cpu=8G
+#############------------------batch
+##SBATCH --cpus-per-task=2
+##SBATCH --mem-per-cpu=8G
 ##SBATCH --qos=batch
 ##SBATCH --nodes=6
 ##SBATCH --tasks-per-node=36
 ##SBATCH -t 02:40:00
-#SBATCH -o log_noahmp.%j.log
-#SBATCH -e err_noahmp.%j.err
+#############------------------URSA
+##SBATCH --account=da-cpu
+#############------------------GAEA
+#SBATCH --account=gfs-cpu
+#SBATCH --clusters=c6
+#SBATCH --partition=batch
+
 
 ############################
 # loop over time steps
@@ -102,14 +110,13 @@ while [ $date_count -lt $cycles_per_job ]; do
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
-        # copy restarts into work directory
-        rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+        rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
         rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
         if [[ -e ${rst_in} ]]; then
-            cp $rst_in $rst_out 
+            cp $rst_in $rst_out
         else
-            echo "restart not found ${rst_in}; exiting" 
-            exit 
+            echo "restart not found ${rst_in}; exiting"
+            exit 10
         fi	
 
 	cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR
@@ -117,7 +124,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         cd $MEM_WORKDIR
         $vec2tileexec vector2tile.namelist
         if [[ $? != 0 ]]; then
-            echo "vec2tile failed for mem000"
+            echo "vec2tile failed for $mem_ens"
             exit 
         fi
 
@@ -129,22 +136,22 @@ while [ $date_count -lt $cycles_per_job ]; do
                 MEM_WORKDIR=${WORKDIR}/${mem_ens}
                 MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
-                # copy restarts into work directory
-                rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc 
+		# copy restarts into work directory
+                rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
                 rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
                 if [[ -e ${rst_in} ]]; then
-                    cp $rst_in $rst_out 
+                    cp $rst_in $rst_out
                 else
-                    echo "restart not found ${rst_in}; exiting" 
-                    exit 
+                    echo "restart not found ${rst_in}; exiting"
+                    exit
                 fi
+
                 cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR/vector2tile.namelist
 
-                #TODO: parallelize this 
                 cd $MEM_WORKDIR
                 $vec2tileexec vector2tile.namelist
                 if [[ $? != 0 ]]; then
-                    echo "vec2tile failed for ens mem $ie"
+                    echo "vec2tile failed for $mem_ens"
                     exit 
                 fi
                
@@ -168,12 +175,13 @@ while [ $date_count -lt $cycles_per_job ]; do
             exit
         fi   
 
+	#NOTE: if the DA is successful the tiles in memworkdir would have the DA increments 
+
         ############################
         #  convert restarts from tile to vector
         ############################
 
         mem_ens="mem000"
-
         MEM_WORKDIR=${WORKDIR}/${mem_ens}
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
@@ -221,7 +229,7 @@ while [ $date_count -lt $cycles_per_job ]; do
                 cd $MEM_WORKDIR
                 $vec2tileexec tile2vector.namelist
                 if [[ $? != 0 ]]; then
-                    echo "tile2vector failed for ens mem "$ie
+                    echo "tile2vector failed for $mem_ens"
                     exit 
                 fi
 
@@ -414,11 +422,11 @@ while [ $date_count -lt $cycles_per_job ]; do
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
         if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
         else 
             echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
             echo "probably model runtime error occurred, exiting" 
-            exit 
+            exit 10
         fi
 
         if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
@@ -445,10 +453,10 @@ while [ $date_count -lt $cycles_per_job ]; do
         ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
 
         if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/restarts/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
         else 
             echo "Something went wrong while generating ens mean file, exiting" 
-            exit 
+            exit 10
         fi
    
         rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
