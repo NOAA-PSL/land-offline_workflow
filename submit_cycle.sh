@@ -104,30 +104,6 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         ############################
         # copy restarts to workdir, convert to tile for DA (all members) 
-
-	# for LETKF mem000 holds ensemble mean
-        mem_ens="mem000" 
-        MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
-        rst_in=${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-        rst_out=${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-        if [[ -e ${rst_in} ]]; then
-            cp $rst_in $rst_out
-        else
-            echo "restart not found ${rst_in}; exiting"
-            exit 10
-        fi	
-
-	cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR
-
-        cd $MEM_WORKDIR
-        $vec2tileexec vector2tile.namelist
-        if [[ $? != 0 ]]; then
-            echo "vec2tile failed for $mem_ens"
-            exit 
-        fi
-
         if [[ "$ensemble_size" -gt 1  ]]; then 
             #TODO: parallelize this 
             for ie in $(seq $ensemble_size)
@@ -143,7 +119,7 @@ while [ $date_count -lt $cycles_per_job ]; do
                     cp $rst_in $rst_out
                 else
                     echo "restart not found ${rst_in}; exiting"
-                    exit
+                    exit 10
                 fi
 
                 cp $WORKDIR/vector2tile.namelist $MEM_WORKDIR/vector2tile.namelist
@@ -152,11 +128,28 @@ while [ $date_count -lt $cycles_per_job ]; do
                 $vec2tileexec vector2tile.namelist
                 if [[ $? != 0 ]]; then
                     echo "vec2tile failed for $mem_ens"
-                    exit 
+                    exit 10
                 fi
                
             done
             # wait
+	else
+
+            rst_in=${OUTDIR}/vector/ufs_land_restart_back.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+            rst_out=${WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+            if [[ -e ${rst_in} ]]; then
+                cp $rst_in $rst_out
+            else
+                echo "restart not found ${rst_in}; exiting"
+                exit 10
+            fi
+    
+            $vec2tileexec vector2tile.namelist
+            if [[ $? != 0 ]]; then
+                echo "vec2tile failed"
+                exit 10
+            fi
+		
         fi	
 
         ############################
@@ -172,19 +165,14 @@ while [ $date_count -lt $cycles_per_job ]; do
         $DAscript ${CYCLEDIR}/$DA_config
         if [[ $? != 0 ]]; then
             echo "land DA script failed"
-            exit
-        fi   
-
-	#NOTE: if the DA is successful the tiles in memworkdir would have the DA increments 
+            exit 10
+        fi    
 
         ############################
         #  convert restarts from tile to vector
         ############################
-
-        mem_ens="mem000"
-        MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-
+        
+        #NOTE: if the DA is successful the tiles in memworkdir would have the DA increments
         cd $WORKDIR
 
         echo '************************************************'
@@ -203,19 +191,6 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" tile2vector.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" tile2vector.namelist 
 
-	cp ${WORKDIR}/tile2vector.namelist $MEM_WORKDIR/tile2vector.namelist
-
-        cd $MEM_WORKDIR
-
-        $vec2tileexec tile2vector.namelist
-        if [[ $? != 0 ]]; then
-            echo "tile2vector failed for $mem_ens"
-            exit 
-        fi
-
-        # save analysis restart
-        cp ${MEM_WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
-
         if [[ "$ensemble_size" -gt 1  ]]; then 
 
             for ie in $(seq $ensemble_size)
@@ -230,7 +205,7 @@ while [ $date_count -lt $cycles_per_job ]; do
                 $vec2tileexec tile2vector.namelist
                 if [[ $? != 0 ]]; then
                     echo "tile2vector failed for $mem_ens"
-                    exit 
+                    exit 10 
                 fi
 
                 # save analysis restart
@@ -238,7 +213,18 @@ while [ $date_count -lt $cycles_per_job ]; do
 
             done
             # wait
-        fi       
+	else
+            $vec2tileexec tile2vector.namelist
+            if [[ $? != 0 ]]; then
+                echo "tile2vector failed"
+                exit 10
+            fi
+
+            # save analysis restart
+            cp ${WORKDIR}/ufs_land_restart.${YYYY}-${MM}-${DD}_${HH}-00-00.nc ${OUTDIR}/vector/ufs_land_restart_anal.${YYYY}-${MM}-${DD}_${HH}-00-00.nc
+
+        fi   
+        	
     fi #$do_jedi
     
     # Forcing perturbation goes here
@@ -373,12 +359,11 @@ while [ $date_count -lt $cycles_per_job ]; do
     for ie in $(seq $ensemble_size)
     do
         if [[ "$ensemble_size" -eq 1  ]]; then 
-            mem_ens="mem000" 
+            MEM_WORKDIR=${WORKDIR} 
         else 
             mem_ens="mem`printf %03i $ie`"
+	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
         fi 
-
-        MEM_WORKDIR=${WORKDIR}/${mem_ens}
         # echo "member working dir $MEM_WORKDIR"
 
         cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
@@ -413,13 +398,13 @@ while [ $date_count -lt $cycles_per_job ]; do
     for ie in $(seq $ensemble_size)
     do
         if [[ "$ensemble_size" -eq 1  ]]; then 
-            mem_ens="mem000" 
+            MEM_WORKDIR=${WORKDIR}
+            MEM_MODL_OUTDIR=${OUTDIR}
         else 
             mem_ens="mem`printf %03i $ie`"
+	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
+            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
         fi 
-
-        MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
 
         if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
             cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc

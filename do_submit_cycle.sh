@@ -65,28 +65,20 @@ mkdir ${WORKDIR}
 ###############################
 # create dirs and copy in ICS if needed
 
-mem_ens="mem000"  # single member, use ensemble 0
-MEM_WORKDIR=${WORKDIR}/${mem_ens}
-mkdir $MEM_WORKDIR
-
 #outdir for model
 if [[ ! -e ${OUTDIR} ]]; then    
 
     mkdir -p  ${OUTDIR}
 
-    # ensemble outdir (model only)
-    MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}    
-    if [[ ! -e $MEM_MODL_OUTDIR ]]; then  
-        mkdir -p $MEM_MODL_OUTDIR
     # outdir subdirs
-        mkdir -p ${MEM_MODL_OUTDIR}/vector/
-        mkdir ${MEM_MODL_OUTDIR}/tile/
-        mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
-        ln -sf ${MEM_MODL_OUTDIR}/noahmp ${MEM_WORKDIR}/noahmp_output 
-    fi
+    mkdir ${OUTDIR}/vector/
+    mkdir ${OUTDIR}/tile/
+    mkdir ${OUTDIR}/noahmp/
+    ln -sf ${OUTDIR}/noahmp ${WORKDIR}/noahmp_output 
+    
     # stochy: ensemble forcing perturbation
     if [[ ! -e ${OUTDIR}/STOCHY/ ]]; then  
-        mkdir -p ${OUTDIR}/STOCHY/        
+        mkdir ${OUTDIR}/STOCHY/        
         mkdir ${OUTDIR}/STOCHY/RESTART/
         # mkdir ${OUTDIR}/STOCHY/INPUT/
     fi
@@ -103,7 +95,7 @@ if [[ "$ensemble_size" -gt 1  ]]; then
         MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
         if [[ ! -e $MEM_MODL_OUTDIR ]]; then  #ensemble outdir 
             mkdir -p $MEM_MODL_OUTDIR
-            mkdir -p ${MEM_MODL_OUTDIR}/vector/ 
+            mkdir ${MEM_MODL_OUTDIR}/vector/ 
             mkdir ${MEM_MODL_OUTDIR}/tile/            
             #TODO: Do we need this?
 	    mkdir -p ${MEM_MODL_OUTDIR}/noahmp/
@@ -156,17 +148,16 @@ fi
 
 # copy ICS if needed
 # update 2.17.26: also copy restarts to working dir to skip "do_jedi" section for openloop runs
-mem_ens="mem000"  # single member/ensemble mean, use ensemble 0
-rst_out=${OUTDIR}/${mem_ens}/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-rst_in=${ICSDIR}/${mem_ens}/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
-MEM_WORKDIR=${WORKDIR}/${mem_ens}
+# update 4.8.26: use outdir/workdir for deterministic; reserve mem000 for ens mean
+rst_out=${OUTDIR}/vector/ufs_land_restart_back.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+rst_in=${ICSDIR}/vector/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
 # if restart not in experiment out directory, copy the restarts from the ICSDIR
 if [[ ! -e ${rst_out} ]]; then 
     echo "Looking for ICS: ${rst_in}"
     if [[ -e "${rst_in}" ]]; then
        echo "ICS found, copying" 
        cp ${rst_in} ${rst_out}
-       cp ${rst_in} ${MEM_WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
+       cp ${rst_in} ${WORKDIR}/ufs_land_restart.${sYYYY}-${sMM}-${sDD}_${sHH}-00-00.nc
     else  
        echo "ICS not found. Exiting" 
        exit 10 
