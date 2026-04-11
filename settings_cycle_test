@@ -7,12 +7,15 @@ STARTDATE=2024030100
 ENDDATE=2024030300    
 
 #export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
+#export landmods=land_mods_ursa
 export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
+export landmods=land_mods_gaeac6
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
-BASEDIR=/scratch5/purged/${USER}/               # EMC
+#BASEDIR=/scratch5/purged/${USER}/               # EMC
 #BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
-#
+BASEDIR=/gpfs/f6/land-cpu/scratch/${USER}/ 
+
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
 

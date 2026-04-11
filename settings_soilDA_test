@@ -57,10 +57,10 @@ export IAU_OFFSET=6
 
 export DO_SNOWDA="NO"
 export DO_SOILDA="YES"
-export DO_LAND_IAU=".false."  #should remain false for now
+export DO_LAND_IAU="NO"  #should remain false for now
 export LSOIL_INCR=2
-export DO_ADD_SOILINC=".True."
-export DO_FINAL_SOILANL=".True."
+export DO_ADD_SOILINC="YES"
+export DO_FINAL_SOILANL="NO"   #keep false for var DA
 
 export NET=gfs
 export RUN=gdas
