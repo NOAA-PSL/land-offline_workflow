@@ -99,8 +99,9 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXTSTUB/${TSTUB}/g" vector2tile.namelist
         sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" vector2tile.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" vector2tile.namelist
- 
-        source ${CYCLEDIR}/land_mods
+        sed -i -e "s#XXDATADIR#${DATADIR}/#g" vector2tile.namelist
+
+        source ${CYCLEDIR}/${landmods}
 
         ############################
         # copy restarts to workdir, convert to tile for DA (all members) 
@@ -177,7 +178,7 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         echo '************************************************'
         echo 'calling tile2vector' 
-        source ${CYCLEDIR}/land_mods
+        source ${CYCLEDIR}/${landmods}
 
         cp  ${CYCLEDIR}/template.tile2vector tile2vector.namelist
 
@@ -190,6 +191,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXTSTUB/${TSTUB}/g" tile2vector.namelist
         sed -i -e "s#XXTPATH#${FIXorog}/${CASE}/#g" tile2vector.namelist
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" tile2vector.namelist 
+        sed -i -e "s#XXDATADIR#${DATADIR}/#g" tile2vector.namelist
 
         if [[ "$ensemble_size" -gt 1  ]]; then 
 
@@ -339,6 +341,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXRHH/${RHH}/g" ufs-land.namelist
     sed -i -e "s#XXVLEN#${vector_size}#g" ufs-land.namelist
     sed -i -e "s#XXSTATICDIRXX#${static_file}#g" ufs-land.namelist
+    sed -i -e "s#XXDATADIR#${DATADIR}/#g" ufs-land.namelist
     if [[ $do_enkf == "YES" ]]; then
 	sed -i -e "s#XXFORCDIR#"./"#g" ufs-land.namelist
     else
@@ -348,48 +351,51 @@ while [ $date_count -lt $cycles_per_job ]; do
     # submit model
     echo '************************************************'
     echo "calling model"
-    source ${CYCLEDIR}/land_mods
-    module list
+    source ${CYCLEDIR}/${landmods}
 
     nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
     NPROC_NOMP=${NPROC_NOMP:-$nt}    
-
     echo "nt=${nt}    NPROC_NOMP = ${NPROC_NOMP}"
-
-    for ie in $(seq $ensemble_size)
-    do
-        if [[ "$ensemble_size" -eq 1  ]]; then 
-            MEM_WORKDIR=${WORKDIR} 
-        else 
-            mem_ens="mem`printf %03i $ie`"
-	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-        fi 
-        # echo "member working dir $MEM_WORKDIR"
-
-        cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
-
-        # run for using baseline snow parameter table
-        cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
-
-        cd $MEM_WORKDIR
-            
-        #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-        time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   &
-        # #-N1-1 --exclusive
-
-        # # srun -l --multi-prog $lsm_tasks_file
-
-        # no error codes on exit from model, check for restart below instead
-        # TODO: Modify noahmp to exit with error code    
-        # if [[ $? != 0 ]]; then
-        #     echo "NoahMP failed for ensemble $ie"
-        #     exit 10
-        # fi   
-    done
-    wait
-
-    cd $WORKDIR
     
+    if [[ "$ensemble_size" -gt 1  ]]; then
+
+        for ie in $(seq $ensemble_size)
+        do
+            mem_ens="mem`printf %03i $ie`"
+    	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
+            # echo "member working dir $MEM_WORKDIR"
+    
+            cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
+   
+            # run using baseline snow parameter table
+            cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
+    
+            cd $MEM_WORKDIR
+                
+            #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
+            time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec   &
+            # #-N1-1 --exclusive
+    
+            # # srun -l --multi-prog $lsm_tasks_file
+    
+            # no error codes on exit from model, check for restart below instead
+            # TODO: Modify noahmp to exit with error code    
+            # if [[ $? != 0 ]]; then
+            #     echo "NoahMP failed for ensemble $ie"
+            #     exit 10
+            # fi   
+        done
+        wait
+
+	cd $WORKDIR
+    else
+	
+        # run using baseline snow parameter table
+        cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
+
+	#TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
+        time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec
+    fi
 
     ############################
     # check model ouput (all members)
