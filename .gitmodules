@@ -1,7 +1,7 @@
 [submodule "ufs-land-driver"]
 	path = ufs-land-driver
-        url = https://github.com/NOAA-EMC/ufs-land-driver
-        branch = main
+        url = https://github.com/tsga/ufs-land-driver
+        branch = gaeac6
 [submodule "DA_update"]
 	path = DA_update
 	url = https://github.com/tsga/land-DA_update
