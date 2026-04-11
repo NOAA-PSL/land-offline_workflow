@@ -76,6 +76,7 @@ class SoilAnalysis(Analysis):
         This method will initialize a global soil analysis.
         This includes:
         - stage input files from COM and create output directories
+        - stage observation files
         - initialize JEDI applications
 
         Parameters
@@ -90,6 +91,10 @@ class SoilAnalysis(Analysis):
         # Stage files from COM
         logger.info(f"Staging files from COM and creating output directories")
         FileHandler(self.task_config.data_in).sync()
+
+        # Stage observation files
+        logger.info(f"Staging observation files")
+        self.jedi_dict['soilanlvar'].stage_obsdatain(self.task_config.COMIN_OBS)     #f"{self.task_config.COMIN_OBS}/soil"
 
         # initialize JEDI variational application
         logger.info(f"Initializing JEDI applications")
@@ -126,10 +131,11 @@ class SoilAnalysis(Analysis):
         self : Analysis
             Instance of the SoilAnalysis object
         """
-
-        # Compress and tar diag files into COM directory
-        self.tar_diag_files(self.task_config.COMOUT_SOIL_ANALYSIS,
-                            f"{self.task_config.APREFIX}soil_analysis.ioda_hofx.tar")
+        
+        # Compress and save diag files to COM directory
+        logger.info(f"Saving observation diag files to COM")
+        self.jedi_dict['soilanlvar'].save_obsdataout(self.task_config.COMOUT_SOIL_ANALYSIS,
+                                                    f"{self.task_config.APREFIX}soil_analysis.ioda_hofx")
 
         # Save files to COM
         logger.info(f"Saving files to COM")
