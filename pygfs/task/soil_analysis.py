@@ -170,7 +170,7 @@ class SoilAnalysis(Analysis):
         logger.info("Copying increments to beginning and middle of window")
         inclist = []
         for bkgtime in bkgtimes:
-            template_in = f'sfc_inc.tile{{tilenum}}.nc'
+            template_in = f'soilinc.tile{{tilenum}}.nc'
             template_out = f'soilinc.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
             for itile in range(1, self.task_config.ntiles + 1):
                 filename_in = template_in.format(tilenum=itile)
@@ -181,16 +181,20 @@ class SoilAnalysis(Analysis):
         FileHandler({'copy': inclist}).sync()
 
         # loop over times to apply increments
+        OBSTYPE="SMAP" # "TQ2M"
         for bkgtime in bkgtimes:
-            logger.info("Processing analysis valid: {bkgtime}")
+            logger.info(f"Processing analysis valid: {bkgtime}")
             styp_template = f'{self.task_config.CASE}.{self.task_config.ORES}.soil_type.tile{{tilenum}}.nc'
             bkg_template  = f'{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
             inc_template  = f'soilinc.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
             anl_template  = f'soilanl.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            noahmp_parms  = f'{self.task_config.CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl'
 
             smc_addincrements(
                 anl_dir=os.path.join(self.task_config.DATA, "anl"),
+                obstype=OBSTYPE,
                 ntiles=self.task_config.ntiles,
+                soil_parms=noahmp_parms,
                 styp_template=styp_template,
                 bkg_template=bkg_template,
                 inc_template=inc_template,
