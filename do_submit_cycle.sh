@@ -86,7 +86,7 @@ fi
 
 if [[ "$ensemble_size" -gt 1  ]]; then  
 
-    for ie in $(seq $ensemble_size)     
+    for ie in $(seq 0 $ensemble_size)     
     do
         mem_ens="mem`printf %03i $ie`"        
         MEM_WORKDIR=${WORKDIR}/${mem_ens}

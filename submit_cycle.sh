@@ -1,4 +1,4 @@
-#!/bin/bash -le 
+#!/bin/bash -e  
 #SBATCH --job-name=offline_noahmp
 #SBATCH -o log_noahmp.%j.log
 #SBATCH -e err_noahmp.%j.err
