@@ -43,7 +43,8 @@
        npx      = XXREP,
        npy      = XXREP,
        ntiles   = XXNTIL,
-       grid_type = XXGRT
+       grid_type = XXGRT,
+       regional = .false.
 /
 
 &gfs_physics_nml

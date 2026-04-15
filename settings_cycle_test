@@ -2,14 +2,15 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=smap_2dvar  
-STARTDATE=2024030100  
-ENDDATE=2024030300    
+export exp_name=t2m_letkf  #smap_2dvar  
+STARTDATE=2024060100  
+ENDDATE=2024060300    
 
 #export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
 #export landmods=land_mods_ursa
 export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
 export landmods=land_mods_gaeac6
+export stochymods=stochy_mods_gaeac6
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 #BASEDIR=/scratch5/purged/${USER}/               # EMC
@@ -29,11 +30,11 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 HOMEgfs=${HOMEdir}/HOMEgfs
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="NO"
+export do_enkf="YES"
 export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=1
+export ensemble_size=20
 
 # number of tiles
 export num_tiles=6         # 1 for regional

@@ -24,7 +24,7 @@
   forc_inp_path = "XXFORINPATH"
   forc_inp_file = "XXFORINFILE"
   n_forc_vars = 6
-  forc_var_list = "precipitation", "solar_radiation", "longwave_radiation", "temperature",
+  forc_var_list = "precipitation_bilinear", "solar_radiation", "longwave_radiation", "temperature",
             "wind_speed", "specific_humidity"
   std_dev_f = 0.6, 0.3, 30.0, 5.0, 0.1075, 0.1075
   forc_ens_pert_type = 1, 1, 0, 0, 1, 1   ! 1 multiplicative, 0 additive
