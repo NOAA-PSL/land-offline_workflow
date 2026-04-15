@@ -18,6 +18,7 @@ from wxflow import (AttrDict, Executable, FileHandler, WorkflowException,
                     parse_j2yaml, save_as_yaml,
                     Jinja,
                     logit)
+from pygfs.utils.process_soil_increments import smc_addincrements
 
 logger = getLogger(__name__.split('.')[-1])
 
@@ -93,7 +94,7 @@ class SoilAnalysis(Analysis):
 
         # initialize JEDI variational application
         logger.info(f"Initializing JEDI applications")
-        self.jedi_dict['soilanlvar'].initialize(self.task_config, clean_empty_obsspaces=False)
+        self.jedi_dict['soilanlvar'].initialize(self.task_config)  #, clean_empty_obsspaces=False)
         self.jedi_dict['soilanladdinc'].initialize(self.task_config)
 
     @logit(logger)
@@ -128,8 +129,8 @@ class SoilAnalysis(Analysis):
         """
 
         # Compress and tar diag files into COM directory
-        self.tar_diag_files(self.task_config.COMOUT_SOIL_ANALYSIS,
-                            f"{self.task_config.APREFIX}soil_analysis.ioda_hofx.tar")
+#        self.tar_diag_files(self.task_config.COMOUT_SOIL_ANALYSIS,
+#                            f"{self.task_config.APREFIX}soil_analysis.ioda_hofx.tar")
 
         # Save files to COM
         logger.info(f"Saving files to COM")
@@ -145,9 +146,6 @@ class SoilAnalysis(Analysis):
             Instance of the SoilAnalysis object
         """
 
-        # need backgrounds to create analysis from increments after LETKF
-        logger.info("Copy backgrounds into anl/ directory for creating analysis from increments")
-        
 #TODO: figure out how to handle IAU cases for (offline) soil DA
         
         # need backgrounds to create analysis from increments after LETKF
@@ -167,59 +165,40 @@ class SoilAnalysis(Analysis):
                 anllist.append([src, dest])
         FileHandler({'copy': anllist}).sync()
 
-        if self.task_config.DOIAU:
-            logger.info("Copying increments to beginning of window")
-            template_in = f'soilinc.{to_fv3time(self.task_config.current_cycle)}.sfc_data.tile{{tilenum}}.nc'
-            template_out = f'soilinc.{to_fv3time(self.task_config.WINDOW_BEGIN)}.sfc_data.tile{{tilenum}}.nc'
-            inclist = []
+#TODO: Copy JEDI generated soil moisture increment files into anl/ directory
+        # Copy increment files into anl/ directory
+        logger.info("Copying increments to beginning and middle of window")
+        inclist = []
+        for bkgtime in bkgtimes:
+            template_in = f'soilinc.tile{{tilenum}}.nc'
+            template_out = f'soilinc.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
             for itile in range(1, self.task_config.ntiles + 1):
                 filename_in = template_in.format(tilenum=itile)
                 filename_out = template_out.format(tilenum=itile)
-                src = os.path.join(self.task_config.DATA, 'anl', filename_in)
+                src = os.path.join(self.task_config.incr_path, filename_in)
                 dest = os.path.join(self.task_config.DATA, 'anl', filename_out)
                 inclist.append([src, dest])
-            FileHandler({'copy': inclist}).sync()
+        FileHandler({'copy': inclist}).sync()
 
         # loop over times to apply increments
+        OBSTYPE="SMAP" # "TQ2M"
         for bkgtime in bkgtimes:
-            logger.info("Processing analysis valid: {bkgtime}")
-            logger.info("Create namelist for APPLY_INCR_EXE")
-            nml_template = self.task_config.APPLY_INCR_NML_TMPL
-            nml_config = {
-                'current_cycle': bkgtime,
-                'CASE': self.task_config.CASE,
-                'DATA': self.task_config.DATA,
-                'FIXorog': self.task_config.FIXorog,
-                'OCNRES': self.task_config.OCNRES,
-                'ens_size': self.task_config.ens_size,
-                'ntiles': self.task_config.ntiles,
-                'noincr_threshold': self.task_config.noincr_threshold,
-                'print_debug': self.task_config.print_debug,
-                'truncate_incr': self.task_config.truncate_incr
-            }
-            nml_data = Jinja(nml_template, nml_config).render
-            logger.debug(f"apply_incr_nml:\n{nml_data}")
+            logger.info(f"Processing analysis valid: {bkgtime}")
+            styp_template = f'{self.task_config.CASE}.{self.task_config.ORES}.soil_type.tile{{tilenum}}.nc'
+            bkg_template  = f'{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            inc_template  = f'soilinc.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            anl_template  = f'soilanl.{to_fv3time(bkgtime)}.sfc_data.tile{{tilenum}}.nc'
+            noahmp_parms  = f'{self.task_config.CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl'
 
-            nml_file = os.path.join(self.task_config.DATA, "apply_incr_nml")
-            with open(nml_file, "w") as fho:
-                fho.write(nml_data)
+            smc_addincrements(
+                anl_dir=os.path.join(self.task_config.DATA, "anl"),
+                obstype=OBSTYPE,
+                ntiles=self.task_config.ntiles,
+                soil_parms=noahmp_parms,
+                styp_template=styp_template,
+                bkg_template=bkg_template,
+                inc_template=inc_template,
+                anl_template=anl_template,
+                logger=logger,
+            )
 
-            logger.info("Link APPLY_INCR_EXE into DATA/")
-            exe_src = self.task_config.APPLY_INCR_EXE
-            exe_dest = os.path.join(self.task_config.DATA, os.path.basename(exe_src))
-            if os.path.exists(exe_dest):
-                rm_p(exe_dest)
-            os.symlink(exe_src, exe_dest)
-
-            # execute APPLY_INCR_EXE to create analysis files
-            exe = Executable(self.task_config.APRUN_APPLY_INCR)
-            exe.add_default_arg(os.path.join(self.task_config.DATA, os.path.basename(exe_src)))
-            logger.info(f"Executing {exe}")
-            try:
-                exe()
-            except OSError:
-                logger.exception(f"Failed to execute {exe}")
-                raise
-            except Exception as err:
-                logger.exception(f"An error occured during execution of {exe}")
-                raise WorkflowException(f"An error occured during execution of {exe}") from err
