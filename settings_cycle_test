@@ -2,20 +2,20 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=smap_letkf  #smap_2dvar  
+export exp_name=smap_letkf  
 STARTDATE=2024060100  
 ENDDATE=2024060300    
 
-#export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
-#export landmods=land_mods_ursa
-export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
-export landmods=land_mods_gaeac6
-export stochymods=stochy_mods_gaeac6
+export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
+export landmods=land_mods_ursa
+export stochymods=stochy_mods_ursa
+#xport DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
+#xport landmods=land_mods_gaeac6
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
-#BASEDIR=/scratch5/purged/${USER}/               # EMC
+BASEDIR=/scratch5/purged/${USER}/               # EMC
 #BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
-BASEDIR=/gpfs/f6/land-cpu/scratch/${USER}/ 
+#BASEDIR=/gpfs/f6/land-cpu/scratch/${USER}/ 
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
