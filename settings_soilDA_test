@@ -24,11 +24,11 @@ RSTRDIR=${WORKDIR}/
 DAalg=letkf
 # TODO: fix this: State being updated: snow or soil
 # Take obs and assimilated var separate (snowdl, stc, smc, T2m) 
-analType=stc
+analType=smc
 
 # JEDI input obs. 
 # options : IMS, GHCN, SFCSNO, MADIS, SMAP 
-OBS_TYPES=("T2m")  #SMAP")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("SMAP")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 

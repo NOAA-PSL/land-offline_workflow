@@ -2,7 +2,7 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=t2m_letkf  #smap_2dvar  
+export exp_name=smap_letkf  #smap_2dvar  
 STARTDATE=2024060100  
 ENDDATE=2024060300    
 

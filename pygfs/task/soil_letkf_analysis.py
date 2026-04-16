@@ -109,24 +109,7 @@ class SoilLetkfAnalysis(Analysis):
         #self.jedi_dict['soilensanlobs'].initialize() #clean_empty_obsspaces=False)
         #self.jedi_dict['soilensanlsol'].initialize() #clean_empty_obsspaces=False)
         
-        # for now copy obs here
 #TODO:prepbufr proc 
-        #for obs_file in observations:
-        #logger.info(f"Reading {self.task_config.PREP_OBS_YAML}")
-        #prep_obs_config = parse_j2yaml(self.task_config.PREP_OBS_YAML, self.task_config)
-        obs_file = f'{self.task_config.OPREFIX}adpsfc_air_temperature_at_2m_181_gsi.nc'  #   adpsfc_airTemperature_181.nc'
-        if not os.path.isfile(f"{os.path.join(self.task_config.COMIN_OBS, obs_file)}"):
-            logger.warning(f"{obs_file} not found - continuing without it.")
-            logger.warning(f"exit")
-            exit(1)
-        else:
-            src = os.path.join(self.task_config.COMIN_OBS, obs_file)
-            dest = os.path.join(self.task_config.DATA, 'obs', obs_file)
-            cpl=[]
-            cpl.append([src, dest])
-            logger.info(f"destination file name: dest")
-            FileHandler({'copy': cpl}).sync()
-            logger.info(f"Successfully copied obs")
 
     @logit(logger)
     def execute(self, jedi_dict_key: str) -> None:
