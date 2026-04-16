@@ -142,10 +142,10 @@ class SoilLetkfAnalysis(Analysis):
             Instance of the SoilLetkfAnalysis object
         """
 
-        # Archive, compress, and save diag files in COM directory
+        # Compress and save diag files to COM directory
         logger.info(f"Saving observation diag files to COM")
-        self.jedi_dict['soilletkfanl'].save_obsdataout(self.task_config.COMOUT_SOIL_ANALYSIS,
-                                                     f"{self.task_config.APREFIX_ENS}soil_analysis.ioda_hofx.ensmean")
+        self.jedi_dict['soilletkfanl'].save_obsdataout(self.task_config.COMOUT_SOIL_DIAG,
+                                                    f"{self.task_config.RUN}.{to_YMDH(self.task_config.current_cycle)}.soil_analysis.ioda_hofx")
 
         # Save files to COM
         logger.info(f"Saving files to COM")

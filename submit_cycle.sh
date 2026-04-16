@@ -1,11 +1,11 @@
-#!/bin/bash -e  
+#!/bin/bash   
 #SBATCH --job-name=offline_noahmp
 #SBATCH -o log_noahmp.%j.log
 #SBATCH -e err_noahmp.%j.err
 #############------------------debug 
 #SBATCH --qos=debug
 #SBATCH --nodes=1
-#SBATCH --tasks-per-node=20
+#SBATCH --tasks-per-node=120
 #SBATCH -t 00:29:00
 #############------------------batch
 ##SBATCH --cpus-per-task=2
@@ -21,7 +21,7 @@
 #SBATCH --clusters=c6
 #SBATCH --partition=batch
 
-
+set -ex
 ############################
 # loop over time steps
 ############################
@@ -308,7 +308,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         #wait
 
         # generate ensemble forcing and soil moisture states
-        source ${CYCLEDIR}/stochy_mods        
+        source ${CYCLEDIR}/$stochymods        
         
         nt=$SLURM_NTASKS
         time srun '--export=ALL' --label -K -n $nt $EnsGenExe
