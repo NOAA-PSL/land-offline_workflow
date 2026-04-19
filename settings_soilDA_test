@@ -21,14 +21,18 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=letkf
+DAalg=2DVar
 # TODO: fix this: State being updated: snow or soil
 # Take obs and assimilated var separate (snowdl, stc, smc, T2m) 
-analType=smc
+analType=stc
 
 # JEDI input obs. 
 # options : IMS, GHCN, SFCSNO, MADIS, SMAP 
+<<<<<<< HEAD
 OBS_TYPES=("SMAP")  #T2m")  #SMAP")  # format: ("OBS1" "OBS2"...)
+=======
+OBS_TYPES=("T2m")  # format: ("OBS1" "OBS2"...)
+>>>>>>> ba41a27 (restore addinc)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
@@ -66,6 +70,7 @@ export NET=gfs
 export RUN=gdas
 
 export HOMEgfs=${HOMEdir}/HOMEgfs   #until a better solution is found
+export HOMEglobal=${HOMEdir}/HOMEgfs       #TODO: update to homeglobal
 export PARMgfs=${HOMEgfs}/parm
 export FIXgfs=${HOMEgfs}/fix
 
@@ -92,8 +97,10 @@ export APRUN_SOILLETKF_ADDINC="srun -l --export=ALL --hint=nomultithread --distr
 export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template
-export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  #gdas_apply_incr.x"
+export APPLY_INCR_EXE="/gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/sorc/land-jediincr/sorc/apply_soil_incr.x"
+#export APPLY_INCR_EXE="${EXECgdas}/apply_soil_incr.x"  #gdas_apply_incr.x"
 export APPLY_INCR_NML_TMPL="${PARMgdas}/soil/apply_incr_nml.j2"
+export INC_PREFIX="soilinc."
 export TASK_CONFIG_YAML_DET="${PARMgdas}/soil/soil_det_config.yaml.j2"
 export TASK_CONFIG_YAML_ENS="${PARMgdas}/soil/soil_letkf_config.yaml.j2"
 
@@ -101,6 +108,8 @@ export TASK_CONFIG_YAML_ENS="${PARMgdas}/soil/soil_letkf_config.yaml.j2"
 export noincr_threshold=9999999.9
 export print_debug=".false."
 export truncate_incr=".true."
+export upd_stc=.true.   #SMAP only slc
+export upd_slc=.true.    
 
 export fail_on_missing_soilobs=True    # False: just warn; True: fail & exit
 

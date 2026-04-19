@@ -2,7 +2,11 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
+<<<<<<< HEAD
 export exp_name=smap_letkf  
+=======
+export exp_name=T2m_2dvar  
+>>>>>>> ba41a27 (restore addinc)
 STARTDATE=2024060100  
 ENDDATE=2024060300    
 
@@ -30,11 +34,11 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 HOMEgfs=${HOMEdir}/HOMEgfs
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="YES"
+export do_enkf="NO"
 export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=20
+export ensemble_size=1
 
 # number of tiles
 export num_tiles=6         # 1 for regional
@@ -51,6 +55,7 @@ export RES=96
 export NPZ=127   # vertical layers
 export ORES=mx100
 export TSTUB=C${RES}.${ORES}_oro_data # file stub for orography files in $TPATH
+export STYPE_PREFX=C${RES}.${ORES}.soil_type  #soil type
 
 export LEVS=128
 export CASE=C96

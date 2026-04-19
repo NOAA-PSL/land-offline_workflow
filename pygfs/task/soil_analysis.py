@@ -188,7 +188,7 @@ class SoilAnalysis(Analysis):
 
         # loop over times to apply increments
         for bkgtime in bkgtimes:
-            logger.info("Processing analysis valid: {bkgtime}")
+            logger.info(f"Processing analysis valid: {bkgtime}")
             logger.info("Create namelist for APPLY_INCR_EXE")
             nml_template = self.task_config.APPLY_INCR_NML_TMPL
             nml_config = {
@@ -196,12 +196,15 @@ class SoilAnalysis(Analysis):
                 'CASE': self.task_config.CASE,
                 'DATA': self.task_config.DATA,
                 'FIXorog': self.task_config.FIXorog,
+                'HOMEglobal': self.task_config.HOMEglobal,
                 'OCNRES': self.task_config.OCNRES,
                 'ens_size': self.task_config.ens_size,
                 'ntiles': self.task_config.ntiles,
-                'noincr_threshold': self.task_config.noincr_threshold,
+                'upd_stc': self.task_config.upd_stc,
+                'upd_slc': self.task_config.upd_slc,
                 'print_debug': self.task_config.print_debug,
-                'truncate_incr': self.task_config.truncate_incr
+                'LSOIL_INCR': self.task_config.LSOIL_INCR,
+                'INC_PREFIX': self.task_config.INC_PREFIX
             }
             nml_data = Jinja(nml_template, nml_config).render
             logger.debug(f"apply_incr_nml:\n{nml_data}")
