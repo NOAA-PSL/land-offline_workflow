@@ -15,11 +15,11 @@
 ##SBATCH --tasks-per-node=36
 ##SBATCH -t 02:40:00
 #############------------------URSA
-#SBATCH --account=da-cpu
+##SBATCH --account=da-cpu
 #############------------------GAEA
-##SBATCH --account=gfs-cpu
-##SBATCH --clusters=c6
-##SBATCH --partition=batch
+#SBATCH --account=gfs-cpu
+#SBATCH --clusters=c6
+#SBATCH --partition=batch
 
 set -ex
 ############################

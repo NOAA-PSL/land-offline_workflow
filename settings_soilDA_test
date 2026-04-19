@@ -28,11 +28,7 @@ analType=stc
 
 # JEDI input obs. 
 # options : IMS, GHCN, SFCSNO, MADIS, SMAP 
-<<<<<<< HEAD
-OBS_TYPES=("SMAP")  #T2m")  #SMAP")  # format: ("OBS1" "OBS2"...)
-=======
 OBS_TYPES=("T2m")  # format: ("OBS1" "OBS2"...)
->>>>>>> ba41a27 (restore addinc)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
