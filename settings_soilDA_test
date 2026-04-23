@@ -21,14 +21,14 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=2DVar
+DAalg=letkf
 # TODO: fix this: State being updated: snow or soil
 # Take obs and assimilated var separate (snowdl, stc, smc, T2m) 
-analType=stc
+analType=smc
 
 # JEDI input obs. 
 # options : IMS, GHCN, SFCSNO, MADIS, SMAP 
-OBS_TYPES=("T2m")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("SMAP")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
@@ -36,7 +36,8 @@ JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 WINLEN=24
 
 # JEDI nproc--make sure to sync with iolayout
-NPROC_JEDI=6
+NPROC_JEDI=${NPROC_JEDI:-240}
+NPROC_INC=${NPROC_INC:-120}
 
 #OPTIONAL: overrides. TODO: this may no longer apply
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
@@ -85,16 +86,16 @@ export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
 export APRUN_SOILANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
-export APRUN_SOILLETKFANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
+export APRUN_SOILLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
 export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
 export APRUN_SOIL_ADDINC='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
-export APRUN_SOILLETKF_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
+export APRUN_SOILLETKF_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
 
 export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template
-export APPLY_INCR_EXE="/gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/sorc/land-jediincr/sorc/apply_soil_incr.x"
-#export APPLY_INCR_EXE="${EXECgdas}/apply_soil_incr.x"  #gdas_apply_incr.x"
+#export APPLY_INCR_EXE="/gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/sorc/land-jediincr/sorc/apply_soil_incr.x"
+export APPLY_INCR_EXE="${EXECgdas}/apply_soil_incr.x"  #gdas_apply_incr.x"
 export APPLY_INCR_NML_TMPL="${PARMgdas}/soil/apply_incr_nml.j2"
 export INC_PREFIX="soilinc."
 export TASK_CONFIG_YAML_DET="${PARMgdas}/soil/soil_det_config.yaml.j2"

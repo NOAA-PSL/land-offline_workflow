@@ -2,21 +2,21 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=T2m_2dvar  
-STARTDATE=2024060100  
-ENDDATE=2024060300    
+export exp_name=smap_letkf  
+STARTDATE=2024030100  
+ENDDATE=2024090300    
 
-#export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
-#export landmods=land_mods_ursa
-#export stochymods=stochy_mods_ursa
-export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
-export landmods=land_mods_gaeac6
-export stochymods=stochy_mods_gaeac6
+export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
+export landmods=land_mods_ursa
+export stochymods=stochy_mods_ursa
+#export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
+#export landmods=land_mods_gaeac6
+#export stochymods=stochy_mods_gaeac6
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
-#BASEDIR=/scratch5/purged/${USER}/               # EMC
+BASEDIR=/scratch5/purged/${USER}/               # EMC
 #BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
-BASEDIR=/gpfs/f6/land-cpu/scratch/${USER}/ 
+#BASEDIR=/gpfs/f6/land-cpu/scratch/${USER}/     #GAEAC6
 
 # temporary directory where experiment is run from
 export WORKDIR=${BASEDIR}/workdir/
@@ -31,11 +31,11 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 HOMEgfs=${HOMEdir}/HOMEgfs
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="NO"
+export do_enkf="YES"
 export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=1
+export ensemble_size=20
 
 # number of tiles
 export num_tiles=6         # 1 for regional
@@ -62,7 +62,7 @@ export FIXorog=${HOMEgfs}/fix/orog   # /scratch3/NCEPDEV/global/role.glopara/fix
 
 # number of cycles to submit in a single job
 # on hera in the debug queue 20 is a good number.
-export cycles_per_job=30
+export cycles_per_job=20
 
 # directory with initial conditions
 export ICSDIR=${DATADIR}/RESTARTS/C${RES}/
@@ -83,10 +83,10 @@ export DA_config12=${DA_config}
 export DA_config18=${DA_config} 
 
 # x y and io layout
-export layout_x=1
-export layout_y=1
-export NPROC_JEDI=$(( 6 * ${layout_x} * ${layout_y} ))
-export NPROC_INC=12
+export layout_x=4
+export layout_y=8
+export NPROC_JEDI=$(( ${num_tiles} * ${layout_x} * ${layout_y} ))
+export NPROC_INC=$(( ${num_tiles} * ${ensemble_size} ))  #120
 export io_layout_x=1
 export io_layout_y=1
 
@@ -103,6 +103,8 @@ export static_file=${DATADIR}/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-
 export stochy_init_exist="YES"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
 export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
 export stochy_init_found="NO" 
+export stochy_layout_x=1
+export stochy_layout_y=2
 
 export perturb_forcing=.true.
 export perturb_state=.true.

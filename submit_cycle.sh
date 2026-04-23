@@ -4,7 +4,7 @@
 #SBATCH -e err_noahmp.%j.err
 #############------------------debug 
 #SBATCH --qos=debug
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --tasks-per-node=120
 #SBATCH -t 00:29:00
 #############------------------batch
@@ -15,11 +15,11 @@
 ##SBATCH --tasks-per-node=36
 ##SBATCH -t 02:40:00
 #############------------------URSA
-##SBATCH --account=da-cpu
+#SBATCH --account=da-cpu
 #############------------------GAEA
-#SBATCH --account=gfs-cpu
-#SBATCH --clusters=c6
-#SBATCH --partition=batch
+##SBATCH --account=gfs-cpu
+##SBATCH --clusters=c6
+##SBATCH --partition=batch
 
 set -ex
 ############################
@@ -248,8 +248,8 @@ while [ $date_count -lt $cycles_per_job ]; do
         fi
     
         sed -i -e "s/XXRES/${RES}/g"  $WORKDIR/input.nml
-        sed -i -e "s/XXLX/${layout_x}/g"  $WORKDIR/input.nml          # Layout
-        sed -i -e "s/XXLY/${layout_y}/g"  $WORKDIR/input.nml
+        sed -i -e "s/XXLX/${stochy_layout_x}/g"  $WORKDIR/input.nml          # Layout
+        sed -i -e "s/XXLY/${stochy_layout_y}/g"  $WORKDIR/input.nml
         sed -i -e "s/XXIOLX/${io_layout_x}/g"  $WORKDIR/input.nml      # IO Layout
         sed -i -e "s/XXIOLY/${io_layout_y}/g"  $WORKDIR/input.nml
     
@@ -278,8 +278,8 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXRESX/${RES}/g" generate_ens_forc_state.nml   # TODO: Do these two (RESX/RESY) every differ?
         sed -i -e "s/XXRESY/${RES}/g" generate_ens_forc_state.nml
         sed -i -e "s/XXNTIL/${num_tiles}/g" generate_ens_forc_state.nml   # Number of tiles
-        sed -i -e "s/XXLX/${layout_x}/g" generate_ens_forc_state.nml          # Layout
-        sed -i -e "s/XXLY/${layout_y}/g" generate_ens_forc_state.nml
+        sed -i -e "s/XXLX/${stochy_layout_x}/g" generate_ens_forc_state.nml          # Layout
+        sed -i -e "s/XXLY/${stochy_layout_y}/g" generate_ens_forc_state.nml
 
         lndp_hscale_km=$((lndp_hscale/1000))
         lndp_tau_hr=$((lndp_tscale/3600))

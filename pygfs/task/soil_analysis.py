@@ -143,7 +143,7 @@ class SoilAnalysis(Analysis):
 
     @logit(logger)
     def add_increments(self) -> None:
-        """Executes the program "apply_incr.exe" to create analysis "sfc_data" files by adding increments to backgrounds
+        """Executes the program "apply_soil_incr.x" to create analysis "sfc_data" files by adding increments to backgrounds
 
         Parameters
         ----------
@@ -151,12 +151,7 @@ class SoilAnalysis(Analysis):
             Instance of the SoilAnalysis object
         """
 
-        # need backgrounds to create analysis from increments after LETKF
-        logger.info("Copy backgrounds into anl/ directory for creating analysis from increments")
-        
-#TODO: figure out how to handle IAU cases for (offline) soil DA
-        
-        # need backgrounds to create analysis from increments after LETKF
+        # need backgrounds to create analysis from increments after DA
         logger.info("Copy backgrounds into anl/ directory for creating analysis from increments")
         bkgtimes = []
         if self.task_config.DOIAU:
@@ -221,7 +216,7 @@ class SoilAnalysis(Analysis):
             os.symlink(exe_src, exe_dest)
 
             # execute APPLY_INCR_EXE to create analysis files
-            exe = Executable(self.task_config.APRUN_APPLY_INCR)
+            exe = Executable(self.task_config.APRUN_SOIL_ADDINC)
             exe.add_default_arg(os.path.join(self.task_config.DATA, os.path.basename(exe_src)))
             logger.info(f"Executing {exe}")
             try:
