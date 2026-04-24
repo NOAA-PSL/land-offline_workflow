@@ -105,7 +105,7 @@ export TASK_CONFIG_YAML_ENS="${PARMgdas}/soil/soil_letkf_config.yaml.j2"
 export noincr_threshold=9999999.9
 export print_debug=".false."
 export truncate_incr=".true."
-export upd_stc=.true.   #SMAP only slc
+export upd_stc=.false.   #SMAP only slc
 export upd_slc=.true.    
 
 export fail_on_missing_soilobs=True    # False: just warn; True: fail & exit

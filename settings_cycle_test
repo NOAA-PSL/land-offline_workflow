@@ -107,7 +107,7 @@ export stochy_layout_x=1
 export stochy_layout_y=2
 
 export perturb_forcing=.true.
-export perturb_state=.true.
+export perturb_state=.false.  #true.
 
 export grid_type=-1         #grid type -1 for fv3 tiles 
 export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120Km

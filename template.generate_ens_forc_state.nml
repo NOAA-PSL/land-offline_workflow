@@ -32,6 +32,6 @@
   state_file_name="XXSTATEFILE"
   n_state_vars = 8
   state_var_list = 'smc1', 'smc2', 'smc3', 'smc4', 'soilt1', 'soilt2', 'soilt3', 'soilt4'
-  std_dev_s = 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 2.0, 2.0
-  state_ens_pert_type = 1, 1, 1, 1, 0, 0, 0, 0
+  std_dev_s = 0.1, 0.05, 0, 0, 0.2, 0.1, 0, 0 ! these crashed with NAN noahmp states: 0.2, 0.2, 0.2, 0.2, 2.0, 2.0, 2.0, 2.0
+  state_ens_pert_type = 1, 1, 0, 0, 0, 0, 0, 0
 /
