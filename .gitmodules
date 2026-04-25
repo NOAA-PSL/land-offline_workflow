@@ -8,8 +8,8 @@
         branch = sfc_tq2m
 [submodule "vector2tile"]
 	path = vector2tile
-	url = https://github.com/NOAA-PSL/land-vector2tile
-	branch = develop
+	url = https://github.com/tsga/land-vector2tile # https://github.com/NOAA-PSL/land-vector2tile
+	branch = mpi  # develop
 [submodule "wxflow"]
 	path = wxflow
 	url = https://github.com/NOAA-EMC/wxflow
@@ -18,3 +18,5 @@
 	path = land_ensemble_gen
 	url = https://github.com/NOAA-PSL/land_ensemble_gen
 	branch = develop
+
+	
