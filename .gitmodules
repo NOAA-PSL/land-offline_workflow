@@ -1,15 +1,15 @@
 [submodule "ufs-land-driver"]
 	path = ufs-land-driver
-        url = https://github.com/NOAA-EMC/ufs-land-driver
-        branch = main
+        url =https://github.com/tsga/ufs-land-driver  # https://github.com/NOAA-EMC/ufs-land-driver
+        branch = mpi_ens #main
 [submodule "DA_update"]
 	path = DA_update
 	url = https://github.com/tsga/land-DA_update
         branch = sfc_tq2m
 [submodule "vector2tile"]
 	path = vector2tile
-	url = https://github.com/NOAA-PSL/land-vector2tile
-	branch = develop
+	url = https://github.com/tsga/land-vector2tile  #  https://github.com/NOAA-PSL/land-vector2tile
+	branch = mpi #develop
 [submodule "wxflow"]
 	path = wxflow
 	url = https://github.com/NOAA-EMC/wxflow
