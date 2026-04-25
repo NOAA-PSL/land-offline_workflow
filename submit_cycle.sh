@@ -33,6 +33,9 @@ source $analdate
 THISDATE=$STARTDATE
 date_count=0
 
+#NPROC_NOMP=${NPROC_NOMP:-$SLURM_NTASKS}
+NPROC_NOMP=$SLURM_NTASKS
+
 while [ $date_count -lt $cycles_per_job ]; do
 
     if [ $THISDATE -ge $ENDDATE ]; then 
@@ -77,6 +80,8 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     cd $WORKDIR
     
+    source ${CYCLEDIR}/${landmods}
+
     if [[ $do_jedi == "YES" ]]; then  
         ############################
         #  convert restarts from vector to tile
@@ -101,8 +106,6 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s/XXFRACGRID/${frac_grid}/g" vector2tile.namelist
         sed -i -e "s#XXDATADIR#${DATADIR}/#g" vector2tile.namelist
         sed -i -e "s/XXENSZ/${ensemble_size}/g" vector2tile.namelist
-
-        source ${CYCLEDIR}/${landmods}
 
         ############################
         # copy restarts to workdir, convert to tile for DA (all members) 
@@ -154,20 +157,16 @@ while [ $date_count -lt $cycles_per_job ]; do
        # 	
        # fi	
         
-	nt=$SLURM_NTASKS
-        time srun '--export=ALL' --label -K -n $nt $vec2tileexec vector2tile.namelist
+        time srun '--export=ALL' --label -K -n $SLURM_NTASKS $vec2tileexec vector2tile.namelist
 
         ############################
         # do DA update
         ############################
 
-        echo '************************************************'
         echo 'CSD calling land DA'
 
-        cd $WORKDIR
-
         export THISDATE
-        $DAscript ${CYCLEDIR}/$DA_config
+        time $DAscript ${CYCLEDIR}/$DA_config
         if [[ $? != 0 ]]; then
             echo "land DA script failed"
             exit 10
@@ -180,7 +179,6 @@ while [ $date_count -lt $cycles_per_job ]; do
         #NOTE: if the DA is successful the tiles in memworkdir would have the DA increments
         cd $WORKDIR
 
-        echo '************************************************'
         echo 'calling tile2vector' 
         source ${CYCLEDIR}/${landmods}
 
@@ -198,7 +196,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         sed -i -e "s#XXDATADIR#${DATADIR}/#g" tile2vector.namelist
         sed -i -e "s/XXENSZ/${ensemble_size}/g" tile2vector.namelist
         
-        time srun '--export=ALL' --label -K -n $nt $vec2tileexec tile2vector.namelist
+        time srun '--export=ALL' --label -K -n $SLURM_NTASKS $vec2tileexec tile2vector.namelist
 
 #TODO: the restart_anl.nc would be saved from letkf_config
 
@@ -240,9 +238,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     
     # Forcing perturbation goes here
     if [[ $do_enkf == "YES" ]]; then 
-
-        cd $WORKDIR
-        
+      
 	echo ""
 	echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
 
@@ -319,8 +315,7 @@ while [ $date_count -lt $cycles_per_job ]; do
         # generate ensemble forcing and soil moisture states
         source ${CYCLEDIR}/$stochymods        
         
-        nt=$SLURM_NTASKS
-        time srun '--export=ALL' --label -K -n $nt $EnsGenExe
+        time srun '--export=ALL' --label -K -n $SLURM_NTASKS $EnsGenExe
         if [[ $? != 0 ]]; then
             echo "EnsForc Gen failed"
             exit 
@@ -334,8 +329,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     ############################
     # run the forecast model
     ############################
-    
-    cd $WORKDIR
+   
     # update model namelist 
     cp  ${CYCLEDIR}/template.ufs-noahMP.namelist.${atmos_forc}  $WORKDIR/ufs-land.namelist
 
@@ -359,8 +353,7 @@ while [ $date_count -lt $cycles_per_job ]; do
     sed -i -e "s/XXENSZ/${ensemble_size}/g" ufs-land.namelist
     
     # submit model
-    echo '************************************************'
-    echo "calling model"
+    echo "calling NoahMP model"
     source ${CYCLEDIR}/${landmods}
 
    # nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
@@ -399,71 +392,93 @@ while [ $date_count -lt $cycles_per_job ]; do
 
    #     cd $WORKDIR
    # else
-	#NPROC_NOMP=${NPROC_NOMP:-$SLURM_NTASKS}
-        NPROC_NOMP=$SLURM_NTASKS	
-        # run using baseline snow parameter table
-        cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
-
-	#TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-        time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec
+        # copied in do_submit_cycle: run using baseline snow parameter table
+        # cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
+        time srun '--export=ALL' --label -K -n $SLURM_NTASKS $LSMexec
    # fi
 
-    ############################
-    # check model ouput (all members)
-    ############################
-
-    for ie in $(seq $ensemble_size)
-    do
-        if [[ "$ensemble_size" -eq 1  ]]; then 
-            MEM_WORKDIR=${WORKDIR}
-            MEM_MODL_OUTDIR=${OUTDIR}
-        else 
-            mem_ens="mem`printf %03i $ie`"
-	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-        fi 
-
-        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-        else 
-            echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
-            echo "probably model runtime error occurred, exiting" 
-            exit 10
-        fi
-
-        if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-           
-	        # delete forcing ens files
-#            rm -f ${MEM_WORKDIR}/${forc_inp_file}  
-#            rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
-
-            # needed for ensemble mean computed below
-            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
-        fi
-        
-    done
-    wait
-
-    # for enkf/letkf get ens mean 
+    # Compute ensemble mean
+    ####################### 
     if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-
-        # module load nco
-
-        MEM_WORKDIR=${WORKDIR}/mem000
-        MEM_MODL_OUTDIR=${OUTDIR}/mem000
+        for ie in $(seq $ensemble_size)
+        do
+          mem_ens="mem`printf %03i $ie`"
+            # delete forcing ens files
+#         rm -f ${MEM_WORKDIR}/${forc_inp_file}
+#         rm -f ${MEM_WORKDIR}/${forc_inp_file_next}
         
+          # needed for ensemble mean computed below
+          yes|cp -f ${WORKDIR}/$mem_ens/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc
+        
+        done
+        
+	MEM_WORKDIR=${WORKDIR}/mem000
         ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
 
-        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-        else 
-            echo "Something went wrong while generating ens mean file, exiting" 
+        if [[ ! -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then
+            echo "Something went wrong while generating ens mean file, exiting"
             exit 10
         fi
-   
+
         rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
-        
-    fi    
+
+    fi
+
+#    ############################
+#    # check model ouput (all members)
+#    ############################
+#    for ie in $(seq $ensemble_size)
+#    do
+#        if [[ "$ensemble_size" -eq 1  ]]; then 
+#            MEM_WORKDIR=${WORKDIR}
+#            MEM_MODL_OUTDIR=${OUTDIR}
+#        else 
+#            mem_ens="mem`printf %03i $ie`"
+#	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
+#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+#        fi 
+#
+#        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
+#            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+#        else 
+#            echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
+#            echo "probably model runtime error occurred, exiting" 
+#            exit 10
+#        fi
+#
+#        if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
+#           
+#	        # delete forcing ens files
+##            rm -f ${MEM_WORKDIR}/${forc_inp_file}  
+##            rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
+#
+#            # needed for ensemble mean computed below
+#            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
+#        fi
+#        
+#    done
+#    wait
+#
+#    # for enkf/letkf get ens mean 
+#    if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
+#
+#        # module load nco
+#
+#        MEM_WORKDIR=${WORKDIR}/mem000
+#        MEM_MODL_OUTDIR=${OUTDIR}/mem000
+#        
+#        ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+#
+#        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
+#            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+#        else 
+#            echo "Something went wrong while generating ens mean file, exiting" 
+#            exit 10
+#        fi
+#   
+#        rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
+#        
+#    fi    
 
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile
 

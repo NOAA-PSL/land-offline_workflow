@@ -186,6 +186,11 @@ if [[ "$ensemble_size" -gt 1  ]]; then
         fi 
     done
 fi
+
+# run using baseline snow parameter table
+# copy once into workdir
+cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
+
 #---------------
 # create dates file 
 touch analdates.sh 
