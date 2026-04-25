@@ -356,55 +356,57 @@ while [ $date_count -lt $cycles_per_job ]; do
     else
         sed -i -e "s#XXFORCDIR#${forcing_dir}#g" ufs-land.namelist
     fi
+    sed -i -e "s/XXENSZ/${ensemble_size}/g" ufs-land.namelist
     
     # submit model
     echo '************************************************'
     echo "calling model"
     source ${CYCLEDIR}/${landmods}
 
-    nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
-    NPROC_NOMP=${NPROC_NOMP:-$nt}    
-    echo "nt=${nt}    NPROC_NOMP = ${NPROC_NOMP}"
-    
-    if [[ "$ensemble_size" -gt 1  ]]; then
+   # nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
+   # NPROC_NOMP=${NPROC_NOMP:-$nt}    
+   # echo "nt=${nt}    NPROC_NOMP = ${NPROC_NOMP}"
+   # 
+   # if [[ "$ensemble_size" -gt 1  ]]; then
 
-        for ie in $(seq $ensemble_size)
-        do
-            mem_ens="mem`printf %03i $ie`"
-    	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-            # echo "member working dir $MEM_WORKDIR"
-    
-            cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
-   
-            # run using baseline snow parameter table
-            cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
-    
-            cd $MEM_WORKDIR
-                
-            #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-            time srun '--export=ALL' --exclusive --label -K -n ${NPROC_NOMP} --mem-per-cpu ${SLURM_MEM_PER_CPU} $LSMexec   &
-            # #-N1-1 --exclusive
-    
-            # # srun -l --multi-prog $lsm_tasks_file
-    
-            # no error codes on exit from model, check for restart below instead
-            # TODO: Modify noahmp to exit with error code    
-            # if [[ $? != 0 ]]; then
-            #     echo "NoahMP failed for ensemble $ie"
-            #     exit 10
-            # fi   
-        done
-        wait
+   #     for ie in $(seq $ensemble_size)
+   #     do
+   #         mem_ens="mem`printf %03i $ie`"
+   # 	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
+   #         # echo "member working dir $MEM_WORKDIR"
+   # 
+   #         cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
+   #
+   #         # run using baseline snow parameter table
+   #         cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
+   # 
+   #         cd $MEM_WORKDIR
+   #             
+   #         #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
+   #         time srun '--export=ALL' --exclusive --label -K -n ${NPROC_NOMP} --mem-per-cpu ${SLURM_MEM_PER_CPU} $LSMexec   &
+   #         # #-N1-1 --exclusive
+   # 
+   #         # # srun -l --multi-prog $lsm_tasks_file
+   # 
+   #         # no error codes on exit from model, check for restart below instead
+   #         # TODO: Modify noahmp to exit with error code    
+   #         # if [[ $? != 0 ]]; then
+   #         #     echo "NoahMP failed for ensemble $ie"
+   #         #     exit 10
+   #         # fi   
+   #     done
+   #     wait
 
-	cd $WORKDIR
-    else
-	
+   #     cd $WORKDIR
+   # else
+	#NPROC_NOMP=${NPROC_NOMP:-$SLURM_NTASKS}
+        NPROC_NOMP=$SLURM_NTASKS	
         # run using baseline snow parameter table
         cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
 
 	#TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
         time srun '--export=ALL' --label -K -n $NPROC_NOMP $LSMexec
-    fi
+   # fi
 
     ############################
     # check model ouput (all members)
