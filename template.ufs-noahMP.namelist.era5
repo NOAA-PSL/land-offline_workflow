@@ -35,7 +35,6 @@
   
   location_start   = 1
   location_end     = XXVLEN
-  ens_size         = XXENSZ
   
 /
 

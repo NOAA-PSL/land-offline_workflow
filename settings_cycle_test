@@ -4,7 +4,7 @@
 # experiment name
 export exp_name=smap_letkf  
 STARTDATE=2024030100  
-ENDDATE=2024090300    
+ENDDATE=2024030300    
 
 export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
 export landmods=land_mods_ursa

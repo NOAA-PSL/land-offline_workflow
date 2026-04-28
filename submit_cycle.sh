@@ -33,9 +33,6 @@ source $analdate
 THISDATE=$STARTDATE
 date_count=0
 
-#NPROC_NOMP=${NPROC_NOMP:-$SLURM_NTASKS}
-NPROC_NOMP=$SLURM_NTASKS
-
 while [ $date_count -lt $cycles_per_job ]; do
 
     if [ $THISDATE -ge $ENDDATE ]; then 
@@ -350,52 +347,47 @@ while [ $date_count -lt $cycles_per_job ]; do
     else
         sed -i -e "s#XXFORCDIR#${forcing_dir}#g" ufs-land.namelist
     fi
-    sed -i -e "s/XXENSZ/${ensemble_size}/g" ufs-land.namelist
     
     # submit model
     echo "calling NoahMP model"
     source ${CYCLEDIR}/${landmods}
 
-   # nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
-   # NPROC_NOMP=${NPROC_NOMP:-$nt}    
-   # echo "nt=${nt}    NPROC_NOMP = ${NPROC_NOMP}"
-   # 
-   # if [[ "$ensemble_size" -gt 1  ]]; then
+    nt=$((SLURM_NTASKS/ensemble_size))  #Note the extra tasks remain idle
+    NPROC_NOMP=${NPROC_NOMP:-$nt}    
+    
+    if [[ "$ensemble_size" -gt 1  ]]; then
 
-   #     for ie in $(seq $ensemble_size)
-   #     do
-   #         mem_ens="mem`printf %03i $ie`"
-   # 	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-   #         # echo "member working dir $MEM_WORKDIR"
-   # 
-   #         cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
-   #
-   #         # run using baseline snow parameter table
-   #         cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
-   # 
-   #         cd $MEM_WORKDIR
-   #             
-   #         #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-   #         time srun '--export=ALL' --exclusive --label -K -n ${NPROC_NOMP} --mem-per-cpu ${SLURM_MEM_PER_CPU} $LSMexec   &
-   #         # #-N1-1 --exclusive
-   # 
-   #         # # srun -l --multi-prog $lsm_tasks_file
-   # 
-   #         # no error codes on exit from model, check for restart below instead
-   #         # TODO: Modify noahmp to exit with error code    
-   #         # if [[ $? != 0 ]]; then
-   #         #     echo "NoahMP failed for ensemble $ie"
-   #         #     exit 10
-   #         # fi   
-   #     done
-   #     wait
+        for ie in $(seq $ensemble_size)
+        do
+            mem_ens="mem`printf %03i $ie`"
+    	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
+            # echo "member working dir $MEM_WORKDIR"
+    
+            cp $WORKDIR/ufs-land.namelist $MEM_WORKDIR/ufs-land.namelist    
+   
+            # run using baseline snow parameter table
+            cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $MEM_WORKDIR/noahmptable.tbl 
+    
+            cd $MEM_WORKDIR
+                
+            #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
+            time srun '--export=ALL' --exclusive --label -K -n ${NPROC_NOMP} --mem-per-cpu ${SLURM_MEM_PER_CPU} $LSMexec   &
+            # #-N1-1 --exclusive
+    
+            # TODO: Modify noahmp to exit with error code    
+            # if [[ $? != 0 ]]; then
+            #     echo "NoahMP failed for ensemble $ie"
+            #     exit 10
+            # fi   
+        done
+        wait
 
-   #     cd $WORKDIR
-   # else
-        # copied in do_submit_cycle: run using baseline snow parameter table
-        # cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
-        time srun '--export=ALL' --label -K -n $SLURM_NTASKS $LSMexec
-   # fi
+        cd $WORKDIR
+    else
+       # copied in do_submit_cycle: run using baseline snow parameter table
+       # cp ${CYCLEDIR}/ufs-land-driver/ccpp-physics/physics/SFC_Models/Land/Noahmp/noahmptable.tbl $WORKDIR/noahmptable.tbl
+       time srun '--export=ALL' --label -K -n $SLURM_NTASKS $LSMexec
+    fi
 
     # Compute ensemble mean
     ####################### 
@@ -423,62 +415,6 @@ while [ $date_count -lt $cycles_per_job ]; do
         rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
 
     fi
-
-#    ############################
-#    # check model ouput (all members)
-#    ############################
-#    for ie in $(seq $ensemble_size)
-#    do
-#        if [[ "$ensemble_size" -eq 1  ]]; then 
-#            MEM_WORKDIR=${WORKDIR}
-#            MEM_MODL_OUTDIR=${OUTDIR}
-#        else 
-#            mem_ens="mem`printf %03i $ie`"
-#	    MEM_WORKDIR=${WORKDIR}/${mem_ens}
-#            MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
-#        fi 
-#
-#        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-#            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-#        else 
-#            echo "Restart couldn't be found: ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc"
-#            echo "probably model runtime error occurred, exiting" 
-#            exit 10
-#        fi
-#
-#        if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-#           
-#	        # delete forcing ens files
-##            rm -f ${MEM_WORKDIR}/${forc_inp_file}  
-##            rm -f ${MEM_WORKDIR}/${forc_inp_file_next}  
-#
-#            # needed for ensemble mean computed below
-#            yes|cp -f ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${WORKDIR}/mem000/ufs_lr_mem${ie}.nc 
-#        fi
-#        
-#    done
-#    wait
-#
-#    # for enkf/letkf get ens mean 
-#    if [[ $do_enkf == "YES" && "$ensemble_size" -gt 1 ]]; then
-#
-#        # module load nco
-#
-#        MEM_WORKDIR=${WORKDIR}/mem000
-#        MEM_MODL_OUTDIR=${OUTDIR}/mem000
-#        
-#        ncra -O ${MEM_WORKDIR}/ufs_lr_mem*.nc ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-#
-#        if [[ -e ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ]]; then 
-#            cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
-#        else 
-#            echo "Something went wrong while generating ens mean file, exiting" 
-#            exit 10
-#        fi
-#   
-#        rm -f ${MEM_WORKDIR}/ufs_lr_mem*.nc
-#        
-#    fi    
 
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile
 
