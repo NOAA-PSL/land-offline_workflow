@@ -15,6 +15,25 @@ if [[ ! -e $config_file ]]; then
     exit 
 fi
 
+dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+GDASApp_root=${dir_root}/DA_update/GDASApp/
+source $GDASApp_root/ush/detect_machine.sh
+
+if [[ ${MACHINE_ID} == 'ursa' ]]; then
+    echo "running land offline workflow on URSA"
+    export DATADIR=/scratch4/NCEPDEV/land/data/         
+    export landmods=land_mods_ursa
+    export stochymods=stochy_mods_ursa
+elif [[ ${MACHINE_ID} == 'gaeac6' ]]; then
+    echo "running land offline workflow on GAEA C6"
+    export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   
+    export landmods=land_mods_gaeac6
+    export stochymods=stochy_mods_gaeac6
+else
+    echo "Land offline workflow currently supported only on URSA and GAEA C6"
+    exit 1
+fi
+ 
 echo "reading cycle settings from $config_file"
 source $config_file
 

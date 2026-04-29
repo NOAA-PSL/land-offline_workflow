@@ -2,16 +2,9 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=smap_letkf  
+export exp_name=smap_2dvar  
 STARTDATE=2024030100  
 ENDDATE=2024030300    
-
-export DATADIR=/scratch4/NCEPDEV/land/data/         #URSA
-export landmods=land_mods_ursa
-export stochymods=stochy_mods_ursa
-#export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   #GAEA C6
-#export landmods=land_mods_gaeac6
-#export stochymods=stochy_mods_gaeac6
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
 BASEDIR=/scratch5/purged/${USER}/               # EMC
@@ -31,11 +24,11 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 HOMEgfs=${HOMEdir}/HOMEgfs
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="YES"
+export do_enkf="NO"
 export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=20
+export ensemble_size=1
 
 # number of tiles
 export num_tiles=6         # 1 for regional
@@ -70,10 +63,7 @@ export ICSDIR=${DATADIR}/RESTARTS/C${RES}/
 #temp ensemble restarts at /scratch3/NCEPDEV/land/Tseganeh.Gichamo/EnsRest
 
 # namelist for do_landDA.sh
-# set to "openloop" to not call do_landDA.sh
-# settings_soilDA_test or settings_snowDA_test depending on DA type
-#export DA_config="openloop"
-#export DA_config="settings_snowDA_test"
+# set to "openloop" to not call DA; to "settings_soilDA_test" or "settings_snowDA_test" for soil/snow DA
 export DA_config="settings_soilDA_test" 
 
 # if want different DA at different times, list here. 

@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=letkf
+DAalg=2DVar
 # TODO: fix this: State being updated: snow or soil
 # Take obs and assimilated var separate (snowdl, stc, smc, T2m) 
 analType=smc
@@ -85,10 +85,10 @@ export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
-export APRUN_SOILANL='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
+export APRUN_SOILANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
 export APRUN_SOILLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
-export APRUN_APPLY_INCR='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6'
-export APRUN_SOIL_ADDINC='srun -l --export=ALL --hint=nomultithread --distribution=block:block -n 6 --mem=0 --cpus-per-task=1'
+export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
+export APRUN_SOIL_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
 export APRUN_SOILLETKF_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
 
 export EXECgfs=${EXECgdas}
