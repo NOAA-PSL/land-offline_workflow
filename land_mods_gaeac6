@@ -1,0 +1,16 @@
+module purge
+
+module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+
+module load stack-oneapi/2024.2.1
+module load stack-cray-mpich/8.1.32
+module load netcdf-fortran/4.6.1
+module load nco/5.2.4
+
+#source /gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/ush/detect_machine.sh
+#
+#source /gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/ush/module-setup.sh
+#module use /gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/modulefiles
+#module load GDAS/gaeac6.intel
+
+module list

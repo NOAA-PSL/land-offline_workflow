@@ -18,7 +18,7 @@
   restart_date = "XXYYYY-XXMM-XXDD XXHH:00:00"
   
 ! Path for static file  
-  static_filename = "/scratch4/NCEPDEV/land/data/ufs-land-driver/vector_inputs/CXXRES.XXORES/ufs-land_CXXRES.XXORES_static_fields.nc"
+  static_filename = "XXDATADIR/ufs-land-driver/vector_inputs/CXXRES.XXORES/ufs-land_CXXRES.XXORES_static_fields.nc"
   
 ! Location of vector restart file (vector2tile direction)
 
@@ -31,6 +31,9 @@
 ! Path for converted files; if same as tile/vector path, files may be overwritten
 
   output_path = "./"
+
+! ensemble size (1 for non-ens appl)
+  ens_size = XXENSZ
 
 !------------------- only perturbation mapping -------------------
 ! layout, options: 1x4, 4x1, 2x2, an input settings for generating the perturbation file

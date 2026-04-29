@@ -1,11 +1,12 @@
 module purge
 
-module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
 
 module load stack-oneapi/2024.2.1
-module load stack-intel-oneapi-mpi/2021.13
+module load stack-cray-mpich/8.1.32
 
-module load glibc/2.34
+module load glibc/2.31
+
 module load zlib/1.2.13
 module load curl/8.10.1
 module load hdf5/1.14.3
@@ -18,6 +19,11 @@ module load nco/5.2.4
 module load fms/2024.02
 module load esmf/8.8.0
 module load eigen/3.4.0
-module load openblas/0.3.27
+
+module load Core/24.11
+module load openblas/0.3.26
+
+export FC=ftn
+export MPIF90=ftn
 
 module list

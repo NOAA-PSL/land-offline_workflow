@@ -32,6 +32,9 @@
 
   output_path = "./"
 
+! ensemble size (1 for non-ens appl)
+  ens_size = XXENSZ
+
 !------------------- only perturbation mapping -------------------
 ! layout, options: 1x4, 4x1, 2x2, an input settings for generating the perturbation file
 
