@@ -104,7 +104,7 @@ class SoilLetkfAnalysis(Analysis):
 
         # Initialize JEDI applications
         logger.info(f"Initializing JEDI applications")
-        self.jedi_dict['soilletkfanl'].initialize(clean_empty_obsspaces=False)
+        self.jedi_dict['soilletkfanl'].initialize(clean_empty_obsspaces=True)
         self.jedi_dict['soilletkfaddinc'].initialize(self.task_config)
         #self.jedi_dict['soilensanlobs'].initialize() #clean_empty_obsspaces=False)
         #self.jedi_dict['soilensanlsol'].initialize() #clean_empty_obsspaces=False)
