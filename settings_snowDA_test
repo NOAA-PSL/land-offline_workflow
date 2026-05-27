@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=2DVar
+DAalg=letkf
 # TODO: fix this: State being updated: snow or smc(soil moisture content) 
 analType=snow
 
@@ -81,7 +81,7 @@ export FIXglobal=${HOMEgfs}/fix
 export DATA=${JEDIWORKDIR}
 export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS     
 export COMIN_ATMOS_RESTART_PREV=${WORKDIR}
-#export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
+export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
 
 #export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/mem000
 #export COMIN_ATMOS_RESTART_PREV_ENS=${JEDIWORKDIR}
@@ -101,9 +101,9 @@ export EXECglobal=${EXECgdas}
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
-export APRUN_SNOWANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
-export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
-export APRUN_SNOWLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
+export APRUN_SNOWANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
+export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
+export APRUN_SNOWLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  

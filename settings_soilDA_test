@@ -85,11 +85,11 @@ export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
-export APRUN_SOILANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
-export APRUN_SOILLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
-export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
-export APRUN_SOIL_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
-export APRUN_SOILLETKF_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
+export APRUN_SOILANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
+export APRUN_SOILLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
+export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
+export APRUN_SOIL_ADDINC="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
+export APRUN_SOILLETKF_ADDINC="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
 
 export EXECgfs=${EXECgdas}
 
