@@ -2,7 +2,7 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=smap_2dvar  
+export exp_name=ghcn_2dvar  
 STARTDATE=2024030100  
 ENDDATE=2024030300    
 
@@ -64,7 +64,7 @@ export ICSDIR=${DATADIR}/RESTARTS/C${RES}/
 
 # namelist for do_landDA.sh
 # set to "openloop" to not call DA; to "settings_soilDA_test" or "settings_snowDA_test" for soil/snow DA
-export DA_config="settings_soilDA_test" 
+export DA_config="settings_snowDA_test" 
 
 # if want different DA at different times, list here. 
 export DA_config00=${DA_config} 
@@ -79,6 +79,7 @@ export NPROC_JEDI=$(( ${num_tiles} * ${layout_x} * ${layout_y} ))
 export NPROC_INC=$(( ${num_tiles} * ${ensemble_size} ))  #120
 export io_layout_x=1
 export io_layout_y=1
+export NPROC_NOMP=6  #comment this out for ens runs. TODO: remove after mpi_ens Noahmp merged
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5

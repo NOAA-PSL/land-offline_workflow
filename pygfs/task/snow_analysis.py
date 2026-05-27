@@ -184,11 +184,9 @@ class SnowAnalysis(Analysis):
         """
 
         # Archive, compress, and save diag files in COM directory
-        # Comment out compression step as it often hangs in the cycled run due to too-many diag files
-        # needs to be compressed in the same directory
-        #logger.info(f"Saving observation diag files to COM")
-        #self.jedi_dict['snowanlvar'].save_obsdataout(self.task_config.COMOUT_SNOW_ANALYSIS,
-        #                                             f"{self.task_config.APREFIX}snow_analysis.ioda_hofx")
+        logger.info(f"Saving observation diag files to COM")
+        self.jedi_dict['snowanlvar'].save_obsdataout(self.task_config.COMOUT_SNOW_DIAG,
+                                                     f"{self.task_config.RUN}.{to_YMDH(self.task_config.current_cycle)}.snow_analysis.ioda_hofx")
 
         # Save files to COM
         logger.info(f"Saving files to COM")
