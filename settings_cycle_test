@@ -92,7 +92,7 @@ export forcing_dir=${DATADIR}/ufs-land-driver/datm/ERA5/C${RES}.${ORES}/
 
 export static_file=${DATADIR}/ufs-land-driver/vector_inputs/C${RES}.${ORES}/ufs-land_C${RES}.${ORES}_static_fields.nc
 export stochy_init_exist="YES"   #YES: init patterns read from cycledir/stochy/restart. NO: initialized from seed
-export stochy_init_dir="${HOMEdir}/STOCHY/RESTART/"
+export stochy_init_dir="${DATADIR}/DA/STOCHY/RESTART/"
 export stochy_init_found="NO" 
 export stochy_layout_x=1
 export stochy_layout_y=2
