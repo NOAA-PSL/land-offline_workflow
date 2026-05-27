@@ -74,7 +74,9 @@ export RUN=gdas
 export HOMEgfs=${HOMEdir}/HOMEgfs   #until a better solution is found
 export HOMEglobal=${HOMEdir}/HOMEgfs       #TODO: update to homeglobal
 export PARMgfs=${HOMEgfs}/parm
+export PARMglobal=${HOMEglobal}/parm
 export FIXgfs=${HOMEgfs}/fix
+export FIXglobal=${HOMEgfs}/fix
 
 export DATA=${JEDIWORKDIR}
 export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS     
@@ -93,13 +95,15 @@ export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gda
 export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/  #gdas.${YYYY}${MM}${DD}/${HH}
 
 export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
+export EXECgfs=${EXECgdas}
+export EXECglobal=${EXECgdas}
+
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
 export APRUN_SNOWANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
 export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
 export APRUN_SNOWLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=2"
-export EXECgfs=${EXECgdas}
 
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  
