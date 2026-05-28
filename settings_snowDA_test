@@ -37,10 +37,6 @@ OBS_TYPES=("GHCN") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA, HOFX
 JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "HOFX"...)
 
-# JEDI nproc--make sure to sync with iolayout
-NPROC_JEDI=${NPROC_JEDI:-240}
-NPROC_INC=${NPROC_INC:-120}
-
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
 
