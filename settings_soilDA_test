@@ -35,10 +35,6 @@ JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
 
-# JEDI nproc--make sure to sync with iolayout
-NPROC_JEDI=${NPROC_JEDI:-240}
-NPROC_INC=${NPROC_INC:-120}
-
 #OPTIONAL: overrides. TODO: this may no longer apply
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
@@ -85,11 +81,11 @@ export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
-export APRUN_SOILANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
-export APRUN_SOILLETKFANL="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
-export APRUN_APPLY_INCR="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
-export APRUN_SOIL_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
-export APRUN_SOILLETKF_ADDINC="srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
+export APRUN_SOILANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
+export APRUN_SOILLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
+export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
+export APRUN_SOIL_ADDINC="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
+export APRUN_SOILLETKF_ADDINC="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC} --mem=0 --cpus-per-task=1"
 
 export EXECgfs=${EXECgdas}
 
