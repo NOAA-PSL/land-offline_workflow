@@ -97,9 +97,9 @@ export EXECglobal=${EXECgdas}
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
 export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
 
-export APRUN_SNOWANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0"
+export APRUN_SNOWANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
 export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
-export APRUN_SNOWLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0"
+export APRUN_SNOWLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
 
 # Name of the executable that applies increment to bkg and its namelist template
 export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  
