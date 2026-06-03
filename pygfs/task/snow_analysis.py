@@ -333,6 +333,14 @@ class SnowAnalysis(Analysis):
             Instance of the SnowAnalysis object
         """
 
+        # Check if add_increments should be skipped
+        # Handle both string and boolean values
+        do_snow_add_increments = getattr(self.task_config, 'DO_SNOW_ADD_INCREMENTS', 'YES')
+        if isinstance(do_snow_add_increments, bool):
+            do_snow_add_increments = 'YES' if do_snow_add_increments else 'NO'
+        else:
+            do_snow_add_increments = str(do_snow_add_increments).upper()
+
         # need backgrounds to create analysis from increments after LETKF
         logger.info("Copy backgrounds into anl/ directory for creating analysis from increments")
         bkgtimes = []
@@ -349,6 +357,12 @@ class SnowAnalysis(Analysis):
                 dest = os.path.join(self.task_config.DATA, "anl", filename)
                 anllist.append([src, dest])
         FileHandler({'copy': anllist}).sync()
+
+        # If DO_SNOW_ADD_INCREMENTS is NO, skip the increment application
+        if do_snow_add_increments == 'NO':
+            logger.info("DO_SNOW_ADD_INCREMENTS is set to NO. Skipping add_increments step.")
+            logger.info("Backgrounds have been copied to anl/ directory for archive purposes.")
+            return
 
         if self.task_config.DOIAU:
             logger.info("Copying increments to beginning of window")
