@@ -34,8 +34,10 @@ analType=snow
 # - sfcsno
 # - snocvr_snomad
 OBS_TYPES=("GHCN") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
-# JEDI call type for each obs_type above. options: DA, HOFX
-JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "HOFX"...)
+# JEDI call type for each obs_type above. options: DA
+JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "DA"...)
+# When call DA in monitor mode (e.g., output O-F for an open-loop), set below to "NO" *and* initiate a non-ensembled snow DA run
+export DO_SNOW_ADD_INCREMENTS="YES"
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
 WINLEN=24
@@ -82,7 +84,7 @@ export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
 #export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/mem000
 #export COMIN_ATMOS_RESTART_PREV_ENS=${JEDIWORKDIR}
 
-export COMOUT_SNOW_ANALYSIS=${WORKDIR}  #${OUTDIR}/DA/jedi_anl
+export COMOUT_SNOW_ANALYSIS=${WORKDIR}
 export COMOUT_SNOW_DIAG=${OUTDIR}/DA/hofx
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 
