@@ -24,7 +24,7 @@ COMPILING and TESTING.
 
 2a. load relevant modules for Ursa or GAEA C6
 >source land_mods_ursa or source land_mods_gaeac6
-(these are the modules needed for steps 2b, 2c - only works for Ursa for now).
+(these are the modules needed for steps 2b, 2c).
 
 2b. 
 > cd ufs-land-driver
