@@ -23,7 +23,6 @@ submit_test() {
     local nodes="$1"; shift
     local mem="$1"; shift
     local walltime="$1"; shift
-    local partition="$1"; shift
     local exclusive="$1"; shift
     local jobname="$1"; shift
     local script="$1"; shift
@@ -74,8 +73,8 @@ if [[ ${notlocal} == "false" ]]; then
   waitlocal=true
 fi
 
-if [[ -f "${RT_DIR}/rt.control" ]]; then
-    source "${RT_DIR}/rt.control"
+if [[ -f "${RT_DIR}/../rt.control" ]]; then
+    source "${RT_DIR}/../rt.control"
 else
     echo "ERROR: Cannot find rt.control script"
     exit 1
@@ -87,6 +86,7 @@ echo "Starting Snow DA Regression Tests"
 echo "========================================"
 echo ""
 
+STMP="/scratch5/purged/"
 LOG_FILE="${RT_DIR}/consistency.log"
 DATA_DIR="${STMP}/${USER}/snowDA_regtest"
 

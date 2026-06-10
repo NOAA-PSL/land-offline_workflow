@@ -12,7 +12,6 @@ export SCHEDULER=${SCHEDULER:-"slurm"}
 # Job submission settings
 export QUEUE=${QUEUE:-"batch"}
 export PROJECT_CODE=${PROJECT_CODE:-"da-cpu"}
-export PARTITION=${PARTITION:-"cpu"}
 
 # Snow DA Analysis Resource Allocation
 # These values are used by submit_test() in driver.sh

@@ -36,10 +36,10 @@ else
 fi
 
 # Source snow DA settings
-if [[ -f "${ROOT_DIR}/settings_snowDA_test_workflow" ]]; then
-    source ${ROOT_DIR}/settings_snowDA_test_workflow
+if [[ -f "${ROOT_DIR}/settings_snowDA_test" ]]; then
+    source ${ROOT_DIR}/settings_snowDA_test
 else
-    echo "ERROR: Cannot find settings_snowDA_test_workflow at ${ROOT_DIR}/settings_snowDA_test_workflow"
+    echo "ERROR: Cannot find settings_snowDA_test at ${ROOT_DIR}/settings_snowDA_test"
     exit 1
 fi
 
