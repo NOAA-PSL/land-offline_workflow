@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=letkf
+DAalg=2DVar
 # TODO: fix this: State being updated: snow or smc(soil moisture content) 
 analType=snow
 
@@ -33,7 +33,7 @@ analType=snow
 # - madis_snow
 # - sfcsno
 # - snocvr_snomad
-OBS_TYPES=("GHCN") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("IMS") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA
 JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "DA"...)
 # When call DA in monitor mode (e.g., output O-F for an open-loop), set below to "NO" *and* initiate a non-ensembled snow DA run
@@ -123,8 +123,6 @@ export fail_on_missing_snowobs=False    # False: just warn; True: fail & exit
 KEEPJEDIDIR="YES"
 
 # OPTIONAL : delete jedi work dirs?
-SAVE_IMS="NO"
+SAVE_IMS="YES"
 SAVE_TILE="NO"
-SAVE_INCR="NO"
-SAVE_ANL="NO"
 SAVE_HOFX="NO"
