@@ -1,0 +1,73 @@
+==================================================
+ Starting Flexible Regression Test Suite          
+ Total test scenarios detected: 1 
+==================================================
+
+--------------------------------------------------
+ RUNNING SCENARIO: settings_cycle_test_C96_snow + settings_snowDA_test_letkf
+--------------------------------------------------
+Submitting cycle workflow...
+running land offline workflow on URSA
+reading cycle settings from settings_cycle_test_C96_snow
+Stochy init files found. Copying...
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem001/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem002/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem003/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem004/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem005/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem006/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem007/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem008/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem009/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem010/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem011/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem012/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem013/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem014/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem015/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem016/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem017/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem018/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem019/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Looking for ICS: /scratch4/NCEPDEV/land/data//RESTARTS/C96//mem020/vector/ufs_land_restart.2024-03-01_00-00-00.nc
+ICS found, copying
+Submitted batch job 15427098
+Monitoring task queue status...
+--> Tracking Slurm Job ID: 15427098
+Cleaning up scheduler log files
+Job sequence concluded. Executing verification script...
+/scratch4/NCEPDEV/stmp/Yuan.Xue/pull_request/land-offline_workflow/reg_tests/check_C96_snowDA_test.sh: line 4: settings_cycle_test: No such file or directory
+2026-06-15 21:24:38.955646 +0000 ERROR /tmp/role.apps/spack-stage/spack-stage-nccmp-1.9.1.0-x25ltdeexvxsg7fh5klcev6vnth5klw7/spack-src/src/nccmp_state.c:163 File not found: /scratch5/purged/Yuan.Xue//cycle_land/ens20_ghcn_letkf//mem000/restarts/vector/ufs_land_restart_back.2024-12-15_00-00-00.nc
+TEST FAILED
+2024-12-15_00-00-00 back are different
+Result: SCENARIO PASSED
+
+==================================================
+ REGRESSION TEST RESULTS SUMMARY                  
+==================================================
+PASSED:
+  - settings_cycle_test_C96_snow (settings_snowDA_test_letkf)
+==================================================
+ STATUS: REGRESSION TEST PASSED 
+==================================================
