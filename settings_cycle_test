@@ -79,7 +79,6 @@ export NPROC_JEDI=$(( ${num_tiles} * ${layout_x} * ${layout_y} ))
 export NPROC_INC=$(( ${num_tiles} * ${ensemble_size} ))  #120
 export io_layout_x=1
 export io_layout_y=1
-export NPROC_NOMP=6  #comment this out for ens runs. TODO: remove after mpi_ens Noahmp merged
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
