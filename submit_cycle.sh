@@ -174,8 +174,8 @@ while [ $date_count -lt $cycles_per_job ]; do
         	
     fi #$do_jedi
     
-    # Forcing perturbation goes here
-    if [[ $do_enkf == "YES" ]]; then 
+    # Forcing perturbation goes here. Done daily at hr=00
+    if [[ $do_enkf == "YES" && "${HH}" == "00" ]]; then 
       
 	echo ""
 	echo 'Running Ens Forc Gen with Stochy'         #>> $logfile
@@ -238,8 +238,13 @@ while [ $date_count -lt $cycles_per_job ]; do
 
         forc_file=${forcing_dir}/${forc_inp_file}
 
-        #TODO: fix Noahmp so the following two lines are not needed
-        forc_inp_file_next=${forcing_prefix}${nYYYY}-${nMM}-${nDD}.nc
+        #TODO: fix Noahmp so the following lines are not needed
+        NEXTDAY=`${incdate} $THISDATE 24`
+        ndYYYY=`echo $NEXTDAY | cut -c1-4`
+        ndMM=`echo $NEXTDAY | cut -c5-6`
+        ndDD=`echo $NEXTDAY | cut -c7-8`
+        ndHH=`echo $NEXTDAY | cut -c9-10`
+        forc_inp_file_next=${forcing_prefix}${ndYYYY}-${ndMM}-${ndDD}.nc
         forc_file_next=${forcing_dir}/${forc_inp_file_next}
 
         for ie in $(seq $ensemble_size)
@@ -357,6 +362,26 @@ while [ $date_count -lt $cycles_per_job ]; do
 
     fi
 
+    # save bkg vectors
+    if [[ $save_bkg_vector == "YES" ]]; then
+        if [[ "$ensemble_size" -gt 1  ]]; then
+
+          for ie in $(seq 0 $ensemble_size)
+          do
+              mem_ens="mem`printf %03i $ie`"
+              MEM_WORKDIR=${WORKDIR}/${mem_ens}
+              MEM_MODL_OUTDIR=${OUTDIR}/${mem_ens}
+
+              cp ${MEM_WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc  ${MEM_MODL_OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+
+          done
+          # wait
+        else
+          cp ${WORKDIR}/ufs_land_restart.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc ${OUTDIR}/vector/ufs_land_restart_back.${nYYYY}-${nMM}-${nDD}_${nHH}-00-00.nc
+
+        fi
+    fi
+   
     echo "Finished job number, ${date_count},for  date: ${THISDATE}" >> $logfile
 
     THISDATE=$NEXTDATE
