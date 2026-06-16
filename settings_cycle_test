@@ -104,3 +104,4 @@ export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120K
 export lndp_vscale=800	    #vertical correlation scale (m)
 export lndp_tscale=86400    #temporal decorrelation length (s) ~ 24hr
 #
+save_anl_vector="NO"
