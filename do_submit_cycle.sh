@@ -24,11 +24,15 @@ if [[ ${MACHINE_ID} == 'ursa' ]]; then
     export DATADIR=/scratch4/NCEPDEV/land/data/         
     export landmods=land_mods_ursa
     export stochymods=stochy_mods_ursa
+	export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
+    export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/
 elif [[ ${MACHINE_ID} == 'gaeac6' ]]; then
     echo "running land offline workflow on GAEA C6"
     export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   
     export landmods=land_mods_gaeac6
     export stochymods=stochy_mods_gaeac6
+	export COMINobsproc_prfx=/gpfs/f6/drsa-precip3/world-shared/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
+    export COMINobsforge_prfx=/gpfs/f6/drsa-precip3/world-shared/role.glopara/dump_ioda/
 else
     echo "Land offline workflow currently supported only on URSA and GAEA C6"
     exit 1

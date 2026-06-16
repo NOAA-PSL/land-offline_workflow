@@ -85,8 +85,8 @@ export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 export COMOUT_SNOW_DIAG=${OUTDIR}/DA/hofx
 
 export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
-export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
-export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/  #gdas.${YYYY}${MM}${DD}/${HH}
+#export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
+#export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/  #gdas.${YYYY}${MM}${DD}/${HH}
 
 export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
 export EXECgfs=${EXECgdas}
