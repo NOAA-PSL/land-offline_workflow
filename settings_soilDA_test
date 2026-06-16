@@ -33,7 +33,7 @@ OBS_TYPES=("SMAP")  # format: ("OBS1" "OBS2"...)
 JEDI_TYPES=("DA")  # format ("DA" "HOFX"...)
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
-WINLEN=24
+WINLEN=${FCSTHR:-24}
 
 #OPTIONAL: overrides. TODO: this may no longer apply
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
@@ -45,6 +45,9 @@ export OBSDIR=${DATADIR}/DA/
 
 # berr dir
 export BCOV_DIR="${DATADIR}/DA/bump_soil/"  #TODO change to soil B
+export BCOV_FNAME="c384_soillt_sl_250v700_bump_nicas.nc"
+export STATICB_TYPE="soill1" #smcstctq2m"
+export DOHYBVAR="NO"
 
 # IAU related parameters
 export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
@@ -65,21 +68,29 @@ export RUN=gdas
 export HOMEgfs=${HOMEdir}/HOMEgfs   #until a better solution is found
 export HOMEglobal=${HOMEdir}/HOMEgfs       #TODO: update to homeglobal
 export PARMgfs=${HOMEgfs}/parm
+export PARMglobal=${HOMEglobal}/parm
 export FIXgfs=${HOMEgfs}/fix
+export FIXglobal=${HOMEgfs}/fix
 
 export DATA=${JEDIWORKDIR}
 export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS
 export COMIN_ATMOS_RESTART_PREV=${WORKDIR}
 #export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
-export COMOUT_SOIL_ANALYSIS=${WORKDIR}
+export COMIN_ATMOS_HISTORY_PREV=${WORKDIR}
+export COMIN_ATMOS_RESTART=${WORKDIR}
+
+export COMOUT_SOIL_ANALYSIS=${OUTDIR}/DA/jedi_anl
 export COMOUT_SOIL_DIAG=${OUTDIR}/DA/hofx
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
 export OBS_LIST_YAML="${JEDIWORKDIR}/soil_obs_list.yaml.j2"
 #export INCPREFIX="sfc_inc"
 
 export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
+export EXECglobal=${EXECgdas}
+export EXECgfs=${EXECgdas}
+
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
-export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
+export FIXgdas=${HOMEgfs}/fix/gdas/
 
 export APRUN_SOILANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
 export APRUN_SOILLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0 --cpus-per-task=1"
@@ -93,7 +104,6 @@ export EXECgfs=${EXECgdas}
 #export APPLY_INCR_EXE="/gpfs/f6/land-cpu/proj-shared/APPS/Land_GDASApp/sorc/land-jediincr/sorc/apply_soil_incr.x"
 export APPLY_INCR_EXE="${EXECgdas}/apply_soil_incr.x"  #gdas_apply_incr.x"
 export APPLY_INCR_NML_TMPL="${PARMgdas}/soil/apply_incr_nml.j2"
-export INC_PREFIX="soilinc."
 export TASK_CONFIG_YAML_DET="${PARMgdas}/soil/soil_det_config.yaml.j2"
 export TASK_CONFIG_YAML_ENS="${PARMgdas}/soil/soil_letkf_config.yaml.j2"
 
@@ -103,6 +113,8 @@ export print_debug=".false."
 export truncate_incr=".true."
 export upd_stc=.false.   #SMAP only slc
 export upd_slc=.true.    
+export csg_increment=.true.
+export INC_PREFIX="soilinc."
 
 export fail_on_missing_soilobs=True    # False: just warn; True: fail & exit
 

@@ -40,17 +40,15 @@ JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "DA"...)
 export DO_SNOW_ADD_INCREMENTS="YES"
 
 #  DA window lenth. Will generally be the same as the FCSTLEN 
-WINLEN=24
+WINLEN=${FCSTHR:-24}
 
 #OPTIONAL: overrides. TODO: this may no longer apply
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
 # this is no longer optional
-#export OBSDIR=/scratch4/NCEPDEV/land/data/DA
 export OBSDIR=${DATADIR}/DA/
 
 # berr dir
-#export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_snow/"  
 export BCOV_DIR="${DATADIR}/DA/bump_snow/"
 
 # IAU related parameters
@@ -80,13 +78,11 @@ export DATA=${JEDIWORKDIR}
 export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS     
 export COMIN_ATMOS_RESTART_PREV=${WORKDIR}
 export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
+export COMIN_ATMOS_RESTART=${WORKDIR}
 
-#export COMIN_ATMOS_RESTART_PREV=${JEDIWORKDIR}/mem000
-#export COMIN_ATMOS_RESTART_PREV_ENS=${JEDIWORKDIR}
-
-export COMOUT_SNOW_ANALYSIS=${WORKDIR}
-export COMOUT_SNOW_DIAG=${OUTDIR}/DA/hofx
+export COMOUT_SNOW_ANALYSIS=${OUTDIR}/DA/jedi_anl
 export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
+export COMOUT_SNOW_DIAG=${OUTDIR}/DA/hofx
 
 export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
 export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
@@ -97,8 +93,9 @@ export EXECgfs=${EXECgdas}
 export EXECglobal=${EXECgdas}
 
 export PARMgdas=${LANDDADIR}/GDASApp/parm/
-export FIXgdas=${LANDDADIR}/jedi/fv3-jedi/Data
+export FIXgdas=${HOMEgfs}/fix/gdas/
 
+##NOTE for snow analysis with IMS, make sure the allocated procs are 2*(6*layout_x*layout_y)
 export APRUN_SNOWANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
 export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
 export APRUN_SNOWLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
