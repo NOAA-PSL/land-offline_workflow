@@ -124,5 +124,4 @@ KEEPJEDIDIR="YES"
 
 # OPTIONAL : delete jedi work dirs?
 SAVE_IMS="YES"
-SAVE_TILE="NO"
-SAVE_HOFX="NO"
+SAVE_TILE="YES"
