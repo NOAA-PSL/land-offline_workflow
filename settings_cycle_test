@@ -2,13 +2,13 @@
 # station snow (e.g., GHCN, SFCSNO, SNOCVR_SNOMAD), and/or satellite snow (e.g., IMS)
 
 # experiment name
-export exp_name=ghcn_letkf  
+export exp_name=ims_2dvar 
 STARTDATE=2024030100  
 ENDDATE=2024030300    
 
 #export BASEDIR=/scratch4/BMC/gsienkf/${USER}/noah-mp # for PSL staff
-BASEDIR=/scratch5/purged/${USER}/               # EMC
-#BASEDIR=/scratch4/NCEPDEV/stmp/${USER}/               # EMC
+#BASEDIR=/scratch5/purged/${USER}/               # EMC
+BASEDIR=/scratch3/NCEPDEV/stmp/${USER}/               # EMC
 #BASEDIR=/gpfs/f6/land-cpu/scratch/${USER}/     #GAEAC6
 
 # temporary directory where experiment is run from
@@ -24,11 +24,11 @@ export HOMEdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd 
 HOMEgfs=${HOMEdir}/HOMEgfs
 
 # run (true) ensemble. NO for LETKFOI
-export do_enkf="YES"
+export do_enkf="NO"
 export frac_grid=.true.  #TODO:make this the only choice so no need to spec
 
 # for LETKF, this is size of ensemble, 1 for non-ensemble runs 
-export ensemble_size=20
+export ensemble_size=1
 
 # number of tiles
 export num_tiles=6         # 1 for regional
@@ -38,7 +38,8 @@ export vector_size=18320   #69465  # hr3 land vectors C384:272699  C96:18320 C19
 # length of each forecast
 export FCSTHR=24
 # delta to previous cycle --6 often, but can be 24
-export PCYC_DEL=6
+export PCYC_DEL=24
+export assim_freq=24
 
 #FV3 resolution
 export RES=96   
@@ -79,7 +80,6 @@ export NPROC_JEDI=$(( ${num_tiles} * ${layout_x} * ${layout_y} ))
 export NPROC_INC=$(( ${num_tiles} * ${ensemble_size} ))  #120
 export io_layout_x=1
 export io_layout_y=1
-export NPROC_NOMP=6  #comment this out for ens runs. TODO: remove after mpi_ens Noahmp merged
 
 #forcing options: gdas, gswp3, gefs_ens, era5
 export atmos_forc=era5
@@ -105,3 +105,5 @@ export lndp_hscale=120000   #horizontal correlation scale for forcing in m ~120K
 export lndp_vscale=800	    #vertical correlation scale (m)
 export lndp_tscale=86400    #temporal decorrelation length (s) ~ 24hr
 #
+export save_anl_vector="YES"
+export save_bkg_vector="YES"
