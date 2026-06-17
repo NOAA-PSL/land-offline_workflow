@@ -61,7 +61,7 @@ COMPILING and TESTING.
 
 > cd land_ensemble_gen
 
-> source ../sotchy_mods_ursa OR source ../stochy_mods_gaeac6
+> source ../stochy_mods_ursa OR source ../stochy_mods_gaeac6
 
 > ./compile_ens_intel
 
