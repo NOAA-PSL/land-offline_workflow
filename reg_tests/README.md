@@ -2,8 +2,8 @@
 
 This script (rt.sh) automates the execution of regression test scenarios for the workflow. It manages configuration staging, Slurm job submission, queue monitoring, and final validation.
 
-# Author: Yuan Xue (yuan.xue@noaa.gov)
-# Date: 06/18/2026
+Author: Yuan Xue (yuan.xue@noaa.gov)
+Date: 06/18/2026
 # Note: Gemini was used to assist with developing this code and summarizing the scripts into a README. The code has been reviewed, edited, and validated by NWS staff.
 
 -------------------------------------------------------------------------------
