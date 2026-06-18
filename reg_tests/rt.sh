@@ -15,7 +15,8 @@ rm -f "$LOG_FILE"
 # Format: "cycle_settings_file  da_settings_file  verification_script"
 # ----------------------------------------------------------------------
 TEST_CASES=(
-    "settings_cycle_test_C96_snow settings_snowDA_test_letkf  check_C96_snowDA_test.sh"
+    "settings_cycle_test_C96_snow_letkf settings_snowDA_test_letkf  check_C96_letkf_snowDA_test.sh"
+    "settings_cycle_test_C96_snow_2dvar settings_snowDA_test_2dvar  check_C96_2dvar_snowDA_test.sh"
 #    "settings_cycle_test_soil settings_soilDA_test  check_soilDA_test.sh"
 )
 
@@ -81,6 +82,7 @@ trap cleanup EXIT
             while squeue -j "$JOB_ID" 2>/dev/null | grep -q "$JOB_ID"; do
                 sleep 30
             done
+	    #comment out for debug (when needed) by retaining all log files
             echo "Cleaning up scheduler log files"
             rm -f "${REPO_DIR}"/err_*.[0-9]* "${REPO_DIR}"/log_*.[0-9]* "${REPO_DIR}/cycle.log"
         else

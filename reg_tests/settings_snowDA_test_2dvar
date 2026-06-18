@@ -21,7 +21,7 @@ RSTRDIR=${WORKDIR}/
 
 # DA algorithm and state type being updated
 # options: "2DVar", "letkf", "hybenkf"
-DAalg=letkf
+DAalg=2DVar
 # TODO: fix this: State being updated: snow or smc(soil moisture content) 
 analType=snow
 
@@ -33,7 +33,7 @@ analType=snow
 # - madis_snow
 # - sfcsno
 # - snocvr_snomad
-OBS_TYPES=("GHCN") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+OBS_TYPES=("IMS") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
 # JEDI call type for each obs_type above. options: DA
 JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "DA"...)
 # When call DA in monitor mode (e.g., output O-F for an open-loop), set below to "NO" *and* initiate a non-ensembled snow DA run
@@ -46,11 +46,9 @@ WINLEN=${FCSTHR:-24}
 #IMShr= # is assimilating IMS at hour other than 18, specify here.
 
 # this is no longer optional
-#export OBSDIR=/scratch4/NCEPDEV/land/data/DA
 export OBSDIR=${DATADIR}/DA/
 
 # berr dir
-#export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_snow/"  
 export BCOV_DIR="${DATADIR}/DA/bump_snow/"
 
 # IAU related parameters
@@ -77,7 +75,7 @@ export FIXgfs=${HOMEgfs}/fix
 export FIXglobal=${HOMEgfs}/fix
 
 export DATA=${JEDIWORKDIR}
-export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS
+export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS     
 export COMIN_ATMOS_RESTART_PREV=${WORKDIR}
 export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
 export COMIN_ATMOS_RESTART=${WORKDIR}
@@ -103,7 +101,7 @@ export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distri
 export APRUN_SNOWLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
 
 # Name of the executable that applies increment to bkg and its namelist template
-export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"
+export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"  
 export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
 export LETKF_APPLY_INCR_NML_TMPL="${PARMgdas}/snow/letkf_apply_incr_nml.j2"
 export TASK_CONFIG_YAML_DET="${PARMgdas}/snow/snow_det_config.yaml.j2"
@@ -125,5 +123,5 @@ export fail_on_missing_snowobs=False    # False: just warn; True: fail & exit
 KEEPJEDIDIR="YES"
 
 # OPTIONAL : delete jedi work dirs?
-SAVE_IMS="NO"
-SAVE_TILE="NO"
+SAVE_IMS="YES"
+SAVE_TILE="YES"
