@@ -1,0 +1,129 @@
+# settings for do_landDA.sh for IMS test case
+
+############################
+# if calling from submit_cycle,vars in this section will already be set. Otherwise, need to be set here. 
+
+# exp_name= # experiment name
+# THISDATE= # date YYYYMMDDHH
+# OUTDIR=/scratch2/BMC/gsienkf/${USER}/cycle_land/${exp_name}/  # temporary directory where experiment is run from
+# RES= #FV3 resolution
+#export FIXorog= orog file location`
+#export TSTUB= # file stub for orography files in $TPATH
+              # oro_C${RES} for atm only, oro_C${RES}.mx100 for atm/ocean.
+
+# if calling from submit_cycle.sh, do not change these three:
+JEDIWORKDIR=${WORKDIR}/jedi/
+LANDDADIR=${CYCLEDIR}/DA_update/  # directory where do_landDA.sh script is 
+RSTRDIR=${WORKDIR}/   
+
+############################
+# DA options
+
+# DA algorithm and state type being updated
+# options: "2DVar", "letkf", "hybenkf"
+DAalg=letkf
+# TODO: fix this: State being updated: snow or smc(soil moisture content) 
+analType=snow
+
+# JEDI input obs. 
+# options : IMS, GHCN, MADIS, SFCSNO, SNOCVR_SNOMAD
+# Corresponding names in pygfs
+# - ims_snow
+# - ghcn_snow
+# - madis_snow
+# - sfcsno
+# - snocvr_snomad
+OBS_TYPES=("GHCN") #SFCSNO" "GHCN" "IMS")  # format: ("OBS1" "OBS2"...)
+# JEDI call type for each obs_type above. options: DA
+JEDI_TYPES=("DA") # "DA" "DA")  # format ("DA" "DA"...)
+# When call DA in monitor mode (e.g., output O-F for an open-loop), set below to "NO" *and* initiate a non-ensembled snow DA run
+export DO_SNOW_ADD_INCREMENTS="YES"
+
+#  DA window lenth. Will generally be the same as the FCSTLEN 
+WINLEN=${FCSTHR:-24}
+
+#OPTIONAL: overrides. TODO: this may no longer apply
+#IMShr= # is assimilating IMS at hour other than 18, specify here.
+
+# this is no longer optional
+#export OBSDIR=/scratch4/NCEPDEV/land/data/DA
+export OBSDIR=${DATADIR}/DA/
+
+# berr dir
+#export BCOV_DIR="/scratch4/NCEPDEV/land/data/DA/bump_snow/"  
+export BCOV_DIR="${DATADIR}/DA/bump_snow/"
+
+# IAU related parameters
+export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
+export IAUFHRS="3,6,9"
+export IAU_DELTHRS=6
+export IAU_OFFSET=6
+
+export DO_SNOWDA="YES"
+export DO_SOILDA="NO"
+export DO_LAND_IAU=".false."  #should remain false for now
+export LSOIL_INCR=2
+export DO_ADD_SOILINC="NO"
+export DO_FINAL_SOILANL="NO"
+
+export NET=gfs
+export RUN=gdas
+
+export HOMEgfs=${HOMEdir}/HOMEgfs   #until a better solution is found
+export HOMEglobal=${HOMEdir}/HOMEgfs       #TODO: update to homeglobal
+export PARMgfs=${HOMEgfs}/parm
+export PARMglobal=${HOMEglobal}/parm
+export FIXgfs=${HOMEgfs}/fix
+export FIXglobal=${HOMEgfs}/fix
+
+export DATA=${JEDIWORKDIR}
+export COMIN_OBS=${JEDIWORKDIR}/COMIN_OBS
+export COMIN_ATMOS_RESTART_PREV=${WORKDIR}
+export COMIN_ATMOS_RESTART_PREV_ENS=${WORKDIR}
+export COMIN_ATMOS_RESTART=${WORKDIR}
+
+export COMOUT_SNOW_ANALYSIS=${OUTDIR}/DA/jedi_anl
+export COMOUT_CONF=${OUTDIR}/DA/jedi_conf
+export COMOUT_SNOW_DIAG=${OUTDIR}/DA/hofx
+
+export OBS_LIST_YAML="${JEDIWORKDIR}/snow_obs_list.yaml.j2"
+#export COMINobsproc_prfx=/scratch3/NCEPDEV/global/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos
+#export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/  #gdas.${YYYY}${MM}${DD}/${HH}
+
+export EXECgdas=${LANDDADIR}/GDASApp/build/bin/
+export EXECgfs=${EXECgdas}
+export EXECglobal=${EXECgdas}
+
+export PARMgdas=${LANDDADIR}/GDASApp/parm/
+export FIXgdas=${HOMEgfs}/fix/gdas/
+
+##NOTE for snow analysis with IMS, make sure the allocated procs are 2*(6*layout_x*layout_y)
+export APRUN_SNOWANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
+export APRUN_APPLY_INCR="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_INC}"
+export APRUN_SNOWLETKFANL="time srun -l --export=ALL --hint=nomultithread --distribution=block:block -n ${NPROC_JEDI} --mem=0  --cpus-per-task=2"
+
+# Name of the executable that applies increment to bkg and its namelist template
+export APPLY_INCR_EXE="${EXECgdas}/apply_incr.exe"
+export APPLY_INCR_NML_TMPL="${PARMgdas}/snow/apply_incr_nml.j2"
+export LETKF_APPLY_INCR_NML_TMPL="${PARMgdas}/snow/letkf_apply_incr_nml.j2"
+export TASK_CONFIG_YAML_DET="${PARMgdas}/snow/snow_det_config.yaml.j2"
+export TASK_CONFIG_YAML_ENS="${PARMgdas}/snow/snow_letkf_config.yaml.j2"
+export PREP_SNOCVR_SNOMAD_YAML="${PARMgdas}/snow/prep/prep_snocvr_snomad.yaml.j2"
+export PREP_GHCN_YAML="${PARMgdas}/snow/prep/prep_ghcn.yaml.j2"
+export GHCN2IODACONV="${LANDDADIR}/GDASApp/ush/snow/ghcn_snod2ioda.py"  #"${USHgfs}/ghcn_snod2ioda.py"
+export OBSBUILDER="${LANDDADIR}/GDASApp/ush/snow/bufr_snocvr_snomad.py"
+
+export noincr_threshold=9999999.9
+export print_debug=".false."
+export truncate_incr=".true."
+
+export ims_scf_obs_suffix="asc" # asc-ascii; nc-netcdf
+export fail_on_missing_snowobs=False    # False: just warn; True: fail & exit
+
+## Clean up settings: TODO: some of these may be taken care of by analysis
+# keep working dir?
+KEEPJEDIDIR="YES"
+
+# OPTIONAL : delete jedi work dirs?
+SAVE_IMS="NO"
+SAVE_TILE="NO"
