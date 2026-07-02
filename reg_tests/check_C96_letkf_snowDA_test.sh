@@ -10,8 +10,20 @@ if [[ -z "${OUTDIR}" ]]; then
     exit 1
 fi
 
-# Base directory for the baseline datasets
-TEST_BASE_ROOT="/scratch4/NCEPDEV/land/data/DA/offline_workflow/baseline/ens20_ghcn_letkf"
+dir_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+GDASApp_root=${dir_root}/../DA_update/GDASApp/
+source $GDASApp_root/ush/detect_machine.sh
+
+if [[ ${MACHINE_ID} == 'ursa' ]]; then
+    echo "checking reg_tests on URSA"
+    TEST_BASE_ROOT="/scratch4/NCEPDEV/land/data/DA/offline_workflow/baseline/ens20_ghcn_letkf"
+elif [[ ${MACHINE_ID} == 'gaeac6' ]]; then
+    echo "checking reg_tests on GAEA C6"
+    TEST_BASE_ROOT="/gpfs/f6/land-cpu/world-shared/Yuan.Xue/offline_workflow/baseline/ens20_ghcn_letkf"
+else
+    echo "reg_tests currently supported only on URSA and GAEA C6"
+    exit 1
+fi
 
 # Loop through members 001 to 020 using Bash brace expansion
 for i in {001..020}
