@@ -317,7 +317,7 @@ while [ $date_count -lt $cycles_per_job ]; do
             cd $MEM_WORKDIR
                 
             #TODO: modify NoahMP to have mpi-group for each ensemble member and compare runtimes
-            time srun '--export=ALL' --exclusive --label -K -n ${NPROC_NOMP} --mem-per-cpu ${SLURM_MEM_PER_CPU} $LSMexec   &
+            time srun '--export=ALL' --label -K -n ${NPROC_NOMP} $LSMexec   &
             # #-N1-1 --exclusive
     
             # TODO: Modify noahmp to exit with error code    
