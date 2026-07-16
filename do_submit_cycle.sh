@@ -28,7 +28,7 @@ if [[ ${MACHINE_ID} == 'ursa' ]]; then
     export COMINobsforge_prfx=/scratch3/NCEPDEV/global/role.glopara/dump_ioda/
 elif [[ ${MACHINE_ID} == 'gaeac6' ]]; then
     echo "running land offline workflow on GAEA C6"
-    export DATADIR=/gpfs/f6/land-cpu/proj-shared/DATA/   
+    export DATADIR=/gpfs/f6/land-cpu/world-shared/DATA/   
     export landmods=land_mods_gaeac6
     export stochymods=stochy_mods_gaeac6
 	export COMINobsproc_prfx=/gpfs/f6/drsa-precip3/world-shared/role.glopara/dump/        #gdas.${YYYY}${MM}${DD}/${HH}/atmos

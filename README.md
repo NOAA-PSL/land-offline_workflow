@@ -77,9 +77,7 @@ COMPILING and TESTING.
  
 > do_submit_test.sh 
 
-Once completed, to check snow DA output:
-
-> (For snowDA) check_snowDA_test.sh
+> A suite of regression tests can be found in the reg_tests directory
 
 RUNNING YOUR OWN EXPERIMENTS 
 

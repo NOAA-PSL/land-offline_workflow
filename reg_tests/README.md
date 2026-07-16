@@ -1,6 +1,6 @@
 # README: Flexible Regression Test Suite (rt.sh)
 
-After compilations are done, this script (rt.sh) automates the execution of regression test scenarios for the workflow. It manages configuration staging, Slurm job submission, queue monitoring, and final validation. Currently only supported on Ursa.
+After compilations are done, this script (rt.sh) automates the execution of regression test scenarios for the workflow. It manages configuration staging, Slurm job submission, queue monitoring, and final validation. Currently only supported on Ursa and Gaea C6.
 
 Author: Yuan Xue (yuan.xue@noaa.gov)
 Date: 06/18/2026
