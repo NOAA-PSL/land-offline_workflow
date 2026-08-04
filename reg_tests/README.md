@@ -53,3 +53,8 @@ Example:
 TEST_CASES=(
     "settings_cycle_test_C96_snow_letkf settings_snowDA_test_letkf  check_C96_letkf_snowDA_test.sh"
 )
+
+-------------------------------------------------------------------------------
+NOTE
+-------------------------------------------------------------------------------
+Default setup of regression tests are on Ursa. When running on GAEA C6, 1) the sbatch related headers need to be modified in ../submit_cycle.sh to be GAEA C6 compatible, and 2) the $BASEDIR in settings_cycle_test_* files need to be GAEA C6's BASEDIR.
