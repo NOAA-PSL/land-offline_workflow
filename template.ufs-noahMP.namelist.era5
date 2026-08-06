@@ -78,7 +78,7 @@
  forcing_type                   = "dd_1h"
  forcing_filename               = "ERA5-CXXRES.XXORES_datm_"
  forcing_interp_solar           = "zenith"          ! zenith or linear
- forcing_time_solar             = "period_average"  ! period_average or instantaneous
+ forcing_time_solar             = "instantaneous"  ! period_average or instantaneous
  forcing_name_precipitation     = "precipitation_bilinear"
  forcing_name_temperature       = "temperature"
  forcing_name_specific_humidity = "specific_humidity"
